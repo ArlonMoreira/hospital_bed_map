@@ -1,4 +1,4 @@
-import React, { useRef, MouseEventHandler } from 'react';
+import React, { useRef, MouseEventHandler, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 //styles
 import styles from './App.module.css';
@@ -12,17 +12,27 @@ function App() {
 
   const sidebar_left = useRef<HTMLDivElement>(null);
 
-  const handleShow = (buttonRef: React.RefObject<HTMLDivElement>, activeClass: any): MouseEventHandler<HTMLButtonElement> => {
-    return () => {
-      sidebar_left.current?.classList.toggle('d-none');
-      buttonRef.current?.classList.toggle(activeClass);
+  const resizeShow = (buttonRef: React.RefObject<HTMLDivElement>, activeClass: any, show: boolean): void => {
+    if(show){
+      sidebar_left.current?.classList.remove('d-none');
+      buttonRef.current?.classList.remove(activeClass);
+    } else {
+      sidebar_left.current?.classList.add('d-none');
+      buttonRef.current?.classList.add(activeClass);
     }
     
   };
 
+  const handleShow = (buttonRef: React.RefObject<HTMLDivElement>, activeClass: any): MouseEventHandler<HTMLButtonElement> => {
+    return () => {
+      sidebar_left.current?.classList.toggle('d-none');
+      buttonRef.current?.classList.toggle(activeClass);
+    } 
+  };
+
   return (
     <div className='App'>
-      <Navbar handleShow={handleShow}/>
+      <Navbar handleShow={handleShow} resizeShow={resizeShow}/>
       <div className='main'>
         <BrowserRouter>
           <Sidebar sideBarRef={sidebar_left}/>

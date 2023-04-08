@@ -18,7 +18,7 @@ const Sidebar = ({sideBarRef}: Props) => {
     }
 
     return (
-        <nav ref={sideBarRef} className={`${styles.sidebar} p-2`}>
+        <nav ref={sideBarRef} className={`${styles.sidebar} py-1 px-1 py-sm-1 px-sm-1 py-md-2 px-md-2`}>
             <div className={`${styles.sidebar_left}`} ref={sidebar}>
                 <ul className={`nav ${styles.container_nav}`}>
                     <li className={`nav-item ${styles.expand_button}`} onClick={handleExpand}>

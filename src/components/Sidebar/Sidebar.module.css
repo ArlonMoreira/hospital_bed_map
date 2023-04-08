@@ -3,6 +3,12 @@
     transition: 0.45s ease-in-out;      
 }
 
+@media only screen and (max-width: 768px) {
+    .sidebar {
+        position: absolute;
+    }
+}
+
 @keyframes slideIn {
     0% {
       transform: translateX(-900px);
@@ -34,6 +40,12 @@
     grid-gap: 0px;
 }
 
+@media only screen and (max-width: 768px) {
+    .container_nav {
+        grid-auto-rows: minmax(65px, auto);
+    }
+}
+
 .item {
     display: flex;
     align-content: center;
@@ -60,6 +72,12 @@
     min-width: 70px;
     display: flex;
     justify-content: center;
+}
+
+@media only screen and (max-width: 768px) {
+    .logo_nav {
+        min-width: 62px;
+    }
 }
 
 .text_nav {
