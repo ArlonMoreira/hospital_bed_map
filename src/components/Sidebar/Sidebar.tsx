@@ -5,18 +5,39 @@ import { NavLink } from 'react-router-dom';
 //Hooks
 import { useRef, useState } from 'react';
 
-type Props = {}
+type Props = {
+    sideBarRef: React.LegacyRef<HTMLElement> | undefined 
+}
 
-const Sidebar = (props: Props) => {
+const Sidebar = ({sideBarRef}: Props) => {
 
     const sidebar = useRef<HTMLDivElement>(null);
+    
+    /**
+     * Caso a área já estiver expandida, a mesma não feche ao sobrepor o mouse sobre o ícone
+     */
+    const [show, setShow] = useState<boolean>(false); 
 
-    const handleExpand = () => {
+    const handleExpand = ():void => {
         sidebar.current?.classList.toggle(styles.expand);
+        if(sidebar.current?.classList.contains(styles.expand)) {
+            setShow(true);
+        } else {
+            setShow(false);
+        }
+        
+    }
+
+    const openExpand = (): void => {
+        sidebar.current?.classList.add(styles.expand);
+    }
+
+    const closeExpand = (): void => {
+        if(!show) sidebar.current?.classList.remove(styles.expand);
     }
 
     return (
-        <nav className={`${styles.sidebar} p-2 d-none`}>
+        <nav ref={sideBarRef} className={`${styles.sidebar} p-2`}>
             <div className={`${styles.sidebar_left}`} ref={sidebar}>
                 <ul className={`nav ${styles.container_nav}`}>
                     <li className={`nav-item ${styles.item} ${styles.expand_button}`} onClick={handleExpand}>
@@ -26,17 +47,17 @@ const Sidebar = (props: Props) => {
                             </svg>  
                         </a>
                     </li>
-                    <li className={`nav-item ${styles.item}`}>
+                    <li className={`nav-item ${styles.item}`} onMouseEnter={openExpand} onMouseLeave={closeExpand}>
                         <NavLink to='/' className='d-flex'>
-                            <svg width="26" height="24" className="bi bi-bar-chart" viewBox="0 0 16 16">
+                            <svg width="24" height="22" className="bi bi-bar-chart" viewBox="0 0 16 16" >
                                 <path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3z"/>
                             </svg>
                             <p className={styles.text_nav}>Dashboard</p>
                         </NavLink>
                     </li>
-                    <li className={`nav-item ${styles.item}`}>
+                    <li className={`nav-item ${styles.item}`} onMouseEnter={openExpand} onMouseLeave={closeExpand}>
                         <NavLink to='/' className='d-flex'>
-                            <svg width="26" height="24" viewBox="0 0 249.000000 203.000000" preserveAspectRatio="xMidYMid meet">
+                            <svg width="24" height="22" viewBox="0 0 249.000000 203.000000" preserveAspectRatio="xMidYMid meet">
                                 <g transform="translate(0.000000,203.000000) scale(0.100000,-0.100000)" stroke="none">
                                     <path d="M1760 1970 c-33 -8 -62 -55 -150 -242 -40 -87 -78 -158 -84 -158 -6 0 -33 34 -61 75 -40 60 -57 77 -85 85 -47 13 -495 13 -542 0 -68 -19 -89 -85 -44 -137 l24 -28 251 -3 251 -3 52 -77 c115 -171 125 -182 167 -182 23 0 47 7 59 18 11 9 57 98 103 197 45 99 88 186 94 193 8 9 23 -4 65 -59 30 -39 65 -75 78 -80 33 -13 389 -11 435 2 30 8 42 18 53 45 12 29 12 39 0 68 -20 48 -57 56 -258 56 l-167 0 -73 96 c-40 53 -78 102 -84 109 -16 21 -56 33 -84 25z"/>
                                     <path d="M75 1705 l-25 -24 0 -781 0 -781 25 -24 c30 -31 83 -33 116 -6 23 18 24 25 27 175 l3 156 1025 0 1024 0 0 -164 c0 -148 2 -166 20 -188 39 -50 118 -37 139 22 14 42 15 804 1 905 -19 130 -96 249 -203 313 -83 50 -142 62 -305 63 l-144 1 -25 -54 c-13 -29 -38 -68 -56 -86 l-31 -32 190 0 c211 0 253 -8 316 -60 20 -17 49 -56 65 -88 28 -57 28 -58 28 -257 l0 -200 -480 0 -480 0 -3 298 c-3 332 -7 311 68 311 l36 1 -59 82 c-33 46 -61 83 -64 83 -13 0 -81 -42 -100 -62 -50 -53 -53 -76 -53 -395 0 -164 -4 -304 -8 -311 -7 -10 -104 -12 -453 -10 l-444 3 -5 548 -5 549 -24 19 c-33 27 -86 25 -116 -6z"/>
@@ -50,6 +71,6 @@ const Sidebar = (props: Props) => {
             </div>
         </nav>
     )
-}
+};
 
 export default Sidebar

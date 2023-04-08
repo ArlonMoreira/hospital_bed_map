@@ -1,30 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { useRef, MouseEventHandler } from 'react'
 //styles
 import styles from './Navbar.module.css';
 
-type Props = {}
+type Props = {
+  handleShow(buttonRef: React.RefObject<HTMLDivElement>, activeClass: any): MouseEventHandler<HTMLButtonElement>
+}
 
-const Navbar = (props: Props) => {
+const Navbar = ({handleShow}: Props) => {
 
-  const [show, setShow] = useState<boolean>(false);
+  const button = useRef<HTMLDivElement>(null);
 
-  const handleShow = () => {
-    if(show) {
-      setShow(false);
-    } else {
-      setShow(true);
-    }
-  };
-
-  useEffect(()=>{
-    console.log(show)
-  }, [show]);
+  const handleClick = handleShow(button, styles.active);
 
   return (
     <div>
         <div className={`${styles.menu_open} p-2`}>
-            <button className='border-0' type='button' onClick={handleShow}>
-                <div className={`${styles.iconArea}`}>
+            <button className='border-0' type='button' onClick={handleClick}>
+                <div className={`${styles.iconArea}`} ref={button}>
                     <span></span>
                     <span></span>
                     <span></span> 

@@ -29,7 +29,7 @@
 
 .container_nav {
     display: grid;
-    grid-template-columns: 80px;
+    grid-template-columns: 70px;
     grid-auto-rows: minmax(70px, auto);
     grid-gap: 0px;
 }
@@ -40,6 +40,11 @@
     justify-content: center;
     flex-wrap: wrap;
     position: relative;
+    cursor: pointer;
+}
+
+.item:hover svg {
+    scale: 1.1;
 }
 
 .text_nav {
@@ -49,7 +54,7 @@
 }
 
 .expand {
-    width: 300px;
+    width: 260px;
 }
 
 .expand .text_nav {
@@ -76,7 +81,7 @@
 }
 
 .expand .expand_button {
-    padding-left: 316% !important;
+    padding-left: 310% !important;
 }
 
 .expand .expand_button svg {
