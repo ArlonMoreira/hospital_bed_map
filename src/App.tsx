@@ -5,6 +5,8 @@ import styles from './App.module.css';
 //Components
 import Sidebar from './components/Sidebar/Sidebar';
 import Navbar from './components/NavBar/Navbar';
+import Dashboard from './pages/Dashboard/Dashboard';
+import HospitalBeds from './pages/HospitalBeds/HospitalBeds';
 
 function App() {
 
@@ -26,7 +28,8 @@ function App() {
           <Sidebar sideBarRef={sidebar_left}/>
           <div className='container-fluid'>
             <Routes>
-                
+              <Route path='/' element={<Dashboard />}/>
+              <Route path='/leitos' element={<HospitalBeds />} />
             </Routes>
           </div>        
         </BrowserRouter>

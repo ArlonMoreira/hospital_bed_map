@@ -21,6 +21,7 @@
 
 .sidebar_left svg {
     fill: #fff;
+    transition: .1s ease-in;
 }
 
 .sidebar_left p {
@@ -29,7 +30,6 @@
 
 .container_nav {
     display: grid;
-    grid-template-columns: 70px;
     grid-auto-rows: minmax(70px, auto);
     grid-gap: 0px;
 }
@@ -43,28 +43,56 @@
     cursor: pointer;
 }
 
+.item a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
 .item:hover svg {
-    scale: 1.1;
+    scale: 1.12;
+}
+
+.logo_nav {
+    min-width: 70px;
+    display: flex;
+    justify-content: center;
 }
 
 .text_nav {
     display: none;
-    position: absolute;
-    left: 100px;
+    width: 100%;
 }
 
-.expand {
-    width: 260px;
+.text_nav p {
+    margin: 0;
+    font-size: .9rem;
+    transition: .1s ease-in;
+}
+
+.item:hover .text_nav p {
+    font-size: 1rem;
+}
+
+.expand .container_nav {
+    grid-template-columns: 260px;
 }
 
 .expand .text_nav {
     display: block;
+    margin: 0;
 }
 
 .expand_button {
     cursor: pointer;
     animation: slide .1s linear;
-    transition: 0.2s ease-out;    
+    transition: 0.2s ease-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;      
 }
 
 @keyframes slide {
@@ -77,14 +105,14 @@
 }
 
 .expand_button svg {
-    transform: rotate(180deg);
+    transform: scaleX(-1);
 }
 
 .expand .expand_button {
-    padding-left: 310% !important;
+    padding-left: 70% !important;
 }
 
 .expand .expand_button svg {
-    transform: rotate(360deg);
+    transform: scaleX(1);
 }
 
