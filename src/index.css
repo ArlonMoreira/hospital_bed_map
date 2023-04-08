@@ -3,3 +3,7 @@
     --secundary-color: #027dce;
     --gradient-color: linear-gradient(0deg,var(--secundary-color),var(--primary-color));
 }
+
+.main {
+    display: flex;
+}

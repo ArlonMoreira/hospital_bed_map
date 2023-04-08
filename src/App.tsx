@@ -4,20 +4,24 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import styles from './App.module.css';
 //Components
 import Sidebar from './components/Sidebar/Sidebar';
+import Navbar from './components/NavBar/Navbar';
 
 function App() {
 
   return (
-    <div className={styles.App}>
-      <BrowserRouter>
-        <Sidebar />
-        <div className='container-fluid'>
-        <h1>Teste</h1>
-          <Routes>
-              
-          </Routes>
-        </div>        
-      </BrowserRouter>
+    <div className='App'>
+      <Navbar />
+      <div className='main'>
+        <BrowserRouter>
+          <Sidebar />
+          <div className='container-fluid'>
+          <h1>Teste</h1>
+            <Routes>
+                
+            </Routes>
+          </div>        
+        </BrowserRouter>
+      </div>
     </div>
   );
   

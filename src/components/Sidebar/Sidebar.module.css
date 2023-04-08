@@ -1,7 +1,22 @@
+.sidebar {
+    animation: slideIn .3s forwards;
+    transition: 0.45s ease-in-out;      
+}
+
+@keyframes slideIn {
+    0% {
+      transform: translateX(-900px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+}
+
 .sidebar_left {
     background-image: var(--gradient-color);
     height: 620px;
     border-radius: .5rem;
+
 }
 
 .sidebar_left svg {
