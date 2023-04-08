@@ -1,0 +1,70 @@
+.sidebar_left {
+    background-image: var(--gradient-color);
+    height: 620px;
+    border-radius: .5rem;
+}
+
+.sidebar_left svg {
+    fill: #fff;
+}
+
+.sidebar_left p {
+    color: #fff;
+}
+
+.container_nav {
+    display: grid;
+    grid-template-columns: 80px;
+    grid-auto-rows: minmax(70px, auto);
+    grid-gap: 0px;
+}
+
+.item {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.text_nav {
+    display: none;
+    position: absolute;
+    left: 100px;
+}
+
+.expand {
+    width: 300px;
+}
+
+.expand .text_nav {
+    display: block;
+}
+
+.expand_button {
+    cursor: pointer;
+    animation: slide .1s linear;
+    transition: 0.2s ease-out;    
+}
+
+@keyframes slide {
+    0% {
+      transform: translateX(-900px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+}
+
+.expand_button svg {
+    transform: rotate(180deg);
+}
+
+.expand .expand_button {
+    padding-left: 316% !important;
+}
+
+.expand .expand_button svg {
+    transform: rotate(360deg);
+}
+
