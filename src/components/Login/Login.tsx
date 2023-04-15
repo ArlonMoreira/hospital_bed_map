@@ -1,30 +1,34 @@
 import React, { ChangeEvent, FormEvent, useRef, useState } from 'react'
 //styles
 import styles from './Login.module.css'
+//interface
+import { ILogin } from '../../interfaces/Authentication'
+//Hooks
+import useAuthentication from '../../hooks/useAuthentication'
 
 type Props = {}
 
 const Login = (props: Props) => {
 
+    const auth = useAuthentication();
+
     const buttonSubmit = useRef<HTMLInputElement>(null);
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const data = {
+        const data:ILogin = {
             username,
             password
         };
 
+        await auth.login(data);
+
         setUsername('');
         setPassword('');
-
-        buttonSubmit.current?.classList.add(styles.pulse);
-        setTimeout(function() {
-            buttonSubmit.current?.classList.remove(styles.pulse);
-        }, 500);        
+        
     };
 
     return (
@@ -56,7 +60,17 @@ const Login = (props: Props) => {
                                     onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                                 />
                             </label>
-                            <input type='submit' value='Acessar' className='form-control' ref={buttonSubmit}></input>                        
+                            <input  className='form-control'
+                                    type='submit' 
+                                    value='Acessar'
+                                    ref={buttonSubmit} 
+                                    onClick={(e)=> {
+                                        buttonSubmit.current?.classList.add(styles.pulse);
+                                        setTimeout(function() {
+                                            buttonSubmit.current?.classList.remove(styles.pulse);
+                                        }, 500);
+                                    }}
+                                    />                        
                         </form>
                     </div>
                 </div>
