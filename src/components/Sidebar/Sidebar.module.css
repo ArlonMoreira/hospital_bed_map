@@ -22,7 +22,9 @@
     background-image: var(--gradient-color);
     height: 620px;
     border-radius: .5rem;
-
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .sidebar_left svg {
@@ -133,4 +135,3 @@
 .expand .expand_button svg {
     transform: scaleX(1);
 }
-

@@ -7,6 +7,7 @@ import Sidebar from './components/Sidebar/Sidebar';
 import Navbar from './components/NavBar/Navbar';
 import Dashboard from './pages/Dashboard/Dashboard';
 import HospitalBeds from './pages/HospitalBeds/HospitalBeds';
+import Login from './components/Login/Login';
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
 
   return (
     <div className='App'>
+      <Login />
       <Navbar handleShow={handleShow} resizeShow={resizeShow}/>
       <div className='main'>
         <BrowserRouter>

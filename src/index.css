@@ -2,6 +2,7 @@
     --primary-color: #00a884;
     --secundary-color: #027dce;
     --gradient-color: linear-gradient(0deg,var(--secundary-color),var(--primary-color));
+    --font-default: #fff;
 }
 
 .main {
@@ -11,3 +12,36 @@
 .active {
     background-color: #ffffff24;
 }
+
+/* Start: Customizar formulário */
+
+.form-control:focus {
+    color: #212529;
+    background-color: transparent;
+    border-color: var(--primary-color);
+    outline: 0;
+    box-shadow: none;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--font-default);
+}  
+
+.btn-close:focus {
+    box-shadow: none;
+}
+
+input {
+    padding: 0.8rem !important;
+}
+
+input[type="submit"] {
+    background: var(--primary-color);
+    color: var(--font-default);
+    border: 0;
+    margin-top: 1em;
+    border-radius: 2em;
+}
+
+/* Ends: Customizar formulário */

@@ -1,0 +1,66 @@
+.login_form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login_form label {
+    text-align: start;
+    margin-bottom: 1rem;
+    font-size: .8rem;
+}
+
+.login_form input {
+    margin-top: 0.5rem;
+    border: 1px solid transparent;
+    background: #ffffff26;
+    color: var(--font-default);
+}
+
+.login_form input:focus {
+    color: var(--font-default) !important;
+    border-color: var(--font-default);
+    border: 1px solid var(--font-default);
+}
+
+.login_form input::placeholder {
+    color: var(--font-default) !important;
+    opacity: .5;
+}
+
+.login_form input[type="submit"] {
+    border: none;
+    background: var(--font-default);
+    color: var(--secundary-color);
+}
+
+.login_form input[type="submit"]:focus {
+    color: var(--secundary-color) !important;
+}
+
+.auth {
+    background: var(--gradient-color);
+    color: var(--font-default);
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; 
+    font-weight: 300 !important;
+    font-size: .9em !important;    
+}
+
+.pulse {
+    animation-name: pulse;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-out;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
