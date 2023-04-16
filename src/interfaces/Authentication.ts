@@ -12,3 +12,7 @@ export interface IAuthentication {
         access: string
     }
 };
+
+export interface AuthHookResult {
+    auth: boolean
+};

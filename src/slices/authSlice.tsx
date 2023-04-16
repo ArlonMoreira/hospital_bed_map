@@ -11,13 +11,15 @@ const user = localStorage.getItem('user');
 interface IAuthSlice {
     user: string | null,
     success: boolean | null,
-    error: IErrors | null
-}
+    error: IErrors | null,
+    loading: boolean
+};
 
 const initialState: IAuthSlice = {
     user: user ? user: null,
     success: null,
     error: null,
+    loading: false
 };
 
 export const login = createAsyncThunk(
@@ -64,16 +66,19 @@ export const authSlice = createSlice({
                 state.error = null;
                 state.success = true;
                 state.user = JSON.stringify(action.payload?.data);
+                state.loading = false;
             })
             .addCase(login.rejected, (state: IAuthSlice, action: PayloadAction<any>) => {
                 state.error = action.payload;
                 state.success = false;
                 state.user = null;
+                state.loading = false;
             })
             .addCase(logout.fulfilled, (state: IAuthSlice, action: PayloadAction<any>) => {
                 state.error = null;
                 state.success = true;
                 state.user = null;
+                state.loading = false;
             });
     }    
 });

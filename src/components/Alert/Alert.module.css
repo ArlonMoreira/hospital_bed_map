@@ -1,0 +1,89 @@
+.alert {
+    width: 100%;
+    max-width: 360px;
+    min-height: 80px;
+    position: absolute;
+    background: var(--bs-body-bg);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    z-index: 1100;
+    margin: 1em;
+    border-radius: .5em;
+    opacity: 0;
+    transform: translateX(-100%);
+    animation: slideIn 0.5s forwards;    
+}
+
+@keyframes slideIn {
+    0% {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+}
+
+.alert_header {
+    right: 10px;
+    position: absolute;
+    z-index: 5;
+    margin: 5px auto;
+}
+
+.alert_body {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    border-radius: .5em;
+}
+
+.success .alert_body {
+    background: #1987543d;
+    border-color: var(--bs-success);
+    color: var(--bs-success);
+}
+
+.error .alert_body {
+    background: #8719193d;
+    border-color: var(--bs-danger);
+    color: var(--bs-danger);
+}
+
+.icon_area {
+    width: 60px;
+    height: 55px;
+    padding: 5px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.65em;
+    margin-left: 0.5em;
+    fill: #fff; 
+    border-radius: .5em;
+}
+
+.success .icon_area {
+    background: var(--bs-success);
+}
+
+.error .icon_area {
+    background: var(--bs-danger);
+}
+
+.icon_area svg {
+    width: 40px;
+    position: absolute;
+}
+
+.message_area p {
+    margin: 0;
+    line-height: 1.2;
+    font-size: .8rem;
+}
+
+

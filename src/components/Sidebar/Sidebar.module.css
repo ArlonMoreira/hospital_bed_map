@@ -135,3 +135,14 @@
 .expand .expand_button svg {
     transform: scaleX(1);
 }
+
+.background_icon {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    background: #ffffff24;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -10,6 +10,8 @@ import { logout } from '../../slices/authSlice';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { AnyAction } from 'redux'; // Importe o tipo AnyAction do pacote 'redux'
 import { useDispatch } from 'react-redux';
+//interface
+import { AuthHookResult } from '../../interfaces/Authentication';
 
 type Props = {
     sideBarRef: React.LegacyRef<HTMLElement> | undefined 
@@ -17,7 +19,7 @@ type Props = {
 
 const Sidebar = ({sideBarRef}: Props) => {
 
-    const { auth } = useAuth();
+    const { auth }:AuthHookResult = useAuth();
     const dispath = useDispatch<ThunkDispatch<void, void, AnyAction>>();
 
     const sidebar = useRef<HTMLDivElement>(null);
@@ -73,12 +75,14 @@ const Sidebar = ({sideBarRef}: Props) => {
                 <ul className={`nav ${styles.container_nav}`}>
                     {
                         !auth ? (
-                            <li className={`nav-item ${styles.item}`}>
+                            <li className={`nav-item ${styles.item} ${!auth ? styles.fade_out : ''}`}>
                                 <a data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                     <div className={styles.logo_nav}>
-                                        <svg width="26" height="22" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                            <path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z"/>
-                                        </svg>
+                                        <div className={styles.background_icon}>
+                                            <svg width="26" height="22" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                <path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z"/>
+                                            </svg>
+                                        </div>
                                     </div>
                                     <div className={styles.text_nav}>
                                         <p>Acessar</p>
@@ -89,9 +93,11 @@ const Sidebar = ({sideBarRef}: Props) => {
                             <li className={`nav-item ${styles.item}`}>
                                 <a onClick={handleLogout}>
                                     <div className={styles.logo_nav}>
-                                        <svg width="26" height="22" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                            <path d="M352 96l64 0c17.7 0 32 14.3 32 32l0 256c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l64 0c53 0 96-43 96-96l0-256c0-53-43-96-96-96l-64 0c-17.7 0-32 14.3-32 32s14.3 32 32 32zm-9.4 182.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L242.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l210.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128z"/>
-                                        </svg>
+                                        <div className={styles.background_icon}>
+                                            <svg width="26" height="22" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                <path d="M352 96l64 0c17.7 0 32 14.3 32 32l0 256c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l64 0c53 0 96-43 96-96l0-256c0-53-43-96-96-96l-64 0c-17.7 0-32 14.3-32 32s14.3 32 32 32zm-9.4 182.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L242.7 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l210.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128z"/>
+                                            </svg>
+                                        </div>
                                     </div>
                                     <div className={styles.text_nav}>
                                         <p>Sair</p>

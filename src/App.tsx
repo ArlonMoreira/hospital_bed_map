@@ -1,7 +1,5 @@
-import React, { useRef, MouseEventHandler, useEffect } from 'react';
+import React, { useRef, MouseEventHandler } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-//styles
-import styles from './App.module.css';
 //Components
 import Sidebar from './components/Sidebar/Sidebar';
 import Navbar from './components/NavBar/Navbar';

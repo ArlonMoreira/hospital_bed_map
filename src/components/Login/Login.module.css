@@ -18,7 +18,6 @@
 
 .login_form input:focus {
     color: var(--font-default) !important;
-    border-color: var(--font-default);
     border: 1px solid var(--font-default);
 }
 
