@@ -20,13 +20,9 @@ const useAuthentication = () => {
         
             const request: IAuthentication  = {
                 success: response.ok,
-                message: result.message,
-                data: {
-                    refresh: result.refresh,
-                    access: result.access
-                }
+                ...result
             };
-            
+
             return request;
 
         } catch(error) {

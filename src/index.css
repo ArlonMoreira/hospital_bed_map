@@ -36,12 +36,12 @@ input {
     padding: 0.8rem !important;
 }
 
-input[type="submit"] {
-    background: var(--primary-color);
-    color: var(--font-default);
-    border: 0;
-    margin-top: 1em;
-    border-radius: 2em;
+input[type="submit"], button.form-control {
+    background: var(--primary-color) !important;
+    color: var(--font-default) !important;
+    border: 0 !important;
+    margin-top: 1em !important;
+    border-radius: 2em !important;
 }
 
 /* Ends: Customizar formulário */

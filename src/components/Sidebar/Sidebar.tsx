@@ -3,7 +3,7 @@ import styles from './Sidebar.module.css';
 //Router
 import { NavLink } from 'react-router-dom';
 //Hooks
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 //Redux
 import { logout } from '../../slices/authSlice';

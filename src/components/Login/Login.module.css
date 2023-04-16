@@ -26,10 +26,11 @@
     opacity: .5;
 }
 
-.login_form input[type="submit"] {
-    border: none;
-    background: var(--font-default);
-    color: var(--secundary-color);
+.login_form input[type="submit"], .login_form button {
+    border: none !important;
+    background: var(--font-default) !important;
+    color: var(--secundary-color) !important;
+    height: 48px;
 }
 
 .login_form input[type="submit"]:focus {

@@ -20,7 +20,7 @@ const Login = (props: Props) => {
 
     const { auth }:AuthHookResult  = useAuth(); //Hook que retorna situação de autenticação.
 
-    const { error } = useSelector((state: RootState) => state.auth);
+    const { error, loading } = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch<ThunkDispatch<RootState, ILogin, AnyAction>>();
 
     const buttonSubmit = useRef<HTMLInputElement>(null);
@@ -67,7 +67,7 @@ const Login = (props: Props) => {
                                 <label>
                                     <span>Usuário</span>
                                     <input
-                                        className={`form-control`}
+                                        className='form-control'
                                         type='text'
                                         value={username}
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
@@ -76,24 +76,36 @@ const Login = (props: Props) => {
                                 <label>
                                     <span>Senha</span>
                                     <input
-                                        className={`form-control`}
+                                        className='form-control'
                                         type='password'
                                         placeholder='********'
                                         value={password}
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                                     />
-                                </label>
-                                <input  className='form-control'
-                                        type='submit' 
-                                        value='Acessar'
-                                        ref={buttonSubmit}
-                                        onClick={(e)=> {
-                                            buttonSubmit.current?.classList.add(styles.pulse);
-                                            setTimeout(function() {
-                                                buttonSubmit.current?.classList.remove(styles.pulse);
-                                            }, 500);
-                                        }}
-                                        />          
+                                </label>                                
+                                {
+                                    loading ? (
+                                        <button className='form-control' disabled>
+                                            <div className="spinner-border" role="status">
+                                                <span className="sr-only"></span>
+                                            </div>
+                                        </button>
+                                    ) : (
+                                        <input 
+                                            className='form-control'
+                                            type='submit' 
+                                            value='Acessar'
+                                            ref={buttonSubmit}
+                                            onClick={()=> {
+                                                buttonSubmit.current?.classList.add(styles.pulse);
+                                                setTimeout(function() {
+                                                    buttonSubmit.current?.classList.remove(styles.pulse);
+                                                }, 500);
+                                            }}
+                                        /> 
+                                    )
+                                }
+         
                             </form>
                         </div>
                     </div>

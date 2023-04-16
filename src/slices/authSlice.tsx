@@ -13,7 +13,7 @@ interface IAuthSlice {
     success: boolean | null,
     error: IErrors | null,
     loading: boolean
-};
+}
 
 const initialState: IAuthSlice = {
     user: user ? user: null,
@@ -28,7 +28,7 @@ export const login = createAsyncThunk(
         const auth = useAuthentication();
 
         const response = await auth.login(data);
-
+        
         if(response?.success){
             localStorage.setItem('user', JSON.stringify(response.data)); //Incluir o token no localStorage
             return response;
@@ -51,7 +51,9 @@ export const logout = createAsyncThunk(
     'auth/logout',
     async() => {
         const auth = useAuthentication();
+
         await auth.logout();
+        
         localStorage.removeItem('user');
     }
 )
@@ -65,8 +67,11 @@ export const authSlice = createSlice({
             .addCase(login.fulfilled, (state: IAuthSlice, action: PayloadAction<IAuthentication | undefined>) => {
                 state.error = null;
                 state.success = true;
-                state.user = JSON.stringify(action.payload?.data);
                 state.loading = false;
+                state.user = JSON.stringify(action.payload?.data);
+            })
+            .addCase(login.pending, (state: IAuthSlice, action: PayloadAction<any>) => {
+                state.loading = true;
             })
             .addCase(login.rejected, (state: IAuthSlice, action: PayloadAction<any>) => {
                 state.error = action.payload;
