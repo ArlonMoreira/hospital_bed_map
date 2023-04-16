@@ -3,14 +3,19 @@ import React, { ChangeEvent, FormEvent, useRef, useState } from 'react'
 import styles from './Login.module.css'
 //interface
 import { ILogin } from '../../interfaces/Authentication'
-//Hooks
-import useAuthentication from '../../hooks/useAuthentication'
+//Redux
+import { useDispatch, useSelector } from 'react-redux';
+import { ThunkDispatch } from '@reduxjs/toolkit';
+import { AnyAction } from 'redux'; // Importe o tipo AnyAction do pacote 'redux'
+import { login } from '../../slices/authSlice';
+import { RootState } from '../../store';
 
 type Props = {}
 
 const Login = (props: Props) => {
 
-    const auth = useAuthentication();
+    const { error } = useSelector((state: RootState) => state.auth)
+    const dispatch = useDispatch<ThunkDispatch<RootState, ILogin, AnyAction>>();
 
     const buttonSubmit = useRef<HTMLInputElement>(null);
     const [username, setUsername] = useState<string>('');
@@ -24,8 +29,8 @@ const Login = (props: Props) => {
             password
         };
 
-        await auth.login(data);
-
+        await dispatch(login(data));
+        
         setUsername('');
         setPassword('');
         

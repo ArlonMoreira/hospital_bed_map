@@ -1,5 +1,6 @@
 //interfaces
 import { ILogin, IAuthentication } from "../interfaces/Authentication";
+import { IData } from "../interfaces/Data";
 
 const url = `${process.env.REACT_APP_BASE_URL}`;
 
@@ -7,7 +8,6 @@ const useAuthentication = () => {
 
     const login = async(params: ILogin):Promise<IAuthentication | undefined> => {
         try {
-
             const response: Response = await fetch(`${url}accounts/login/`, {
                 method: 'POST',
                 headers: {
@@ -17,12 +17,16 @@ const useAuthentication = () => {
             });
     
             const result = await response.json();
-    
-            const request:IAuthentication = {
+        
+            const request: IAuthentication  = {
                 success: response.ok,
-                ...result
-            }
-    
+                message: result.message,
+                data: {
+                    refresh: result.refresh,
+                    access: result.access
+                }
+            };
+            
             return request;
 
         } catch(error) {
@@ -32,8 +36,23 @@ const useAuthentication = () => {
 
     };
 
+    const logout = async():Promise<IData | undefined> => {
+        try {
+            const response: IData = await fetch(`${url}accounts/logout/`, {
+                method: 'POST'
+            }).then((data) => data.json())
+            .catch((error) => console.error(error))
+
+            return response;
+            
+        } catch(error) {
+            console.error(error);
+        }
+    };
+
     return {
-        login
+        login,
+        logout
     };
 };
 
