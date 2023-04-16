@@ -13,11 +13,11 @@ const Alert = ({message, trigger, type}: Props) => {
     const alertRef = useRef<HTMLDivElement | null>(null);
 
     const showAlert = ():void => {
-        alertRef.current?.classList.remove('d-none');
+        alertRef.current?.classList.remove(styles.hide);
     };
 
     const hideAlert = ():void => {
-        alertRef.current?.classList.add('d-none');
+        alertRef.current?.classList.add(styles.hide);
     };    
 
     useEffect(()=>{
@@ -34,7 +34,7 @@ const Alert = ({message, trigger, type}: Props) => {
     }, [trigger]);
 
     return (
-        <div className={`${styles.alert} ${type === 'success' && styles.success} ${type === 'error' && styles.error} d-none`} ref={alertRef}>
+        <div className={`${styles.alert} ${type === 'success' && styles.success} ${type === 'error' && styles.error} ${styles.hide}`} ref={alertRef}>
             <div className={styles.alert_header}>
                 <button type="button" className="btn-close" onClick={hideAlert}></button>
             </div>
