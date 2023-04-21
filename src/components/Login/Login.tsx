@@ -54,7 +54,7 @@ const Login = (props: Props) => {
 
     return (
         <>
-            {   error && <Alert message={error.error_message} trigger={error} type={'error'} />  } 
+            {   error && <Alert message={error.message} trigger={error} type={'error'} />  } 
             <div className={`modal fade pb-5`} id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
                     <div className={`modal-content ${styles.auth}`}>
