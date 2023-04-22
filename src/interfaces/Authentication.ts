@@ -9,18 +9,16 @@ export interface IAuth {
     refresh: string;
 }
 
+export interface IAuthError {
+    username: string[],
+    password: string[]
+}
+
 //A api de autenticação pode retornar os valores IAuth caso ocorrer uscesso como também um array
 export interface IAuthentication {
     success: boolean;
     message: string;
-    data: 
-        IAuth | 
-        [
-            {
-                [key: string]: string[] //A chave é string e o valor é um array(lista) de string.
-            }
-        ] | 
-        []
+    data: IAuth | IAuthError | unknown
 };
 
 export interface AuthHookResult {

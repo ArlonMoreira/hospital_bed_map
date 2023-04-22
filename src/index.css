@@ -45,3 +45,8 @@ input[type="submit"], button.form-control {
 }
 
 /* Ends: Customizar formulário */
+
+.warning {
+    position: absolute;
+    color: #eeff69;    
+}

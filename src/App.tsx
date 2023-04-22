@@ -18,16 +18,10 @@ import { IAuth } from './interfaces/Authentication';
 
 function App() {
   const dispath = useDispatch<ThunkDispatch<RootState, IAuth, AnyAction>>();
-  const { error } = useSelector((state: RootState) => state.auth)
 
   useEffect(()=>{ //Atualiza o token assim que acessar a aplicação
     dispath(refreshToken());
   }, [dispath])
-
-  useEffect(()=>{
-
-    console.log(error)
-  }, [error])
   
   const sidebar_left = useRef<HTMLDivElement>(null);
 
@@ -51,7 +45,6 @@ function App() {
 
   return (
     <div className='App'>
-      {error && <Alert message={error.message} trigger={error} type={'error'}/>}
       <Login />
       <Navbar handleShow={handleShow} resizeShow={resizeShow}/>
       <div className='main'>

@@ -14,28 +14,22 @@ interface DecodedAccessToken {
     token_type: 'access' | 'refresh', //tipo de token
     user_id: number; // identificador do usuário autenticado.
 }
-
-interface refreshResponse {
-    access: string
-}
   
 const useAuthentication = () => {
 
     const refreshToken = async(user: IAuth):Promise<IAuthentication> => { //Caso não tiver autenticado pode receber valor null
 
-        const accessToken:string = user.access;
-        const refreshToken:string  = user.refresh;
+        const { access, refresh } = user;
 
-        const decodedAccessToken:DecodedAccessToken = jwt_decode(accessToken); //Decodifica o token
-        const dataFinshToken = dayjs.unix(decodedAccessToken.exp); //Data em que o token expira
-        const isExpired = dataFinshToken.diff(dayjs()) < 1; //Compara com a data atual e verifica se o token expirou
+        const decodedAccessToken:DecodedAccessToken = jwt_decode(access); //Decodifica o token
+        const tokenExpirationDate = dayjs.unix(decodedAccessToken.exp); //Data em que o token expira
+        const isTokenExpired = tokenExpirationDate.diff(dayjs()) < 1; //Compara com a data atual e verifica se o token expirou
 
-        if (!isExpired) {//Se não tiver expirado retorna o usuário original
+        if (!isTokenExpired) {//Se não tiver expirado retorna o usuário original
             return { 
                 success: true,
                 message: 'Sessão renovada.',
-                data: []
-            }; 
+            } as IAuthentication
         } 
         
         try {
@@ -45,26 +39,33 @@ const useAuthentication = () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "refresh": refreshToken
+                    refresh
                 })
             });
-            const result:refreshResponse = await response.json();
+            
+            if(!response.ok){
+                return {
+                    success: response.ok,
+                    message: 'Sessão encerrada.'
+                } as IAuthentication
+            }
+
+            const result:IAuth = await response.json();
             
             return {
                 success: response.ok,
-                message: response.ok ? 'Sessão renovada.': 'Sessão encerrada.',
-                data: response.ok ? {
+                message: 'Sessão renovada.',
+                data: {
                     access: result.access,
-                    refresh: user.refresh
-                }: []
-            }; 
+                    refresh,
+                },
+            } as IAuthentication; 
 
         } catch(Error: unknown) {
             return { 
                 success: false,
-                message: 'Erro interno no sistema. Contate o administrador.',
-                data: []
-            }; 
+                message: 'Erro interno no sistema. Contate o administrador.'
+            } as IAuthentication; 
 
         }
     
@@ -89,13 +90,11 @@ const useAuthentication = () => {
             
             return request;
 
-        } catch(error: unknown) {
-            const request: IAuthentication = {
+        } catch(error) {
+            return {
                 success: false,
-                message: 'Erro interno no sistema. Contate o administrador.',
-                data: []
-            }
-            return request;
+                message: 'Erro interno no sistema. Contate o administrador.'
+            } as IAuthentication;
         }
 
     };

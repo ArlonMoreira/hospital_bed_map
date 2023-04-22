@@ -2,7 +2,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'reac
 //styles
 import styles from './Login.module.css'
 //interface
-import { ILogin, AuthHookResult } from '../../interfaces/Authentication'
+import { ILogin, IAuthError, AuthHookResult } from '../../interfaces/Authentication'
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
@@ -20,6 +20,7 @@ const Login = (props: Props) => {
 
     const { auth }:AuthHookResult  = useAuth(); //Hook que retorna situação de autenticação.
 
+    const [errors, setErrors] = useState<IAuthError | null>(null);
     const { error, loading } = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch<ThunkDispatch<RootState, ILogin, AnyAction>>();
 
@@ -48,9 +49,16 @@ const Login = (props: Props) => {
             buttonCloseRef.current?.click();
 
             setUsername(''); //Limpar campo quando autenticado; 
-            setPassword(''); //Limpar campo quando autenticado;            
+            setPassword(''); //Limpar campo quando autenticado;    
+            setErrors(null); //Limpar campo de errors;        
         }
     }, [auth]);
+    
+    useEffect(()=>{
+        if(error){
+            setErrors(error.data as IAuthError);
+        }
+    }, [error]);
 
     return (
         <>
@@ -72,6 +80,13 @@ const Login = (props: Props) => {
                                         value={username}
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
                                     />
+                                    {
+                                        errors?.username && (
+                                            errors?.username.map((erro, i) => (
+                                                <p key={i} className='warning'>{erro}</p>
+                                            ))
+                                        ) 
+                                    }
                                 </label>
                                 <label>
                                     <span>Senha</span>
@@ -82,6 +97,13 @@ const Login = (props: Props) => {
                                         value={password}
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                                     />
+                                    {
+                                        errors?.password && (
+                                            errors?.password.map((erro, i) => (
+                                                <p key={i} className='warning'>{erro}</p>
+                                            ))
+                                        ) 
+                                    }                                    
                                 </label>                                
                                 {
                                     loading ? (

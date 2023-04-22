@@ -26,10 +26,11 @@ export const refreshToken = createAsyncThunk(
     'auth/refreshToken',
     async (_, { getState, rejectWithValue }) => {
         const userAuth:IAuth = (getState() as any).auth.userAuth;
-        const newUserAuth:IAuthentication = await useAuthentication().refreshToken(userAuth);
+        const newUserAuth = await useAuthentication().refreshToken(userAuth);
         
         if(newUserAuth.success){
-            if('access' in newUserAuth.data) return (newUserAuth.data as IAuth);
+            const token = newUserAuth.data as IAuth;
+            if('access' in token) return (token);
             return userAuth;
         } else {
             return rejectWithValue(newUserAuth);
@@ -43,9 +44,9 @@ export const login = createAsyncThunk(
     async(data: ILogin, { rejectWithValue }) => {
 
         const response = await useAuthentication().login(data);
-
+        
         if(response.success){
-            return (response.data as IAuth); //Não sabe que data tem o formato de IAuth
+            return (response.data as IAuth);
         } else {
             return rejectWithValue(response);
         }
@@ -76,8 +77,8 @@ export const authSlice = createSlice({
             .addCase(login.pending, (state: IAuthSlice, action: PayloadAction<any>) => {
                 state.loading = true;
             })
-            .addCase(login.rejected, (state: IAuthSlice, action: PayloadAction<any>) => {
-                state.error = action.payload;
+            .addCase(login.rejected, (state: IAuthSlice, action: PayloadAction<IAuthentication | unknown>) => {
+                state.error = (action.payload as IAuthentication);
                 state.success = false;
                 state.userAuth = null;
                 state.loading = false;
