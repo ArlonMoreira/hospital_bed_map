@@ -8,7 +8,7 @@ import { AuthHookResult } from '../interfaces/Authentication';
 export const useAuth = ():AuthHookResult => {
 
     const [auth, setAuth] = useState<boolean>(false);
-    const { userAuth } = useSelector((state: RootState) => state.auth)
+    const { userAuth } = useSelector((state: RootState) => state.auth);
 
     useEffect(()=>{
         if(userAuth){

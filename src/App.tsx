@@ -6,8 +6,9 @@ import Navbar from './components/NavBar/Navbar';
 import Dashboard from './pages/Dashboard/Dashboard';
 import HospitalBeds from './pages/HospitalBeds/HospitalBeds';
 import Login from './components/Login/Login';
+import Alert from './components/Alert/Alert';
 //Redux
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { AnyAction } from 'redux'; // Importe o tipo AnyAction do pacote 'redux'
 import { RootState } from './store';
@@ -17,10 +18,16 @@ import { IAuth } from './interfaces/Authentication';
 
 function App() {
   const dispath = useDispatch<ThunkDispatch<RootState, IAuth, AnyAction>>();
+  const { error } = useSelector((state: RootState) => state.auth)
 
   useEffect(()=>{ //Atualiza o token assim que acessar a aplicação
     dispath(refreshToken());
   }, [dispath])
+
+  useEffect(()=>{
+
+    console.log(error)
+  }, [error])
   
   const sidebar_left = useRef<HTMLDivElement>(null);
 
@@ -44,6 +51,7 @@ function App() {
 
   return (
     <div className='App'>
+      {error && <Alert message={error.message} trigger={error} type={'error'}/>}
       <Login />
       <Navbar handleShow={handleShow} resizeShow={resizeShow}/>
       <div className='main'>

@@ -24,14 +24,16 @@ const initialState: IAuthSlice = {
 
 export const refreshToken = createAsyncThunk(
     'auth/refreshToken',
-    async (_, { getState }) => {
-        const userAuth: IAuth = (getState() as any).auth.userAuth;
-        console.log(userAuth)
-        const newUserAuth = await useAuthentication().refreshToken(userAuth);
+    async (_, { getState, rejectWithValue }) => {
+        const userAuth:IAuth = (getState() as any).auth.userAuth;
+        const newUserAuth:IAuthentication = await useAuthentication().refreshToken(userAuth);
         
-        if(newUserAuth) return newUserAuth;
-
-        return userAuth;
+        if(newUserAuth.success){
+            if('access' in newUserAuth.data) return (newUserAuth.data as IAuth);
+            return userAuth;
+        } else {
+            return rejectWithValue(newUserAuth);
+        }
    
     }
 )
@@ -70,7 +72,6 @@ export const authSlice = createSlice({
                 state.loading = false;
                 state.userAuth = action.payload;
                 localStorage.setItem('userAuth', JSON.stringify(state.userAuth));
-
             })
             .addCase(login.pending, (state: IAuthSlice, action: PayloadAction<any>) => {
                 state.loading = true;
@@ -90,9 +91,19 @@ export const authSlice = createSlice({
                 localStorage.removeItem('userAuth'); //Remover o token do localStore
             })
             .addCase(refreshToken.fulfilled, (state: IAuthSlice, action: PayloadAction<IAuth>) => {
+                state.success = true;
+                state.error = null;
+                state.loading = false;
                 state.userAuth = action.payload;
                 localStorage.setItem('userAuth', JSON.stringify(state.userAuth));
-            });
+            })
+            .addCase(refreshToken.rejected, (state: IAuthSlice, action: PayloadAction<any>) => {
+                state.success = false;
+                state.error = action.payload;
+                state.loading = false;
+                state.userAuth = null;
+                localStorage.removeItem('userAuth'); //Remover o token do localStore
+            })
     }    
 });
 

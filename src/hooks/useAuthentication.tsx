@@ -21,41 +21,58 @@ interface refreshResponse {
   
 const useAuthentication = () => {
 
-    const refreshToken = async(user: IAuth):Promise<IAuth> => { //Caso não tiver autenticado pode receber valor null
+    const refreshToken = async(user: IAuth):Promise<IAuthentication> => { //Caso não tiver autenticado pode receber valor null
 
-        let accessToken:string = '';
-        let refreshToken:string = '';
-
-        accessToken = user.access;
-        refreshToken = user.refresh;
+        const accessToken:string = user.access;
+        const refreshToken:string  = user.refresh;
 
         const decodedAccessToken:DecodedAccessToken = jwt_decode(accessToken); //Decodifica o token
         const dataFinshToken = dayjs.unix(decodedAccessToken.exp); //Data em que o token expira
         const isExpired = dataFinshToken.diff(dayjs()) < 1; //Compara com a data atual e verifica se o token expirou
 
-        if (!isExpired) return user; //Se não tiver expirado retorna o usuário original
+        if (!isExpired) {//Se não tiver expirado retorna o usuário original
+            return { 
+                success: true,
+                message: 'Sessão renovada.',
+                data: []
+            }; 
+        } 
         
-        const response: Response = await fetch(`${url}token/refresh/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "refresh": refreshToken
-            })
-        });
-        const result: refreshResponse = await response.json();
-        
-        return {
-            access: result.access,
-            refresh: user.refresh
-        };
+        try {
+            const response:Response = await fetch(`${url}token/refresh/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "refresh": refreshToken
+                })
+            });
+            const result:refreshResponse = await response.json();
+            
+            return {
+                success: response.ok,
+                message: response.ok ? 'Sessão renovada.': 'Sessão encerrada.',
+                data: response.ok ? {
+                    access: result.access,
+                    refresh: user.refresh
+                }: []
+            }; 
+
+        } catch(Error: unknown) {
+            return { 
+                success: false,
+                message: 'Erro interno no sistema. Contate o administrador.',
+                data: []
+            }; 
+
+        }
     
     };
 
     const login = async(params: ILogin):Promise<IAuthentication> => {
         try {
-            const response: Response = await fetch(`${url}accounts/login/`, {
+            const response:Response = await fetch(`${url}accounts/login/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -65,7 +82,7 @@ const useAuthentication = () => {
     
             const result = await response.json();
             
-            const request: IAuthentication  = {
+            const request:IAuthentication  = {
                 success: response.ok,
                 ...result
             };
@@ -75,7 +92,7 @@ const useAuthentication = () => {
         } catch(error: unknown) {
             const request: IAuthentication = {
                 success: false,
-                message: 'Ocorreu um erro ao realizar o login. Erro interno no sistema. Contate o administrador do sistema.',
+                message: 'Erro interno no sistema. Contate o administrador.',
                 data: []
             }
             return request;
