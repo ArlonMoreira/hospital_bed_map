@@ -1,4 +1,4 @@
-import React, { useRef, MouseEventHandler } from 'react';
+import React, { useRef, MouseEventHandler, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 //Components
 import Sidebar from './components/Sidebar/Sidebar';
@@ -6,9 +6,22 @@ import Navbar from './components/NavBar/Navbar';
 import Dashboard from './pages/Dashboard/Dashboard';
 import HospitalBeds from './pages/HospitalBeds/HospitalBeds';
 import Login from './components/Login/Login';
+//Redux
+import { useDispatch } from 'react-redux';
+import { ThunkDispatch } from '@reduxjs/toolkit';
+import { AnyAction } from 'redux'; // Importe o tipo AnyAction do pacote 'redux'
+import { RootState } from './store';
+import { refreshToken } from './slices/authSlice';
+//Interface
+import { IAuth } from './interfaces/Authentication';
 
 function App() {
+  const dispath = useDispatch<ThunkDispatch<RootState, IAuth, AnyAction>>();
 
+  useEffect(()=>{ //Atualiza o token assim que acessar a aplicação
+    dispath(refreshToken());
+  }, [dispath])
+  
   const sidebar_left = useRef<HTMLDivElement>(null);
 
   const resizeShow = (buttonRef: React.RefObject<HTMLDivElement>, activeClass: any, show: boolean): void => {

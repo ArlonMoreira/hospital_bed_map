@@ -2,7 +2,7 @@
 import jwt_decode from "jwt-decode";
 import dayjs from "dayjs";
 //interfaces
-import { ILogin, IAuthentication } from "../interfaces/Authentication";
+import { ILogin, IAuthentication, IAuth } from "../interfaces/Authentication";
 import { IData } from "../interfaces/Data";
 
 const url = `${process.env.REACT_APP_BASE_URL}`;
@@ -14,28 +14,28 @@ interface DecodedAccessToken {
     token_type: 'access' | 'refresh', //tipo de token
     user_id: number; // identificador do usuário autenticado.
 }
+
+interface refreshResponse {
+    access: string
+}
   
 const useAuthentication = () => {
 
-    const refreshToken = async(user: IAuthentication):Promise<IAuthentication> => {
+    const refreshToken = async(user: IAuth):Promise<IAuth> => { //Caso não tiver autenticado pode receber valor null
 
         let accessToken:string = '';
         let refreshToken:string = '';
-        
-        if(typeof user === 'object'){ //user pode retornar um array ou um objecto pra que não ocorra um erro, será necessário afirmar que trata-se de um objeto
-            if('access' in user.data && 'refresh' in user.data){ //É preciso afirmar que access e refresh existem no objeto data, caso contrário ocorrerá o erro "'access' in user.data && 'refresh' in user.data"
-                accessToken = user.data.access
-                refreshToken = user.data.refresh
-            }
-        }
-        
+
+        accessToken = user.access;
+        refreshToken = user.refresh;
+
         const decodedAccessToken:DecodedAccessToken = jwt_decode(accessToken); //Decodifica o token
         const dataFinshToken = dayjs.unix(decodedAccessToken.exp); //Data em que o token expira
         const isExpired = dataFinshToken.diff(dayjs()) < 1; //Compara com a data atual e verifica se o token expirou
 
         if (!isExpired) return user; //Se não tiver expirado retorna o usuário original
-
-        const access: string = await fetch(`${url}token/refresh/`, {
+        
+        const response: Response = await fetch(`${url}token/refresh/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -43,18 +43,17 @@ const useAuthentication = () => {
             body: JSON.stringify({
                 "refresh": refreshToken
             })
-        }).then((result) => result.json())
-        .catch((error) => { throw error });
-
-        if(typeof user === 'object' && 'access' in user.data){
-            user.data.access = access;
-        }
-
-        return user;
+        });
+        const result: refreshResponse = await response.json();
         
+        return {
+            access: result.access,
+            refresh: user.refresh
+        };
+    
     };
 
-    const login = async(params: ILogin):Promise<IAuthentication | undefined> => {
+    const login = async(params: ILogin):Promise<IAuthentication> => {
         try {
             const response: Response = await fetch(`${url}accounts/login/`, {
                 method: 'POST',
@@ -65,17 +64,21 @@ const useAuthentication = () => {
             });
     
             const result = await response.json();
-        
+            
             const request: IAuthentication  = {
                 success: response.ok,
                 ...result
             };
-      
+            
             return request;
 
-        } catch(error) {
-            console.error(error);
-
+        } catch(error: unknown) {
+            const request: IAuthentication = {
+                success: false,
+                message: 'Ocorreu um erro ao realizar o login. Erro interno no sistema. Contate o administrador do sistema.',
+                data: []
+            }
+            return request;
         }
 
     };

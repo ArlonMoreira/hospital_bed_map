@@ -2,21 +2,21 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { useEffect, useState } from 'react';
-//interfcae
+//Interface
 import { AuthHookResult } from '../interfaces/Authentication';
 
 export const useAuth = ():AuthHookResult => {
 
     const [auth, setAuth] = useState<boolean>(false);
-    const { user } = useSelector((state: RootState) => state.auth)
+    const { userAuth } = useSelector((state: RootState) => state.auth)
 
     useEffect(()=>{
-        if(user){
+        if(userAuth){
             setAuth(true);
         } else {
             setAuth(false);
         }
-    }, [user]);
+    }, [userAuth]);
 
     return {
         auth
