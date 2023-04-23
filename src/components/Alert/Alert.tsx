@@ -36,7 +36,9 @@ const Alert = ({message, trigger, type}: Props) => {
     return (
         <div className={`${styles.alert} ${type === 'success' && styles.success} ${type === 'error' && styles.error} ${styles.hide}`} ref={alertRef}>
             <div className={styles.alert_header}>
-                <button type="button" className="btn-close" onClick={hideAlert}></button>
+                <button className='btn p-0 m-0' type="button" onClick={hideAlert}>
+                    <i className="bi bi-x"></i>
+                </button>
             </div>
             <div className={styles.alert_body}>
                 <div className={styles.icon_area}>

@@ -64,3 +64,30 @@
     }
 }
 
+.warning {
+    list-style-type: none;
+    padding: 0;
+    position: relative;
+    margin: 0;
+    font-size: .75rem;
+    float: right;
+}
+
+.warning li {
+    display: flex;
+    margin-top: 0.1rem;
+    align-items: center;
+    color: #eeff69;
+    fill: #eeff69;
+}
+
+.warning li > svg {
+    width: 0.8rem;
+    height: 0.8rem;
+    margin-right: 0.25rem;    
+}
+
+.warning li > p {
+    margin: 0;
+}
+

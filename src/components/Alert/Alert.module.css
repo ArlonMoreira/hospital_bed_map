@@ -1,16 +1,27 @@
 .alert {
     width: 100%;
     max-width: 340px;
-    min-height: 70px;
+    min-height: 4em;
     position: absolute;
-    background: var(--bs-body-bg);
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     z-index: 1100;
     margin: 0.5em;
     border-radius: 0.5em;
     opacity: 0;
     transform: translateX(-100%);
-    animation: slideIn 0.5s forwards;    
+    animation: slideIn 0.5s forwards;   
+}
+
+.alert i {
+    font-size: 2rem;
+    color: var(--font-default);
+}
+
+.error.alert {
+    background: var(--bs-danger);
+}
+
+.success.alert {
+    background: var(--bs-success);
 }
 
 @keyframes slideIn {
@@ -55,23 +66,13 @@
     align-items: center;
     justify-content: flex-start;
     border-radius: 0.5em;
-}
-
-.success .alert_body {
-    background: #1987543d;
-    border-color: var(--bs-success);
-    color: var(--bs-success);
-}
-
-.error .alert_body {
-    background: #8719193d;
-    border-color: var(--bs-danger);
-    color: var(--bs-danger);
+    color: var(--font-default);
+    font-weight: 500;    
 }
 
 .icon_area {
-    width: 60px;
-    height: 55px;
+    width: 3em;
+    height: 3em;
     padding: 5px;
     position: relative;
     display: flex;
@@ -84,15 +85,19 @@
 }
 
 .success .icon_area {
-    background: var(--bs-success);
+    background: var(--bs-body-bg);
+    fill: var(--bs-success);
+    opacity: .5;
 }
 
 .error .icon_area {
-    background: var(--bs-danger);
+    background: var(--bs-body-bg);
+    fill: var(--bs-danger);
+    opacity: .5;
 }
 
 .icon_area svg {
-    width: 40px;
+    width: 2em;
     position: absolute;
 }
 

@@ -3,18 +3,27 @@ export interface ILogin {
     password: string;
 };
 
-//Interface com os tokens de acesso.
+/**
+ * Quando sucesso no login é retornado o token de acesso e o token de atualização.
+ */
 export interface IAuth {
     access: string;
     refresh: string;
 }
 
+/**
+ * Quando ocorre erro de atenticação 401, são retornados as inconsistências existentes para os campos
+ * username e password
+ */
 export interface IAuthError {
     username: string[],
     password: string[]
 }
 
-//A api de autenticação pode retornar os valores IAuth caso ocorrer uscesso como também um array
+/**
+ * A api de autenticação pode retornar os valores (IAuth) caso ocorrer sucesso.
+ * Ou um erro (IAuthError), ou então pode não retornar nada caso for um erro interno no sistema. 
+ * */
 export interface IAuthentication {
     success: boolean;
     message: string;

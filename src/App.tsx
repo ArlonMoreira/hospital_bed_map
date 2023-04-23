@@ -6,9 +6,8 @@ import Navbar from './components/NavBar/Navbar';
 import Dashboard from './pages/Dashboard/Dashboard';
 import HospitalBeds from './pages/HospitalBeds/HospitalBeds';
 import Login from './components/Login/Login';
-import Alert from './components/Alert/Alert';
 //Redux
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { AnyAction } from 'redux'; // Importe o tipo AnyAction do pacote 'redux'
 import { RootState } from './store';
@@ -17,11 +16,15 @@ import { refreshToken } from './slices/authSlice';
 import { IAuth } from './interfaces/Authentication';
 
 function App() {
+
+  /**
+   * Start: Atualizar token de autenticação;
+   */
   const dispath = useDispatch<ThunkDispatch<RootState, IAuth, AnyAction>>();
 
   useEffect(()=>{ //Atualiza o token assim que acessar a aplicação
     dispath(refreshToken());
-  }, [dispath])
+  }, [dispath]);
   
   const sidebar_left = useRef<HTMLDivElement>(null);
 

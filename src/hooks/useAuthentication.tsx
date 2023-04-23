@@ -3,7 +3,6 @@ import jwt_decode from "jwt-decode";
 import dayjs from "dayjs";
 //interfaces
 import { ILogin, IAuthentication, IAuth } from "../interfaces/Authentication";
-import { IData } from "../interfaces/Data";
 
 const url = `${process.env.REACT_APP_BASE_URL}`;
 
@@ -29,6 +28,7 @@ const useAuthentication = () => {
             return { 
                 success: true,
                 message: 'Sessão renovada.',
+                data: user
             } as IAuthentication
         } 
         
@@ -42,24 +42,15 @@ const useAuthentication = () => {
                     refresh
                 })
             });
-            
-            if(!response.ok){
-                return {
-                    success: response.ok,
-                    message: 'Sessão encerrada.'
-                } as IAuthentication
-            }
 
-            const result:IAuth = await response.json();
-            
-            return {
+            const result = await response.json();
+
+            const request:IAuthentication  = {
                 success: response.ok,
-                message: 'Sessão renovada.',
-                data: {
-                    access: result.access,
-                    refresh,
-                },
-            } as IAuthentication; 
+                ...result
+            };            
+            
+            return request; 
 
         } catch(Error: unknown) {
             return { 
@@ -99,23 +90,8 @@ const useAuthentication = () => {
 
     };
 
-    const logout = async():Promise<IData | undefined> => {
-        try {
-            const response: IData = await fetch(`${url}accounts/logout/`, {
-                method: 'POST'
-            }).then((data) => data.json())
-            .catch((error) => console.error(error))
-
-            return response;
-            
-        } catch(error) {
-            console.error(error);
-        }
-    };
-
     return {
         login,
-        logout,
         refreshToken
     };
 };

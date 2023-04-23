@@ -2,7 +2,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'reac
 //styles
 import styles from './Login.module.css'
 //interface
-import { ILogin, IAuthError, AuthHookResult } from '../../interfaces/Authentication'
+import { ILogin, IAuthError, AuthHookResult, IAuthentication } from '../../interfaces/Authentication'
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
@@ -18,17 +18,43 @@ type Props = {}
 
 const Login = (props: Props) => {
 
+    const buttonCloseRef = useRef<HTMLButtonElement>(null);
+    const [username, setUsername] = useState<string>('');
+    const [password, setPassword] = useState<string>('');    
+
+    /**
+     * Start: Detectar autenticação
+     */
     const { auth }:AuthHookResult  = useAuth(); //Hook que retorna situação de autenticação.
 
+    useEffect(()=>{
+        if(auth){ //Caso autenticado.
+            buttonCloseRef.current?.click(); //Fechar modal de login.
+
+            setUsername(''); //Limpar campo username; 
+            setPassword(''); //Limpar campo password;    
+            setErrors(null); //Limpar campo de errors;        
+        }
+    }, [auth]);
+
+    /**
+     * Start: Tratando erros de autenticação
+     */
     const [errors, setErrors] = useState<IAuthError | null>(null);
-    const { error, loading } = useSelector((state: RootState) => state.auth);
+    const { error, loading }: {error:IAuthentication | null, loading: boolean} = useSelector((state: RootState) => state.auth);
+
+    useEffect(()=>{
+        console.log(error)
+        if(error){ //Caso ocorrer um erro o stado errors como formato IAuthError será definido, assim será possível recuperar o motivo específico do erro de username e password
+            setErrors(error.data as IAuthError);
+        }
+    }, [error]);
+
+    /**
+     * Start: Submissão do login.
+     */
     const dispatch = useDispatch<ThunkDispatch<RootState, ILogin, AnyAction>>();
-
-    const buttonSubmit = useRef<HTMLInputElement>(null);
-    const [username, setUsername] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-
-    const buttonCloseRef = useRef<HTMLButtonElement>(null);
+    const buttonSubmit = useRef<HTMLInputElement>(null); //Apenas para adicionar uma animação ao clicar no botão, faz referencia ao elemento HTML do botão.
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -43,22 +69,6 @@ const Login = (props: Props) => {
         }
 
     };
-
-    useEffect(()=>{ //Detectar quando a autenticação ocorrer
-        if(auth){ //Assim que autenticar será forçado o click no botão de abertura do modal, fechando-o.
-            buttonCloseRef.current?.click();
-
-            setUsername(''); //Limpar campo quando autenticado; 
-            setPassword(''); //Limpar campo quando autenticado;    
-            setErrors(null); //Limpar campo de errors;        
-        }
-    }, [auth]);
-    
-    useEffect(()=>{
-        if(error){
-            setErrors(error.data as IAuthError);
-        }
-    }, [error]);
 
     return (
         <>
@@ -82,10 +92,19 @@ const Login = (props: Props) => {
                                     />
                                     {
                                         errors?.username && (
-                                            errors?.username.map((erro, i) => (
-                                                <p key={i} className='warning'>{erro}</p>
-                                            ))
-                                        ) 
+                                            <ul className={styles.warning}>
+                                                {
+                                                    errors?.username.map((erro, i) => (
+                                                        <li key={i}>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                                <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                                                            </svg>
+                                                            <p className='warning'>{erro}</p>
+                                                        </li>
+                                                    )) 
+                                                }                                               
+                                            </ul>
+                                        )
                                     }
                                 </label>
                                 <label>
@@ -99,9 +118,18 @@ const Login = (props: Props) => {
                                     />
                                     {
                                         errors?.password && (
-                                            errors?.password.map((erro, i) => (
-                                                <p key={i} className='warning'>{erro}</p>
-                                            ))
+                                            <ul className={styles.warning}>
+                                                {
+                                                    errors?.password.map((erro, i) => (
+                                                        <li key={i}>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                                <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                                                            </svg>
+                                                            <p className='warning'>{erro}</p>
+                                                        </li>
+                                                    )) 
+                                                }                                               
+                                            </ul>
                                         ) 
                                     }                                    
                                 </label>                                
