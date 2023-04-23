@@ -5,6 +5,11 @@
     --font-default: #fff;
 }
 
+body {
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-family: 'Roboto', sans-serif;     
+}
+
 .main {
     display: flex;
 }
@@ -45,3 +50,24 @@ input[type="submit"], button.form-control {
 }
 
 /* Ends: Customizar formulário */
+
+/* Start: Customizar button */
+
+.small-button {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    position: absolute !important;
+    right: 0.5em !important;
+}
+
+.small-button i {
+    font-size: 2em;
+    color: var(--font-default);
+}
+
+.small-button:hover i {
+    opacity: .5;
+    transform: scale(1.1) !important;
+}
+

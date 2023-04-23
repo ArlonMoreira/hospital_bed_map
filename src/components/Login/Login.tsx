@@ -14,9 +14,11 @@ import { useAuth } from '../../hooks/useAuth';
 //components
 import Alert from '../Alert/Alert';
 
-type Props = {}
+type Props = {
+    openModalLoading: boolean
+}
 
-const Login = (props: Props) => {
+const Login = ({openModalLoading}: Props) => {
 
     const buttonCloseRef = useRef<HTMLButtonElement>(null);
     const [username, setUsername] = useState<string>('');
@@ -44,7 +46,6 @@ const Login = (props: Props) => {
     const { error, loading }: {error:IAuthentication | null, loading: boolean} = useSelector((state: RootState) => state.auth);
 
     useEffect(()=>{
-        console.log(error)
         if(error){ //Caso ocorrer um erro o stado errors como formato IAuthError será definido, assim será possível recuperar o motivo específico do erro de username e password
             setErrors(error.data as IAuthError);
         }
@@ -70,6 +71,16 @@ const Login = (props: Props) => {
 
     };
 
+    /**
+     * Start: Limpa o modal quando o mesmo for aberto
+     */
+
+    useEffect(()=>{
+        setUsername('');
+        setPassword('');    
+        setErrors(null);        
+    }, [openModalLoading]);
+
     return (
         <>
             {   error && <Alert message={error.message} trigger={error} type={'error'} />  } 
@@ -78,7 +89,9 @@ const Login = (props: Props) => {
                     <div className={`modal-content ${styles.auth}`}>
                         <div className="modal-header border-0">
                             <p className='m-0'>Faça a autenticação para acessar a área de cadastro de leitos.</p>
-                            <button type="button" ref={buttonCloseRef} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" ref={buttonCloseRef} className="small-button" data-bs-dismiss="modal" aria-label="Close">
+                                <i className="bi bi-x fs-2"></i>
+                            </button>
                         </div>
                         <div className='modal-body text-center'>
                             <form className={`${styles.login_form}`} onSubmit={handleSubmit}>

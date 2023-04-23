@@ -6,7 +6,8 @@
 .login_form label {
     text-align: start;
     margin-bottom: 1rem;
-    font-size: .8rem;
+    font-size: .75rem;
+    font-weight: 300;
 }
 
 .login_form input {
@@ -41,9 +42,9 @@
     background: var(--gradient-color);
     color: var(--font-default);
     border: none;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; 
-    font-weight: 300 !important;
-    font-size: .9em !important;    
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    font-weight: 300;
+    font-size: .8rem;    
 }
 
 .pulse {
@@ -69,7 +70,7 @@
     padding: 0;
     position: relative;
     margin: 0;
-    font-size: .75rem;
+    font-size: .7rem;
     float: right;
 }
 

@@ -55,6 +55,7 @@
     flex-wrap: wrap;
     position: relative;
     cursor: pointer;
+    transition: all .3s ease-in-out;
 }
 
 .item a {
@@ -67,7 +68,7 @@
 }
 
 .item:hover svg {
-    scale: 1.12;
+    transform: scale(1.12);
 }
 
 .logo_nav {
@@ -85,16 +86,12 @@
 .text_nav {
     display: none;
     width: 100%;
+    font-weight: 300;
 }
 
 .text_nav p {
     margin: 0;
     font-size: .9rem;
-    transition: .1s ease-in;
-}
-
-.item:hover .text_nav p {
-    font-size: 1rem;
 }
 
 .expand .container_nav {

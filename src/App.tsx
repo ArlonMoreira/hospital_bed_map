@@ -1,4 +1,4 @@
-import React, { useRef, MouseEventHandler, useEffect } from 'react';
+import React, { useRef, MouseEventHandler, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 //Components
 import Sidebar from './components/Sidebar/Sidebar';
@@ -16,6 +16,8 @@ import { refreshToken } from './slices/authSlice';
 import { IAuth } from './interfaces/Authentication';
 
 function App() {
+
+  const [openModalLoading, setOpenModalLoading] = useState<boolean>(false);
 
   /**
    * Start: Atualizar token de autenticação;
@@ -48,11 +50,11 @@ function App() {
 
   return (
     <div className='App'>
-      <Login />
+      <Login openModalLoading={openModalLoading}/>
       <Navbar handleShow={handleShow} resizeShow={resizeShow}/>
       <div className='main'>
         <BrowserRouter>
-          <Sidebar sideBarRef={sidebar_left}/>
+          <Sidebar setOpenModalLoading={setOpenModalLoading} sideBarRef={sidebar_left}/>
           <div className='container-fluid'>
             <Routes>
               <Route path='/' element={<Dashboard />}/>

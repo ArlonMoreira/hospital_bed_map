@@ -11,11 +11,6 @@
     animation: slideIn 0.5s forwards;   
 }
 
-.alert i {
-    font-size: 2rem;
-    color: var(--font-default);
-}
-
 .error.alert {
     background: var(--bs-danger);
 }
@@ -67,7 +62,7 @@
     justify-content: flex-start;
     border-radius: 0.5em;
     color: var(--font-default);
-    font-weight: 500;    
+    font-weight: 300;    
 }
 
 .icon_area {
@@ -108,7 +103,7 @@
 .message_area p {
     margin: 0;
     line-height: 1.2;
-    font-size: .8rem;
+    font-size: .75rem;
 }
 
 
