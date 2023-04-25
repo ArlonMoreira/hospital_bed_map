@@ -31,7 +31,7 @@ const Login = ({openModalLoading}: Props) => {
 
     useEffect(()=>{
         if(auth){ //Caso autenticado.
-            buttonCloseRef.current?.click(); //Fechar modal de login.
+            buttonCloseRef.current?.click(); //Fechar modal de login. Utiliza uma referência pois, só quero fechar o modal caso o login for bem sucedido.
 
             setUsername(''); //Limpar campo username; 
             setPassword(''); //Limpar campo password;    
@@ -84,7 +84,7 @@ const Login = ({openModalLoading}: Props) => {
     return (
         <>
             {   error && <Alert message={error.message} trigger={error} type={'error'} />  } 
-            <div className={`modal fade pb-5`} id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div className='modal fade pb-5' id="login-modal" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
                     <div className={`modal-content ${styles.auth}`}>
                         <div className="modal-header border-0">
@@ -178,4 +178,4 @@ const Login = ({openModalLoading}: Props) => {
     )
 }
 
-export default Login
+export default Login;

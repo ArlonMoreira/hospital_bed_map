@@ -11,6 +11,7 @@ const storedUserAuth:IAuth|null = localStorage.getItem('userAuth') ? JSON.parse(
 interface IAuthSlice {
     userAuth: IAuth | null,
     success: boolean | null,
+    successLogout: boolean,
     error: IAuthentication | null,
     loading: boolean
 }
@@ -18,6 +19,7 @@ interface IAuthSlice {
 const initialState: IAuthSlice = {
     userAuth: storedUserAuth,
     success: null,
+    successLogout: false,
     error: null,
     loading: false
 };
@@ -68,6 +70,7 @@ export const authSlice = createSlice({
             .addCase(login.fulfilled, (state: IAuthSlice, action: PayloadAction<IAuth>) => {
                 state.userAuth = action.payload;
                 state.success = true;
+                state.successLogout = false;
                 state.loading = false;
                 state.error = null;
                 localStorage.setItem('userAuth', JSON.stringify(state.userAuth));
@@ -78,13 +81,15 @@ export const authSlice = createSlice({
             .addCase(login.rejected, (state: IAuthSlice, action: PayloadAction<IAuthentication | unknown>) => {
                 state.userAuth = null;
                 state.success = false;
+                state.successLogout = false;
                 state.loading = false;
                 state.error = (action.payload as IAuthentication);
                 localStorage.removeItem('userAuth'); //Remover o token do localStore
             })
             .addCase(logout.fulfilled, (state: IAuthSlice, action: PayloadAction<boolean>) => {
                 state.userAuth = null;
-                state.success = true;
+                state.success = false;
+                state.successLogout = true;
                 state.loading = false;
                 state.error = null;
                 localStorage.removeItem('userAuth'); //Remover o token do localStore
@@ -92,6 +97,7 @@ export const authSlice = createSlice({
             .addCase(refreshToken.fulfilled, (state: IAuthSlice, action: PayloadAction<IAuth>) => {
                 state.userAuth = action.payload;
                 state.success = true;
+                state.successLogout = false;
                 state.loading = false;
                 state.error = null;
                 localStorage.setItem('userAuth', JSON.stringify(state.userAuth));
@@ -99,6 +105,7 @@ export const authSlice = createSlice({
             .addCase(refreshToken.rejected, (state: IAuthSlice, action: PayloadAction<any>) => {
                 state.userAuth = null;
                 state.success = false;
+                state.successLogout = false;
                 state.loading = false;
                 state.error = action.payload;
                 localStorage.removeItem('userAuth'); //Remover o token do localStore

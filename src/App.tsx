@@ -6,6 +6,7 @@ import Navbar from './components/NavBar/Navbar';
 import Dashboard from './pages/Dashboard/Dashboard';
 import HospitalBeds from './pages/HospitalBeds/HospitalBeds';
 import Login from './components/Login/Login';
+import Logout from './components/Logout/Logout';
 //Redux
 import { useDispatch } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
@@ -50,6 +51,7 @@ function App() {
 
   return (
     <div className='App'>
+      <Logout />
       <Login openModalLoading={openModalLoading}/>
       <Navbar handleShow={handleShow} resizeShow={resizeShow}/>
       <div className='main'>

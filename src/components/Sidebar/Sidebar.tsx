@@ -3,13 +3,8 @@ import styles from './Sidebar.module.css';
 //Router
 import { NavLink } from 'react-router-dom';
 //Hooks
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-//Redux
-import { logout } from '../../slices/authSlice';
-import { ThunkDispatch } from '@reduxjs/toolkit';
-import { AnyAction } from 'redux'; // Importe o tipo AnyAction do pacote 'redux'
-import { useDispatch } from 'react-redux';
 //interface
 import { AuthHookResult } from '../../interfaces/Authentication';
 
@@ -21,16 +16,11 @@ type Props = {
 const Sidebar = ({sideBarRef, setOpenModalLoading}: Props) => {
 
     const { auth }:AuthHookResult = useAuth();
-    const dispath = useDispatch<ThunkDispatch<void, void, AnyAction>>();
 
     const sidebar = useRef<HTMLDivElement>(null);
 
     const handleExpand = ():void => {
         sidebar.current?.classList.toggle(styles.expand);
-    };
-
-    const handleLogout = ():void => {
-        dispath(logout());
     };
 
     /**
@@ -87,7 +77,7 @@ const Sidebar = ({sideBarRef, setOpenModalLoading}: Props) => {
                     {
                         !auth ? (
                             <li className={`nav-item ${styles.item} ${!auth ? styles.fade_out : ''}`}>
-                                <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick={handleOpenModalLoading}>
+                                <a data-bs-toggle="modal" data-bs-target="#login-modal" onClick={handleOpenModalLoading}>
                                     <div className={styles.logo_nav}>
                                         <div className={styles.background_icon}>
                                             <svg width="26" height="26" viewBox="0 0 149 166" xmlns="http://www.w3.org/2000/svg">
@@ -105,7 +95,7 @@ const Sidebar = ({sideBarRef, setOpenModalLoading}: Props) => {
                             </li>
                         ): (
                             <li className={`nav-item ${styles.item}`}>
-                                <a onClick={handleLogout}>
+                                <a data-bs-toggle="modal" data-bs-target="#logout-modal">
                                     <div className={styles.logo_nav}>
                                         <div className={styles.background_icon}>
                                             <svg width="26" height="26" version="1.0" viewBox="0 0 166 144" xmlns="http://www.w3.org/2000/svg">
