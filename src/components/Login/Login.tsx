@@ -55,8 +55,7 @@ const Login = ({openModalLoading}: Props) => {
      * Start: Submissão do login.
      */
     const dispatch = useDispatch<ThunkDispatch<RootState, ILogin, AnyAction>>();
-    const buttonSubmit = useRef<HTMLInputElement>(null); //Apenas para adicionar uma animação ao clicar no botão, faz referencia ao elemento HTML do botão.
-
+    
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -158,13 +157,6 @@ const Login = ({openModalLoading}: Props) => {
                                             className='form-control'
                                             type='submit' 
                                             value='Acessar'
-                                            ref={buttonSubmit}
-                                            onClick={()=> {
-                                                buttonSubmit.current?.classList.add(styles.pulse);
-                                                setTimeout(function() {
-                                                    buttonSubmit.current?.classList.remove(styles.pulse);
-                                                }, 500);
-                                            }}
                                         /> 
                                     )
                                 }

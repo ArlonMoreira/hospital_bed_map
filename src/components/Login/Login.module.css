@@ -47,31 +47,13 @@
     font-size: .8rem;    
 }
 
-.pulse {
-    animation-name: pulse;
-    animation-duration: 0.5s;
-    animation-timing-function: ease-out;
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
 .warning {
     list-style-type: none;
     padding: 0;
-    position: relative;
     margin: 0;
     font-size: .7rem;
-    float: right;
+    right: 1rem;
+    position: absolute;
 }
 
 .warning li {
