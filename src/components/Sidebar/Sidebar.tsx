@@ -9,7 +9,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { AuthHookResult } from '../../interfaces/Authentication';
 
 type Props = {
-    sideBarRef: React.LegacyRef<HTMLElement> | undefined ,
+    sideBarRef: React.RefObject<HTMLDivElement>,
     setOpenModalLoading: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
@@ -119,4 +119,4 @@ const Sidebar = ({sideBarRef, setOpenModalLoading}: Props) => {
     )
 };
 
-export default Sidebar
+export default Sidebar;

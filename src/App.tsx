@@ -28,35 +28,20 @@ function App() {
   useEffect(()=>{ //Atualiza o token assim que acessar a aplicação
     dispath(refreshToken());
   }, [dispath]);
-  
-  const sidebar_left = useRef<HTMLDivElement>(null);
 
-  const resizeShow = (buttonRef: React.RefObject<HTMLDivElement>, activeClass: any, show: boolean): void => {
-    if(show){
-      sidebar_left.current?.classList.remove('d-none');
-      buttonRef.current?.classList.remove(activeClass);
-    } else {
-      sidebar_left.current?.classList.add('d-none');
-      buttonRef.current?.classList.add(activeClass);
-    }
-    
-  };
-
-  const handleShow = (buttonRef: React.RefObject<HTMLDivElement>, activeClass: any): MouseEventHandler<HTMLButtonElement> => {
-    return () => {
-      sidebar_left.current?.classList.toggle('d-none');
-      buttonRef.current?.classList.toggle(activeClass);
-    } 
-  };
+  /**
+   * Start: Ocultar e apresentar Sidebar a partir da navbar
+   */
+  const sidebar = useRef<HTMLDivElement>(null); //Referência a barra de navegação
 
   return (
     <div className='App'>
       <Logout />
       <Login openModalLoading={openModalLoading}/>
-      <Navbar handleShow={handleShow} resizeShow={resizeShow}/>
+      <Navbar sidebarRef={sidebar}/>
       <div className='main'>
         <BrowserRouter>
-          <Sidebar setOpenModalLoading={setOpenModalLoading} sideBarRef={sidebar_left}/>
+          <Sidebar setOpenModalLoading={setOpenModalLoading} sideBarRef={sidebar}/>
           <div className='container-fluid'>
             <Routes>
               <Route path='/' element={<Dashboard />}/>
