@@ -29,7 +29,7 @@ const Logout = (props: Props) => {
             { successLogout && <Alert message={'Sessão encerrada.'} trigger={successLogout} type={'success'}/>}
             <div className='modal fade pb-5' id='logout-modal' data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
-                    <div className={`modal-content ${styles.auth}`}>
+                    <div className='modal-content modal_custom'>
                         <div className='modal-body text-center'>
                             <p>Deseja encerrar a sessão?</p>
                         </div>

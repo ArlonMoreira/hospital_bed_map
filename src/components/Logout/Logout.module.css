@@ -1,21 +1,8 @@
-.auth {
-    background: var(--gradient-color);
-    color: var(--font-default);
-    border: none;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    font-weight: 300;
-    font-size: 1rem;    
-}
-
-.auth p {
-    margin: 1rem auto;
-}
-
 .submit_logout {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
-    background: #ffffff26;
+    background: var(--active-shadow);
     border: 0;    
 }
 
@@ -25,6 +12,11 @@
     background: var(--font-default) !important;
     color: var(--secundary-color) !important;
     border: 1px solid var(--font-default) !important;
+    transition: all .2s ease-in-out;
+}
+
+.submit_logout button:hover {
+    transform: scale(1.05);
 }
 
 .submit_logout .cancel {

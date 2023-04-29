@@ -3,6 +3,17 @@
     flex-direction: column;
 }
 
+.login_form svg {
+    width: 1.2rem;
+    height: 1.2rem;
+    position: absolute;
+    margin: -3em auto;
+    margin-left: 1em;
+    fill: var(--font-default);
+    opacity: .5;
+    transition: all .5s ease-in-out;    
+}
+
 .login_form label {
     text-align: start;
     margin-bottom: 1rem;
@@ -13,13 +24,22 @@
 .login_form input {
     margin-top: 0.5rem;
     border: 1px solid transparent;
-    background: #ffffff26;
+    background: var(--active-shadow);
     color: var(--font-default);
+    padding-left: 2.5em !important;
+    padding-right: 2.5em !important;
+    transition: all .5s ease-in-out;
+    font-weight: 300;
 }
 
 .login_form input:focus {
     color: var(--font-default) !important;
     border: 1px solid var(--font-default);
+    
+}
+
+.login_form input:focus + svg {
+    opacity: 1;
 }
 
 .login_form input::placeholder {
@@ -31,7 +51,10 @@
     border: none !important;
     background: var(--font-default) !important;
     color: var(--secundary-color) !important;
-    height: 48px;
+    padding-left: .8rem !important;
+    padding-right: .8em !important;
+    font-weight: 400;
+    height: 3em;
 }
 
 .login_form input[type="submit"]:focus {
@@ -60,17 +83,29 @@
     display: flex;
     margin-top: 0.1rem;
     align-items: center;
-    color: #eeff69;
-    fill: #eeff69;
+    color: #eeff69;    
 }
 
 .warning li > svg {
     width: 0.8rem;
     height: 0.8rem;
-    margin-right: 0.25rem;    
+    margin-right: 0.25rem;  
+    position: relative !important;  
+    fill: #eeff69 !important;
+    opacity: 1;
 }
 
 .warning li > p {
     margin: 0;
+}
+
+.reveal_password {
+    right: 5.5em;
+    cursor: pointer;
+    position: absolute;
+} 
+
+.reveal_password:hover svg {
+    opacity: 1;
 }
 

@@ -3,6 +3,7 @@
     --secundary-color: #027dce;
     --gradient-color: linear-gradient(0deg,var(--secundary-color),var(--primary-color));
     --font-default: #fff;
+    --active-shadow: #ffffff26;
 }
 
 body {
@@ -15,7 +16,7 @@ body {
 }
 
 .active {
-    background-color: #ffffff24;
+    background-color: var(--active-shadow);
 }
 
 /* Start: Customizar formulário */
@@ -71,3 +72,26 @@ input[type="submit"], button.form-control {
     transform: scale(1.1) !important;
 }
 
+/* End: Customizar button */
+
+/* Start: Modal custom */
+
+.modal_custom {
+    background: var(--gradient-color);
+    color: var(--font-default);
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    font-weight: 300;
+    font-size: .8rem;    
+}
+
+.modal_custom p {
+    margin: 1rem auto;   
+}
+
+/* End: Modal custom */
+
+#logout-modal p {
+    font-weight: 300;
+    font-size: 1.2em;
+}
