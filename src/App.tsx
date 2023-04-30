@@ -1,4 +1,4 @@
-import React, { useRef, MouseEventHandler, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 //Components
 import Sidebar from './components/Sidebar/Sidebar';
@@ -32,16 +32,16 @@ function App() {
   /**
    * Start: Ocultar e apresentar Sidebar a partir da navbar
    */
-  const sidebar = useRef<HTMLDivElement>(null); //Referência a barra de navegação
+  const sideBarRef = useRef<HTMLDivElement>(null); //Referência a barra de navegação
 
   return (
     <div className='App'>
       <Logout />
       <Login openModalLoading={openModalLoading}/>
-      <Navbar sidebarRef={sidebar}/>
+      <Navbar sidebarRef={sideBarRef}/>
       <div className='main'>
         <BrowserRouter>
-          <Sidebar setOpenModalLoading={setOpenModalLoading} sideBarRef={sidebar}/>
+          <Sidebar setOpenModalLoading={setOpenModalLoading} sideBarRef={sideBarRef}/>
           <div className='container-fluid'>
             <Routes>
               <Route path='/' element={<Dashboard />}/>

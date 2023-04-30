@@ -17,12 +17,6 @@ const Sidebar = ({sideBarRef, setOpenModalLoading}: Props) => {
 
     const { auth }:AuthHookResult = useAuth();
 
-    const sidebar = useRef<HTMLDivElement>(null);
-
-    const handleExpand = ():void => {
-        sidebar.current?.classList.toggle(styles.expand);
-    };
-
     /**
      * Start: Identifica se o modal de login foi aberto
      */
@@ -33,16 +27,23 @@ const Sidebar = ({sideBarRef, setOpenModalLoading}: Props) => {
         setOpenModalLoading((current:boolean)=> current ? false: true);
     };
 
+    /**
+     * Start Expandir área interna
+     */
+    const expandArea = useRef<HTMLDivElement>(null);
+
+    const handleExpand = ():void => {
+        expandArea.current?.classList.toggle(styles.expand);
+    };    
+
     return (
         <nav ref={sideBarRef} className={`${styles.sidebar} py-1 px-1 py-sm-1 px-sm-1 py-md-2 px-md-2`}>
-            <div className={`${styles.sidebar_left}`} ref={sidebar}>
+            <div className={`${styles.sidebar_left}`} ref={expandArea}>
                 <ul className={`nav ${styles.container_nav}`}>
                     <li className={`nav-item ${styles.expand_button}`} onClick={handleExpand}>
-                        <a>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="22" fill="white" viewBox="0 0 16 16">
-                                <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-                            </svg>  
-                        </a>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="22" fill="white" viewBox="0 0 16 16">
+                            <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                        </svg>
                     </li>
                     <li className={`nav-item ${styles.item}`}>
                         <NavLink to='/'>
@@ -77,7 +78,7 @@ const Sidebar = ({sideBarRef, setOpenModalLoading}: Props) => {
                     {
                         !auth ? (
                             <li className={`nav-item ${styles.item} ${!auth ? styles.fade_out : ''}`}>
-                                <a data-bs-toggle="modal" data-bs-target="#login-modal" onClick={handleOpenModalLoading}>
+                                <a href="/#" data-bs-toggle="modal" data-bs-target="#login-modal" onClick={handleOpenModalLoading}>
                                     <div className={styles.logo_nav}>
                                         <div className={styles.background_icon}>
                                             <svg width="26" height="26" viewBox="0 0 149 166" xmlns="http://www.w3.org/2000/svg">
@@ -95,7 +96,7 @@ const Sidebar = ({sideBarRef, setOpenModalLoading}: Props) => {
                             </li>
                         ): (
                             <li className={`nav-item ${styles.item}`}>
-                                <a data-bs-toggle="modal" data-bs-target="#logout-modal">
+                                <a href="/#" data-bs-toggle="modal" data-bs-target="#logout-modal">
                                     <div className={styles.logo_nav}>
                                         <div className={styles.background_icon}>
                                             <svg width="26" height="26" version="1.0" viewBox="0 0 166 144" xmlns="http://www.w3.org/2000/svg">

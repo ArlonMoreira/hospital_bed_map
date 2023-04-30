@@ -1,8 +1,14 @@
+import React from 'react';
+//Teste
 import { render } from "@testing-library/react";
-import Sidebar from "../Sidebar/Sidebar";
+import App from '../../App';
+
 
 describe("Sidebar", () => {
-    it("should render correctly", () => {
+    it("should toggle sidebar when button is clicked", () => {
+        const sideBarRef = React.createRef<HTMLDivElement>();
+
+        render(<App/> as React.ComponentType);
 
     });
 

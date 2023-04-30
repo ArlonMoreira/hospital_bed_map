@@ -10,14 +10,15 @@ type Props = {
 
 const Navbar = ({sidebarRef}: Props) => {
 
-  const button = useRef<HTMLDivElement>(null);
+  const button = useRef<HTMLDivElement>(null); 
 
   /**
    * Start: Apresentar e ocultar o sidebar em telas inferiores à 768 píxels
    */
   const { width } = useWindowSize();
 
-  const resizeShow = (show: boolean): void => {
+  useEffect(()=>{
+    const show = width < 768? false: true;
     if(sidebarRef){
       if(show){
         sidebarRef.current?.classList.remove('d-none');
@@ -26,13 +27,8 @@ const Navbar = ({sidebarRef}: Props) => {
         sidebarRef.current?.classList.add('d-none');
         button.current?.classList.add(styles.active);
       }
-    }
-    
-  };  
-
-  useEffect(()=>{
-    resizeShow(width < 768? false: true);
-  }, [width]);
+    }    
+  }, [width, sidebarRef]);
 
   //Essa função irá ocultar a barra de navegação a partir da referência sidebar
   const handleShow = (): void => {
