@@ -20,6 +20,10 @@ export interface IAuthError {
     password: string[]
 }
 
+export interface IRefreshError {
+    refresh: string[],
+}
+
 /**
  * A api de autenticação pode retornar os valores (IAuth) caso ocorrer sucesso.
  * Ou um erro (IAuthError), ou então pode não retornar nada caso for um erro interno no sistema. 
@@ -27,7 +31,7 @@ export interface IAuthError {
 export interface IAuthentication {
     success: boolean;
     message: string;
-    data: IAuth | IAuthError | unknown
+    data: IAuth | IAuthError | IRefreshError | unknown
 };
 
 export interface AuthHookResult {

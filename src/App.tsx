@@ -1,10 +1,12 @@
 import { useRef, useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+//Pages
+import Dashboard from './pages/Dashboard/Dashboard';
+import HospitalBeds from './pages/HospitalBeds/HospitalBeds';
+import Hospitals from './pages/Hospitals/Hospitals';
 //Components
 import Sidebar from './components/Sidebar/Sidebar';
 import Navbar from './components/NavBar/Navbar';
-import Dashboard from './pages/Dashboard/Dashboard';
-import HospitalBeds from './pages/HospitalBeds/HospitalBeds';
 import Login from './components/Login/Login';
 import Logout from './components/Logout/Logout';
 //Redux
@@ -15,8 +17,12 @@ import { RootState } from './store';
 import { refreshToken } from './slices/authSlice';
 //Interface
 import { IAuth } from './interfaces/Authentication';
+//Hooks
+import { useAuth } from './hooks/useAuth';
 
 function App() {
+  
+  const { auth } = useAuth();
 
   const [openModalLoading, setOpenModalLoading] = useState<boolean>(false);
 
@@ -42,10 +48,11 @@ function App() {
       <div className='main'>
         <BrowserRouter>
           <Sidebar setOpenModalLoading={setOpenModalLoading} sideBarRef={sideBarRef}/>
-          <div className='container-fluid'>
+          <div className='container-fluid py-1 px-1 py-sm-1 px-sm-1 py-md-2 px-md-2'>
             <Routes>
               <Route path='/' element={<Dashboard />}/>
               <Route path='/leitos' element={<HospitalBeds />} />
+              <Route path='/hospitais' element={ auth ? <Hospitals /> : <Navigate to='/'/>} />
             </Routes>
           </div>        
         </BrowserRouter>

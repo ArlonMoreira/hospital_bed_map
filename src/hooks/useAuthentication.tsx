@@ -33,7 +33,7 @@ const useAuthentication = () => {
         } 
         
         try {
-            const response:Response = await fetch(`${url}token/refresh/`, {
+            const response:Response = await fetch(`${url}accounts/token/refresh/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

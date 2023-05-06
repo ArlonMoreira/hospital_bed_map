@@ -73,12 +73,28 @@ const Sidebar = ({sideBarRef, setOpenModalLoading}: Props) => {
                             </div>
                         </NavLink>
                     </li>
+                    {
+                        auth && (
+                            <li className={`nav-item ${styles.item}`}>
+                                <NavLink to='/hospitais'>
+                                    <div className={styles.logo_nav}>
+                                    <svg width="30" height="30" viewBox="0 0 184 163">
+                                        <path d="M50.4 36.1C-3.1 83.1-.5 80.4 4 84.5c2.5 2.3 4.7 1.4 11.6-4.9 2.9-2.5 5.4-4.6 5.7-4.6.4 0 .7 15.2.9 33.8l.3 33.8 2.6 4.9c3.2 6.4 9.3 11 16.3 12.5 3.6.7 20.8 1 53.7.8 47.3-.3 48.5-.3 52.4-2.4 5.4-2.9 9.4-7 11.6-11.9 1.7-3.6 1.9-7.1 1.9-37.2 0-20.3.4-33.4 1-33.8.5-.3 3.6 1.9 7 5 3.3 3 6.8 5.5 7.8 5.5 2.6 0 4.2-2 4.2-5.1 0-2.3-6.1-8.1-41.2-39.1C96.9 3.9 93.4 1 91.4 1c-.6 0-19.1 15.8-41 35.1zm65.8-2.4l29.6 26.2 6.2 5.4v36.9c0 40.7-.1 41.6-6.1 45.9l-3.4 2.4H91.8c-49.9 0-50.7 0-53.5-2.1-1.5-1.2-3.7-3.6-4.8-5.5-1.9-3.2-2-5.5-2.3-40l-.3-36.7 29.8-26.5C77.1 25.1 91 13.1 91.6 13.1c.6-.1 11.7 9.2 24.6 20.6zM82.1 57.3c-3.6 2.1-5 5.6-5.1 12.4V76h-6c-11 0-14 3.2-14 15s3 15 14 15h6v5.5c0 11.7 3.7 15 16.4 14.3 6.2-.3 7.9-.7 10-2.7 2.3-2.2 2.6-3.2 2.6-9.7v-7.2l7.4-.4c6.2-.3 7.9-.7 10-2.7 2.4-2.3 2.6-3 2.6-12.1s-.2-9.8-2.6-12.1c-2.1-2-3.8-2.4-10-2.7l-7.4-.4v-7.2c0-6.5-.3-7.5-2.6-9.7-2.2-2.1-3.7-2.4-10.7-2.7-5.6-.1-9 .2-10.6 1.1zM97 74.2c0 11.1.7 11.8 11.7 11.8h8.3v5 5h-8.2c-11.1 0-11.8.7-11.8 11.7v8.3h-5.5-5.6l.2-8.7c.2-10.9-.3-11.3-11.8-11.3H66v-5-5h8.1C85.8 86 86 85.8 86 75v-9h5.5H97v8.2z"/>
+                                    </svg>
+                                    </div>
+                                    <div className={styles.text_nav}>
+                                        <p>Hospitais</p>
+                                    </div>
+                                </NavLink>
+                            </li>
+                        )
+                    }
                 </ul>
                 <ul className={`nav ${styles.container_nav}`}>
                     {
                         !auth ? (
                             <li className={`nav-item ${styles.item} ${!auth ? styles.fade_out : ''}`}>
-                                <a href="/#" data-bs-toggle="modal" data-bs-target="#login-modal" onClick={handleOpenModalLoading}>
+                                <a data-bs-toggle="modal" data-bs-target="#login-modal" onClick={handleOpenModalLoading}>
                                     <div className={styles.logo_nav}>
                                         <div className={styles.background_icon}>
                                             <svg width="26" height="26" viewBox="0 0 149 166" xmlns="http://www.w3.org/2000/svg">
@@ -96,7 +112,7 @@ const Sidebar = ({sideBarRef, setOpenModalLoading}: Props) => {
                             </li>
                         ): (
                             <li className={`nav-item ${styles.item}`}>
-                                <a href="/#" data-bs-toggle="modal" data-bs-target="#logout-modal">
+                                <a data-bs-toggle="modal" data-bs-target="#logout-modal">
                                     <div className={styles.logo_nav}>
                                         <div className={styles.background_icon}>
                                             <svg width="26" height="26" version="1.0" viewBox="0 0 166 144" xmlns="http://www.w3.org/2000/svg">

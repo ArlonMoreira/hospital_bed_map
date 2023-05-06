@@ -1,6 +1,7 @@
 .sidebar {
     animation: slideIn .3s forwards;
-    transition: 0.45s ease-in-out;      
+    transition: 0.45s ease-in-out;
+    z-index: 5;   
 }
 
 @media only screen and (max-width: 768px) {

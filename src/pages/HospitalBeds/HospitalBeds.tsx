@@ -9,4 +9,4 @@ const HospitalBeds = (props: Props) => {
   )
 }
 
-export default HospitalBeds
+export default HospitalBeds;
