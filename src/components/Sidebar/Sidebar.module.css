@@ -21,7 +21,7 @@
 
 .sidebar_left {
     background-image: var(--gradient-color);
-    height: 28em;
+    height: 75vh;
     border-radius: .5rem;
     display: flex;
     flex-direction: column;

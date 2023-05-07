@@ -3,6 +3,7 @@
     --secundary-color: #027dce;
     --gradient-color: linear-gradient(0deg,var(--secundary-color),var(--primary-color));
     --font-default: #fff;
+    --font-dark: #3f3f3f;
     --active-shadow: #ffffff26;
 }
 
@@ -64,7 +65,7 @@ input[type="submit"], button.form-control {
 
 .small-button i {
     font-size: 2em;
-    color: var(--font-default);
+    color: var(--font-dark);
 }
 
 .small-button:hover i {
