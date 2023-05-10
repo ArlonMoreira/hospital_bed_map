@@ -102,8 +102,8 @@ const Login = ({openModalLoading}: Props) => {
                                 <i className="bi bi-x fs-2"></i>
                             </button>
                         </div>
-                        <div className='modal-body text-center'>
-                            <form className={`${styles.login_form}`} onSubmit={handleSubmit}>
+                        <form className={`${styles.login_form}`} onSubmit={handleSubmit}>
+                            <div className='modal-body text-center'>
                                 <label>
                                     <span>Usuário</span>
                                     <input
@@ -174,6 +174,8 @@ const Login = ({openModalLoading}: Props) => {
                                         }                                                                               
                                     </a>                                   
                                 </label>                                
+                            </div>
+                            <div className='modal-footer border-0'>
                                 {
                                     loading ? (
                                         <button className='form-control' disabled>
@@ -189,9 +191,8 @@ const Login = ({openModalLoading}: Props) => {
                                         /> 
                                     )
                                 }
-         
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>                             

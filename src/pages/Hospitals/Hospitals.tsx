@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useState } from 'react'
 //styles
 import styles from './Hospitals.module.css';
 
@@ -8,7 +8,20 @@ const Hospitals = (props: Props) => {
 
     const [name, setName] = useState<string>('');
     const [acronym, setAcronym] = useState<string>('');
-    const [is_active, setIs_active] = useState<boolean>(true);
+    const [is_active, setIs_active] = useState<boolean>(false);
+
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const data = {
+            name,
+            acronym,
+            is_active
+        };
+
+        console.log(data);
+        
+    };
 
     return (
         <div>
@@ -26,7 +39,7 @@ const Hospitals = (props: Props) => {
             </div>
             <div className='modal fade pb-5' id='register-hospital' data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className='modal-dialog modal-dialog-centered'>
-                    <div className='modal-content'>
+                    <div className={`modal-content ${styles.register_hospital}`}>
                         <div className='modal-header'>
                             <p className='m-0'>
                                 Cadastrar Hospital
@@ -35,8 +48,8 @@ const Hospitals = (props: Props) => {
                                 <i className="bi bi-x fs-2"></i>
                             </button>
                         </div>
-                        <div className='modal-body'>
-                            <form className={`${styles.register_form}`}>
+                        <form className={`${styles.register_form}`} onSubmit={handleSubmit}>
+                            <div className='modal-body'>
                                 <label>
                                     <span>Nome:</span>
                                     <input
@@ -59,12 +72,23 @@ const Hospitals = (props: Props) => {
                                 </label>
                                 <label>
                                     <span>Ativo:</span>
+                                    <label className='switch'>
+                                        <input  type='checkbox'
+                                                checked={is_active}
+                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setIs_active(e.target.checked)}
+                                                />
+                                        <span className="slider round"></span>
+                                    </label>                                    
                                 </label>
-                            </form>
-                        </div>
-                        <div className='modal-footer'>
-
-                        </div>
+                            </div>
+                            <div className='modal-footer'>
+                                <input 
+                                        className='form-control'
+                                        type='submit' 
+                                        value='Cadastrar'
+                                    /> 
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
