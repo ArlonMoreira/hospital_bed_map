@@ -46,12 +46,19 @@ input {
 }
 
 input[type="submit"], button.form-control {
-    background: var(--primary-color) !important;
-    color: var(--font-default) !important;
-    border: 0 !important;
+    background: var(--primary-color);
+    color: var(--font-default);
+    border: 0;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     border-radius: 2em !important;
+    font-size: 1rem !important;
+    height: 2.5rem;
+    padding: 0 !important;    
+}
+
+input[type="submit"]:hover {
+    opacity: .8;
 }
 
 /* Ends: Customizar formulário */
@@ -166,4 +173,9 @@ transform: translateX(26px);
 }
 
 /* End:Checkbox custom */
+
+input::placeholder {
+    opacity: .65 !important;
+}
+
 

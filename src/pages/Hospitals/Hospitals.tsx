@@ -1,25 +1,35 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 //styles
 import styles from './Hospitals.module.css';
+//Redux
+import { register } from '../../slices/hospitalSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
+import { RootState } from '../../store';
+//Interface
+import { IHospitalParams } from '../../interfaces/Hospital';
 
 type Props = {}
 
 const Hospitals = (props: Props) => {
 
+    const dispatch = useDispatch<ThunkDispatch<RootState, IHospitalParams, AnyAction>>();
+    const { loading } = useSelector((state: RootState) => state.hospital)
+
     const [name, setName] = useState<string>('');
     const [acronym, setAcronym] = useState<string>('');
     const [is_active, setIs_active] = useState<boolean>(false);
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const data = {
+        const data:IHospitalParams  = {
             name,
             acronym,
             is_active
         };
-
-        console.log(data);
+        
+        await dispatch(register(data));
         
     };
 
@@ -38,9 +48,9 @@ const Hospitals = (props: Props) => {
                 </div>            
             </div>
             <div className='modal fade pb-5' id='register-hospital' data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div className='modal-dialog modal-dialog-centered'>
+                <div className='modal-dialog modal-dialog-centered modal-lg'>
                     <div className={`modal-content ${styles.register_hospital}`}>
-                        <div className='modal-header'>
+                        <div className={`modal-header border-0 ${styles.modal_header_bg}`}>
                             <p className='m-0'>
                                 Cadastrar Hospital
                             </p>
@@ -49,7 +59,7 @@ const Hospitals = (props: Props) => {
                             </button>
                         </div>
                         <form className={`${styles.register_form}`} onSubmit={handleSubmit}>
-                            <div className='modal-body'>
+                            <div className='modal-body p-2'>
                                 <label>
                                     <span>Nome:</span>
                                     <input
@@ -70,9 +80,9 @@ const Hospitals = (props: Props) => {
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => setAcronym(e.target.value)}
                                     />
                                 </label>
-                                <label>
+                                <label className='mb-0'>
                                     <span>Ativo:</span>
-                                    <label className='switch'>
+                                    <label className='switch mb-0'>
                                         <input  type='checkbox'
                                                 checked={is_active}
                                                 onChange={(e: ChangeEvent<HTMLInputElement>) => setIs_active(e.target.checked)}
@@ -81,12 +91,19 @@ const Hospitals = (props: Props) => {
                                     </label>                                    
                                 </label>
                             </div>
-                            <div className='modal-footer'>
-                                <input 
-                                        className='form-control'
-                                        type='submit' 
-                                        value='Cadastrar'
-                                    /> 
+                            <div className={`modal-footer border-0 ${styles.modal_footer_bg} px-4`}>
+                                {
+                                    loading ? (
+                                        <button className='form-control' disabled>
+                                            <div className="spinner-border" role="status">
+                                                <span className="sr-only"></span>
+                                            </div>
+                                        </button>                                        
+                                    ) : (
+                                        <input type='submit' value='Cadastrar'/>
+                                    )
+                                }
+                                <input className={`${styles.cancel}`} type='submit' value='Cancelar' data-bs-dismiss="modal" aria-label="Close"/>
                             </div>
                         </form>
                     </div>
