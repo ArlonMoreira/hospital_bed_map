@@ -20,5 +20,5 @@ export interface IHospital {
 export interface IHospitalResponse {
     success: boolean;
     message: string;
-    data: IHospital[] | IHospitalErrors[] | unknown
+    data?: IHospital[] | IHospitalErrors
 }

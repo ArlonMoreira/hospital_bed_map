@@ -2,7 +2,8 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 //styles
 import styles from './Hospitals.module.css';
 //Redux
-import { register } from '../../slices/hospitalSlice';
+import { register, list } from '../../slices/hospitalSlice';
+import { refreshToken } from '../../slices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
@@ -14,7 +15,7 @@ type Props = {}
 const Hospitals = (props: Props) => {
 
     const dispatch = useDispatch<ThunkDispatch<RootState, IHospitalParams, AnyAction>>();
-    const { loading } = useSelector((state: RootState) => state.hospital)
+    const { loading, hospitals } = useSelector((state: RootState) => state.hospital)
 
     const [name, setName] = useState<string>('');
     const [acronym, setAcronym] = useState<string>('');
@@ -29,9 +30,14 @@ const Hospitals = (props: Props) => {
             is_active
         };
         
+        await dispatch(refreshToken()); //Atualizar token antes de enviar os dados
         await dispatch(register(data));
         
     };
+
+    useEffect(()=>{
+        dispatch(list());        
+    }, [dispatch]);
 
     return (
         <div>

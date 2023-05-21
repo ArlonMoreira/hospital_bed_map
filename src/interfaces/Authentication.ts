@@ -31,7 +31,7 @@ export interface IRefreshError {
 export interface IAuthentication {
     success: boolean;
     message: string;
-    data: IAuth | IAuthError | IRefreshError | unknown
+    data?: IAuth | IAuthError | IRefreshError
 };
 
 export interface AuthHookResult {

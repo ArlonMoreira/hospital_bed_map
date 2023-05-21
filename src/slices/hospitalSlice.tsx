@@ -9,6 +9,7 @@ import { IAuth } from "../interfaces/Authentication";
 
 interface IState {
     success: boolean | null,
+    successMessage: string | null,
     loading: boolean,
     errorMessage: string | null,
     errors: IHospitalErrors | null,
@@ -17,6 +18,7 @@ interface IState {
 
 const initialState: IState = {
     success: null,
+    successMessage: null,
     loading: false,
     errorMessage: null,
     errors: null,
@@ -30,16 +32,27 @@ export const register = createAsyncThunk(
         const response:IHospitalResponse = await useHospital().register({token: userAuth.access, data});
 
         if(response.success){
-            if (Array.isArray(response.data)) { //Será necessário afirmar que response.data é um array, pois pode retornar unknown
-                return (response.data[0] as IHospital);
-            } else {
-                throw new Error('Invalid response data');
-            }
+            return response;
         } else {
             return rejectWithValue(response);
         }
     }
 );
+
+export const list = createAsyncThunk(
+    'hospital/list',
+    async (_, { getState, rejectWithValue }) => {
+        const userAuth:IAuth = (getState() as any).auth.userAuth;
+        const response:IHospitalResponse = await useHospital().hospitals({token: userAuth.access});
+
+        if(response.success){
+            return response;
+        } else {
+            return rejectWithValue(response);
+        }
+
+    }
+)
 
 export const hospitalSlice = createSlice({
     name: 'hospital',
@@ -47,26 +60,43 @@ export const hospitalSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(register.fulfilled, (state: IState, action: PayloadAction<IHospital>)=>{
+            .addCase(register.fulfilled, (state: IState, action: PayloadAction<IHospitalResponse>)=>{
+                const response = (action.payload as IHospitalResponse);
                 state.success = true;
+                state.successMessage = response.message;
                 state.loading = false;
                 state.errorMessage = null;
                 state.errors = null;
-                state.hospitals.unshift(action.payload);
+                
+                if(response.data && Array.isArray(response.data)){
+                    const hospitals:IHospital[] = response.data;
+                    state.hospitals.unshift(hospitals[0]);
+                }
+
             })
             .addCase(register.pending, (state: IState)=>{
                 state.loading = true;
             })
             .addCase(register.rejected, (state: IState, action: PayloadAction<IHospitalResponse | unknown>)=>{
+                const response = (action.payload as IHospitalResponse);
                 state.success = true;
-                if(action.payload){
-                    const response = (action.payload as IHospitalResponse);
-                    state.errorMessage = response.message;
-                    if(response.data){
-                        state.errors = response.data as IHospitalErrors;
-                    }
-                }
+                state.successMessage = null;
                 state.loading = false;
+                state.errorMessage = response.message;
+                
+                if(response.data){
+                    state.errors = response.data as IHospitalErrors;
+                }
+                
+            })
+            .addCase(list.fulfilled, (state: IState, action: PayloadAction<IHospitalResponse>)=>{
+                const response = (action.payload as IHospitalResponse);
+                state.success = true;
+                state.successMessage = response.message;
+                state.loading = false;
+                state.errorMessage = null;
+                state.errors = null;
+                state.hospitals = response.data as IHospital[];
             })
     }
 });
