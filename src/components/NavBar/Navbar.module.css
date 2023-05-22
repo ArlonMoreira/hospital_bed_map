@@ -5,7 +5,8 @@
     align-items: center;
     justify-content: center;    
     border-radius: .5rem;
-    background-color: var(--primary-color);
+    background-color: var(--secundary-color);
+    box-shadow: 0 2px 22px 0 rgba(0,0,0,.1), 0 4px 20px 0 rgba(0,0,0,.15);    
 }
 
 @media only screen and (max-width: 768px) {
@@ -51,4 +52,36 @@
 
 .iconArea.active > span:nth-child(3) {
     transform:translateY(-9px) rotate(90deg);
+}
+
+.container_navbar {
+    display: flex;
+    justify-content: space-between;
+}
+
+.utils {
+    position: relative;
+    width: 4em;
+    margin-right: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    fill: var(--secundary-color);
+    margin-left: 0 !important;
+}
+
+.utils_item {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    justify-content: center;
+    cursor: pointer;
+    width: 3em;
+    height: 3em;
+    border-radius: 50%;
+    border: .1rem solid var(--secundary-color);
+}
+
+.utils_item svg {
+    width: 1.5em;
 }

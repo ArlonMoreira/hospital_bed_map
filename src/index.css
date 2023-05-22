@@ -1,16 +1,15 @@
 :root {
-    --primary-color: #00a884;
-    --secundary-color: #027dce;
-    --gradient-color: linear-gradient(0deg,var(--secundary-color),var(--primary-color));
+    --primary-color: #3358f4;
+    --secundary-color: #1d8cf8;
+    --gradient-color: linear-gradient(0deg,var(--primary-color),var(--secundary-color));
     --font-default: #fff;
     --font-dark: #3f3f3f;
-    --background-default: var(--bs-gray-100);
+    --background-default: #f5f6fa;
     --active-shadow: #ffffff26;
 }
 
 body {
-    font-family: 'Montserrat Alternates', sans-serif;
-    font-family: 'Roboto', sans-serif; 
+    font-family: 'Poppins', sans-serif;
     background: var(--background-default);    
 }
 
