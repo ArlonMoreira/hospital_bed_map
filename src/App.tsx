@@ -35,7 +35,7 @@ function App() {
   useEffect(()=>{ //Atualiza o token assim que acessar a aplicação
     dispath(refreshToken());
   }, [dispath]);
-
+  
   /**
    * Start: Ocultar e apresentar Sidebar a partir da navbar
    */
