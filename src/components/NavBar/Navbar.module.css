@@ -72,7 +72,6 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    fill: var(--secundary-color);
     margin-left: 0 !important;
     gap: 1rem;
 }
@@ -90,6 +89,7 @@
 
 .tools_item svg {
     width: 1.7em;
+    fill: var(--secundary-color);
 }
 
 .tools_item:hover svg {

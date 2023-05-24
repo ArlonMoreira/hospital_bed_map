@@ -1,9 +1,10 @@
 import React, { useRef, useEffect } from 'react'
 //styles
 import styles from './Navbar.module.css';
-import logo from '../../logo_min.svg';
 //Hooks
 import { useWindowSize } from 'react-use';
+//Rooter
+import { NavLink } from 'react-router-dom';
 
 type Props = {
   sidebarRef: React.RefObject<HTMLDivElement>
@@ -37,7 +38,7 @@ const Navbar = ({sidebarRef}: Props) => {
       sidebarRef.current?.classList.toggle('d-none');
       button.current?.classList.toggle(styles.active); //Ative e desativa o botão da sidebar, indicando que a sidebar está aberta ou fechada.
     }
-  };  
+  };
 
   return (
     <div className={styles.container_navbar}>
@@ -58,11 +59,11 @@ const Navbar = ({sidebarRef}: Props) => {
               </g>
             </svg>                 
           </a>          
-          <a className={`${styles.tools_item} ${styles.auth_item}`}>
+          <NavLink to='/login' className={`${styles.tools_item} ${styles.auth_item}`}>
             <svg viewBox="0 0 448 512">
               <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/>
             </svg>                  
-          </a>
+          </NavLink>
         </div> 
     </div>
   )
