@@ -1,3 +1,10 @@
+.container_navbar {
+    display: flex;
+    justify-content: space-between;
+}
+
+/*Start: Open/close sidebar menu*/
+
 .menu_open button {
     width: 4.2em;
     height: 60px;
@@ -16,7 +23,7 @@
     }
 }
 
-.iconArea > span {
+.icon_area > span {
     display: block;
     width: 32px;
     height: 2px;
@@ -24,53 +31,53 @@
     background-color: #ffffff;
 }
 
-.iconArea > span:not(:last-child) {
+.icon_area > span:not(:last-child) {
     margin-bottom: 7px;
 }
 
-.iconArea, .iconArea > span {
+.icon_area, .icon_area > span {
     transition: all .2s ease-in-out;
 }
 
-.iconArea.active {
+.icon_area.active {
     transition-delay: 0.4s;
     transform: rotate(45deg);
 }
 
-.iconArea.active > span:nth-child(2) {
+.icon_area.active > span:nth-child(2) {
     width: 0;
 }
 
-.iconArea.active > span:nth-child(1),
-.iconArea.active > span:nth-child(3) {
+.icon_area.active > span:nth-child(1),
+.icon_area.active > span:nth-child(3) {
     transition-delay: .2s;
 }
 
-.iconArea.active > span:nth-child(1) {
+.icon_area.active > span:nth-child(1) {
     transform:translateY(9px);
 }
 
-.iconArea.active > span:nth-child(3) {
+.icon_area.active > span:nth-child(3) {
     transform:translateY(-9px) rotate(90deg);
 }
 
-.container_navbar {
-    display: flex;
-    justify-content: space-between;
-}
+/*End: Open/close sidebar menu*/
 
-.utils {
+/*Start: tools area */
+
+.tools {
     position: relative;
-    width: 4em;
+    width: 100%;
     margin-right: 1em;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     fill: var(--secundary-color);
     margin-left: 0 !important;
+    gap: 1rem;
 }
 
-.utils_item {
+.tools_item {
     display: flex;
     align-items: center;
     background-color: transparent;
@@ -79,9 +86,26 @@
     width: 3em;
     height: 3em;
     border-radius: 50%;
+}
+
+.tools_item svg {
+    width: 1.7em;
+}
+
+.tools_item:hover svg {
+    fill: var(--bs-gray-400);
+}
+
+.auth_item {
     border: .1rem solid var(--secundary-color);
 }
 
-.utils_item svg {
-    width: 1.5em;
+.auth_item svg {
+    width: 1.2em;
 }
+
+.auth_item:hover {
+    border: .1rem solid var(--bs-gray-400);
+}
+
+/*End: tools area */
