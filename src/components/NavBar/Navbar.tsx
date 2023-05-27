@@ -24,10 +24,10 @@ const Navbar = ({sidebarRef}: Props) => {
     if(sidebarRef){
       if(show){
         sidebarRef.current?.classList.remove('d-none');
-        button.current?.classList.remove(styles.active);
+        button.current?.classList.add(styles.active);
       } else {
         sidebarRef.current?.classList.add('d-none');
-        button.current?.classList.add(styles.active);
+        button.current?.classList.remove(styles.active);
       }
     }    
   }, [width, sidebarRef]);
@@ -44,7 +44,7 @@ const Navbar = ({sidebarRef}: Props) => {
     <div className={styles.container_navbar}>
         <div className={`${styles.menu_open} py-1 px-1 py-sm-1 px-sm-1 py-md-2 px-md-2`}>
             <button className='border-0' type='button' onClick={handleShow}>
-                <div className={`${styles.icon_area} ${styles.active}`} ref={button}>
+                <div className={`${styles.icon_area}`} ref={button}>
                     <span></span>
                     <span></span>
                     <span></span> 

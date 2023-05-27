@@ -1,5 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+//styles
+import styles from './App.module.css';
 //Pages
 import Dashboard from './pages/Dashboard/Dashboard';
 import HospitalBeds from './pages/HospitalBeds/HospitalBeds';
@@ -42,23 +44,23 @@ function App() {
   const sideBarRef = useRef<HTMLDivElement>(null); //Referência a barra de navegação
 
   return (
-    <div className='App'>
+    <div className={styles.App}>
       <Logout />
       <Login openModalLoading={openModalLoading}/>
       <BrowserRouter>
-        <Navbar sidebarRef={sideBarRef}/>
-        <div className='main'>
-          
-            <Sidebar setOpenModalLoading={setOpenModalLoading} sideBarRef={sideBarRef}/>
-            <div className='container-fluid py-1 px-1 py-sm-1 px-sm-1 py-md-2 px-md-2'>
-              <Routes>
-                <Route path='/' element={<Dashboard />}/>
-                <Route path='/login' element={!auth ? <Authentication />: <Navigate to='/'/> }/>
-                <Route path='/leitos' element={<HospitalBeds />} />
-                <Route path='/hospitais' element={ auth ? <Hospitals /> : <Navigate to='/'/>} />
-              </Routes>
-            </div>        
-          
+        <div className='d-flex flex-column h-100'>
+          <Navbar sidebarRef={sideBarRef}/>
+          <div className='main w-100 h-100'>
+              <Sidebar setOpenModalLoading={setOpenModalLoading} sideBarRef={sideBarRef}/>
+              <div className='container-fluid py-1 px-1 py-sm-1 px-sm-1 py-md-2 px-md-2'>
+                <Routes>
+                  <Route path='/' element={<Dashboard />}/>
+                  <Route path='/login' element={!auth ? <Authentication />: <Navigate to='/'/> }/>
+                  <Route path='/leitos' element={<HospitalBeds />} />
+                  <Route path='/hospitais' element={ auth ? <Hospitals /> : <Navigate to='/'/>} />
+                </Routes>
+              </div>        
+          </div>
         </div>
       </BrowserRouter>
     </div>
