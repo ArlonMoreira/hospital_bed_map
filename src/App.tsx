@@ -10,7 +10,6 @@ import Authentication from './pages/Authentication/Authentication';
 //Components
 import Sidebar from './components/Sidebar/Sidebar';
 import Navbar from './components/NavBar/Navbar';
-import Login from './components/Login/Login';
 import Logout from './components/Logout/Logout';
 //Redux
 import { useDispatch } from 'react-redux';
@@ -46,7 +45,6 @@ function App() {
   return (
     <div className={styles.App}>
       <Logout />
-      <Login openModalLoading={openModalLoading}/>
       <BrowserRouter>
         <div className='d-flex flex-column h-100'>
           <Navbar sidebarRef={sideBarRef}/>

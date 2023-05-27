@@ -43,13 +43,13 @@ const Login = ({openModalLoading}: Props) => {
      * Start: Tratando erros de autenticação
      */
     const [errors, setErrors] = useState<IAuthError | null>(null);
-    const { error, loading }: {error:IAuthentication | null, loading: boolean} = useSelector((state: RootState) => state.auth);
-
+    //const { error, loading }: {error:IAuthentication | null, loading: boolean} = useSelector((state: RootState) => state.auth);
+    /*
     useEffect(()=>{
         if(error){ //Caso ocorrer um erro o stado errors como formato IAuthError será definido, assim será possível recuperar o motivo específico do erro de username e password
             setErrors(error.data as IAuthError);
         }
-    }, [error]);
+    }, [error]);*/
 
     /**
      * Start: Submissão do login.
@@ -92,7 +92,7 @@ const Login = ({openModalLoading}: Props) => {
 
     return (
         <>
-            {   error && <Alert message={error.message} trigger={error} type={'error'} />  } 
+            {/*   error && <Alert message={error.message} trigger={error} type={'error'} />  */} 
             <div className='modal fade pb-5' id="login-modal" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
                     <div className='modal-content modal_custom'>
@@ -176,7 +176,7 @@ const Login = ({openModalLoading}: Props) => {
                                 </label>                                
                             </div>
                             <div className='modal-footer border-0'>
-                                {
+                                {/*
                                     loading ? (
                                         <button className='form-control' disabled>
                                             <div className="spinner-border" role="status">
@@ -190,7 +190,7 @@ const Login = ({openModalLoading}: Props) => {
                                             value='Acessar'
                                         /> 
                                     )
-                                }
+                                    */}
                             </div>
                         </form>
                     </div>

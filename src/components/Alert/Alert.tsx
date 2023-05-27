@@ -26,7 +26,7 @@ const Alert = ({message, trigger, type}: Props) => {
         const timeoutId = setTimeout(() => {
             hideAlert();
         }, 2600);
-      
+     
         return () => {
             clearTimeout(timeoutId);
         };

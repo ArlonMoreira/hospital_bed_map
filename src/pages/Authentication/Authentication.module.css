@@ -8,7 +8,7 @@
 .auth_item {
     display: flex;
     background-color: var(--bs-body-bg);
-    width: 65%;
+    width: 70%;
     height: 40em;
     border-radius: 2em;
     overflow: hidden;
@@ -31,6 +31,13 @@
 @media only screen and (max-width: 1440px) {
     .auth_item {
         width: 95%;
+    }
+}
+
+@media only screen and (max-width: 425px) {
+    .auth_item {
+        background: transparent;
+        box-shadow: none;
     }
 }
 

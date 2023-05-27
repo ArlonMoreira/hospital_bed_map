@@ -189,4 +189,36 @@ input::placeholder {
     opacity: .65 !important;
 }
 
+/* Start: Warning */
+
+.error-message {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    font-size: .7rem;
+    right: 1rem;
+    position: absolute;
+}
+
+.error-message li {
+    display: flex;
+    margin-top: 0.1rem;
+    align-items: center;
+    color: var(--bs-danger);    
+}
+
+.error-message li > svg {
+    width: 0.8rem;
+    height: 0.8rem;
+    margin-right: 0.25rem;  
+    position: relative !important;  
+    fill: var(--bs-danger) !important;
+    opacity: 1;
+}
+
+.error-message p {
+    margin: 0;
+}
+
+/* End: Warning */
 
