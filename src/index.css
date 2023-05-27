@@ -30,12 +30,25 @@ body {
 
 /* Start: Customizar formulário */
 
+input[type="submit"], button.form-control {
+    background: var(--primary-color);
+    color: var(--font-default);
+    border: 0;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    border-radius: 2em !important;
+    font-size: 1rem !important;
+    height: 3rem;
+    padding: 0 !important;
+    justify-content: center;  
+}
+
 .form-control:focus {
-    color: #212529;
     background-color: transparent;
-    border-color: var(--primary-color);
     outline: 0;
     box-shadow: none;
+    border: 1px solid var(--secundary-color);
+    color: var(--secundary-color);
 }
 
 input:focus {
@@ -51,20 +64,12 @@ input {
     padding: 0.8rem !important;
 }
 
-input[type="submit"], button.form-control {
-    background: var(--primary-color);
-    color: var(--font-default);
-    border: 0;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    border-radius: 2em !important;
-    font-size: 1rem !important;
-    height: 2.5rem;
-    padding: 0 !important;    
-}
-
 input[type="submit"]:hover {
     opacity: .8;
+}
+
+.spinner-border {
+    color: var(--primary-color)
 }
 
 /* Ends: Customizar formulário */
