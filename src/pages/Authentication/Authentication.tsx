@@ -54,6 +54,10 @@ const Authentication = () => {
         setTypeInputPassword((current) => current === 'password' ? 'text': 'password');
     };
 
+    /**
+     * Clear form when open page
+     */
+
     useEffect(()=>{
         setUsername('');
         setPassword('');

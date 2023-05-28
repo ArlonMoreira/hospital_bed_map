@@ -1,25 +1,29 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
 //styles
 import styles from './Hospitals.module.css';
 //Redux
-import { register, list } from '../../slices/hospitalSlice';
+import { register, list, reset } from '../../slices/hospitalSlice';
 import { refreshToken } from '../../slices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 //Interface
-import { IHospitalParams } from '../../interfaces/Hospital';
+import { IHospitalParams, IHospital, IHospitalErrors } from '../../interfaces/Hospital';
+//Components
+import Alert from '../../components/Alert/Alert';
 
-type Props = {}
-
-const Hospitals = (props: Props) => {
+const Hospitals = () => {
 
     const dispatch = useDispatch<ThunkDispatch<RootState, IHospitalParams, AnyAction>>();
-    const { loading, hospitals } = useSelector((state: RootState) => state.hospital)
+    const { success, successMessage, loading, hospitals, errorMessage, errors }: { success:boolean | null, successMessage:string | null, loading:boolean, hospitals: IHospital[], errorMessage: string | null, errors: IHospitalErrors | null} = useSelector((state: RootState) => state.hospital)
+
+    /**
+     * Register Hospital
+     */
 
     const [name, setName] = useState<string>('');
     const [acronym, setAcronym] = useState<string>('');
-    const [is_active, setIs_active] = useState<boolean>(false);
+    const [is_active, setIs_active] = useState<boolean>(true);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -30,17 +34,44 @@ const Hospitals = (props: Props) => {
             is_active
         };
         
-        await dispatch(refreshToken()); //Atualizar token antes de enviar os dados
+        await dispatch(refreshToken()); //Update token access after to send data
         await dispatch(register(data));
         
     };
 
+    /**
+     * Close modal and clear form when the register hospital is success.
+     */
+
+    const buttonCloseModal = useRef<HTMLButtonElement>(null);
+
     useEffect(()=>{
-        dispatch(list());        
+        if(success) {
+            buttonCloseModal.current?.click();
+            setName('');
+            setAcronym('');
+            setIs_active(true);
+        }
+
+    }, [success]);
+
+    /**
+     * List all hospital when dispatch update
+     */
+
+    useEffect(() => {
+        (async () => {
+            await dispatch(refreshToken()); //Update token access after to send data
+            await dispatch(list());
+            dispatch(reset());
+        })();
+        
     }, [dispatch]);
 
     return (
-        <div>
+        <>
+            { successMessage && <Alert message={successMessage} trigger={success} type='success' />}
+            { errorMessage && <Alert message={errorMessage} trigger={errors} type='error' /> }
             <div className={`${styles.hospitals_container}`}>
                 <div data-bs-toggle="modal" data-bs-target="#register-hospital" className={`card ${styles.item} ${styles.insert_container}`}>
                     <a className={`${styles.insert_body}`}>
@@ -49,44 +80,80 @@ const Hospitals = (props: Props) => {
                         </svg>
                     </a>
                 </div>
-                <div className={`card ${styles.item} ${styles.hospital_area}`}>
+                {
+                    hospitals && hospitals.map((hospital, i)=>(
+                        <div key={hospital.id} className={`card ${styles.item} ${styles.hospital_area}`}>
                     
-                </div>            
+                        </div>                        
+                    ))
+                }
             </div>
             <div className='modal fade pb-5' id='register-hospital' data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className='modal-dialog modal-dialog-centered modal-lg'>
                     <div className={`modal-content ${styles.register_hospital}`}>
-                        <div className={`modal-header border-0 ${styles.modal_header_bg}`}>
+                        <div className={`modal-header border-0 ${styles.modal_header_bg} p-4`}>
                             <p className='m-0'>
                                 Cadastrar Hospital
                             </p>
-                            <button type='button' className="small-button" data-bs-dismiss="modal" aria-label="Close">
+                            <button ref={buttonCloseModal} type='button' className="small-button" data-bs-dismiss="modal" aria-label="Close">
                                 <i className="bi bi-x fs-2"></i>
                             </button>
                         </div>
                         <form className={`${styles.register_form}`} onSubmit={handleSubmit}>
-                            <div className='modal-body p-2'>
-                                <label>
+                            <div className='modal-body p-4 row'>
+                                <label className='col-6'>
                                     <span>Nome:</span>
                                     <input
-                                        className='form-control'
+                                        className={`form-control ${errors?.name && 'border border-danger'}`}
                                         type='text'
                                         value={name}
                                         placeholder='Razão Social/Nome Fantasia'
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                                     />
+                                    {
+                                        errors?.name && (
+                                            <ul className='error-message'>
+                                                {
+                                                    errors.name.map((error, i) => (
+                                                        <li key={i}>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                                <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                                                            </svg>
+                                                            <p>{error}</p> 
+                                                        </li>
+                                                    ))
+                                                }
+                                            </ul>
+                                        )
+                                    }
                                 </label>
-                                <label>
+                                <label className='col-6'>
                                     <span>Sigla:</span>
                                     <input 
-                                        className='form-control'
+                                        className={`form-control ${errors?.acronym && 'border border-danger'}`}
                                         type='text'
                                         value={acronym}
                                         placeholder='Sigla/Apelido'
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => setAcronym(e.target.value)}
                                     />
+                                    {
+                                        errors?.acronym && (
+                                            <ul className='error-message'>
+                                                {
+                                                    errors.acronym.map((error, i) => (
+                                                        <li key={i}>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                                <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                                                            </svg>
+                                                            <p>{error}</p>
+                                                        </li>
+                                                    ))
+                                                }
+                                            </ul>
+                                        )
+                                    }                                    
                                 </label>
-                                <label className='mb-0'>
+                                <label className='mb-0 col-6 d-flex'>
                                     <span>Ativo:</span>
                                     <label className='switch mb-0'>
                                         <input  type='checkbox'
@@ -109,13 +176,13 @@ const Hospitals = (props: Props) => {
                                         <input type='submit' value='Cadastrar'/>
                                     )
                                 }
-                                <input className={`${styles.cancel}`} type='submit' value='Cancelar' data-bs-dismiss="modal" aria-label="Close"/>
+                                <input className={`${styles.cancel}`} type='cancel' value='Cancelar' data-bs-dismiss="modal" aria-label="Close"/>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 

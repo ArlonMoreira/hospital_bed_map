@@ -10,22 +10,11 @@ import { AuthHookResult } from '../../interfaces/Authentication';
 
 type Props = {
     sideBarRef: React.RefObject<HTMLDivElement>,
-    setOpenModalLoading: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
-const Sidebar = ({sideBarRef, setOpenModalLoading}: Props) => {
+const Sidebar = ({sideBarRef}: Props) => {
 
     const { auth }:AuthHookResult = useAuth();
-
-    /**
-     * Start: Identifica se o modal de login foi aberto
-     */
-
-    //Será utilizado para identificar se o modal foi aberto, realizado a limpeza dos campos
-    //username, password e errors 
-    const handleOpenModalLoading = (): void => {
-        setOpenModalLoading((current:boolean)=> current ? false: true);
-    };
 
     /**
      * Start Expandir área interna
@@ -86,47 +75,6 @@ const Sidebar = ({sideBarRef, setOpenModalLoading}: Props) => {
                                         <p>Hospitais</p>
                                     </div>
                                 </NavLink>
-                            </li>
-                        )
-                    }
-                </ul>
-                <ul className={`nav ${styles.container_nav}`}>
-                    {
-                        !auth ? (
-                            <li className={`nav-item ${styles.item} ${!auth ? styles.fade_out : ''}`}>
-                                <a data-bs-toggle="modal" data-bs-target="#login-modal" onClick={handleOpenModalLoading}>
-                                    <div className={styles.logo_nav}>
-                                        <div className={styles.background_icon}>
-                                            <svg width="26" height="26" viewBox="0 0 149 166" xmlns="http://www.w3.org/2000/svg">
-                                                <g transform="translate(0 166) scale(.1 -.1)">
-                                                    <path d="m655 1617c-74-20-132-53-186-107-224-224-108-605 206-670 167-35 350 58 431 217 27 54 29 66 29 173s-2 119-29 173c-40 79-137 168-213 197-72 27-172 34-238 17zm222-115c67-35 114-82 145-147 90-190-40-407-253-423-91-6-154 16-223 79-97 89-127 219-76 337 27 63 110 143 172 166 61 22 180 16 235-12z"/>
-                                                    <path d="m513 670c-211-38-380-189-436-390-25-87-31-157-17-191 25-60 9-59 694-59h624l31 26c28 24 31 31 31 88 0 221-161 437-379 508-58 18-94 21-281 24-118 1-238-1-267-6zm498-106c88-26 150-63 209-123 76-79 129-193 130-283v-28h-605-605l6 33c22 133 63 215 145 291 61 57 120 90 197 111 74 21 453 20 523-1z"/>
-                                                </g>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div className={styles.text_nav}>
-                                        <p>Acessar</p>
-                                    </div>
-                                </a>
-                            </li>
-                        ): (
-                            <li className={`nav-item ${styles.item}`}>
-                                <a data-bs-toggle="modal" data-bs-target="#logout-modal">
-                                    <div className={styles.logo_nav}>
-                                        <div className={styles.background_icon}>
-                                            <svg width="26" height="26" version="1.0" viewBox="0 0 166 144" xmlns="http://www.w3.org/2000/svg">
-                                                <g transform="translate(0 144) scale(.1 -.1)">
-                                                    <path d="m190 1405c-60-19-113-65-142-122l-23-48-3-484c-2-329 1-501 8-537 15-70 61-131 125-163 47-25 59-26 231-29 121-2 189 0 203 8 24 12 29 64 9 77-7 4-97 10-200 13-208 6-221 10-263 81-19 33-20 52-20 519s1 486 20 519c42 71 55 75 263 81 103 3 193 9 200 13 19 13 15 65-7 77-30 16-346 12-401-5z"/>
-                                                    <path d="m1045 1210c-11-4-31-20-45-35-22-23-25-37-28-116l-4-89h-171c-264 0-277-12-277-250s13-250 277-250h171l4-89c3-83 5-92 32-120 37-38 87-49 130-28 17 8 131 110 254 227l222 211v49 49l-226 213c-124 117-236 218-247 225-25 14-63 15-92 3zm266-287c115-109 209-200 209-203 0-12-420-400-433-400-22 0-27 23-27 130 0 88-2 100-19 110-12 6-99 10-213 10-138 0-197 3-206 12-17 17-17 259 0 276 9 9 68 12 206 12 114 0 201 4 213 10 17 10 19 22 19 110 0 107 5 130 27 130 8 0 108-89 224-197z"/>
-                                                </g>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div className={styles.text_nav}>
-                                        <p>Sair</p>
-                                    </div>
-                                </a>
                             </li>
                         )
                     }

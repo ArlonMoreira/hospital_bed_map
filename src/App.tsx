@@ -26,8 +26,6 @@ function App() {
   
   const { auth } = useAuth();
 
-  const [openModalLoading, setOpenModalLoading] = useState<boolean>(false);
-
   /**
    * Start: Atualizar token de autenticação;
    */
@@ -49,7 +47,7 @@ function App() {
         <div className='d-flex flex-column h-100'>
           <Navbar sidebarRef={sideBarRef}/>
           <div className='main w-100 h-100'>
-              <Sidebar setOpenModalLoading={setOpenModalLoading} sideBarRef={sideBarRef}/>
+              <Sidebar sideBarRef={sideBarRef}/>
               <div className='container-fluid py-1 px-1 py-sm-1 px-sm-1 py-md-2 px-md-2'>
                 <Routes>
                   <Route path='/' element={<Dashboard />}/>

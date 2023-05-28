@@ -30,7 +30,7 @@ body {
 
 /* Start: Customizar formulário */
 
-input[type="submit"], button.form-control {
+input[type="submit"], input[type="cancel"], button.form-control {
     background: var(--primary-color);
     color: var(--font-default);
     border: 0;
@@ -41,6 +41,9 @@ input[type="submit"], button.form-control {
     height: 3rem;
     padding: 0 !important;
     justify-content: center;  
+    text-align: center;
+    cursor: pointer;
+    caret-color: transparent;
 }
 
 .form-control:focus {
@@ -197,7 +200,6 @@ input::placeholder {
     margin: 0;
     font-size: .7rem;
     right: 1rem;
-    position: absolute;
 }
 
 .error-message li {

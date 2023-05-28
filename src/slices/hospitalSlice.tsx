@@ -57,17 +57,28 @@ export const list = createAsyncThunk(
 export const hospitalSlice = createSlice({
     name: 'hospital',
     initialState,
-    reducers: {},
+    reducers: {
+        reset: (state: IState) => {
+            state.success = null;
+            state.successMessage = null;
+            state.loading = false;
+            state.errorMessage = null;
+            state.errors = null;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(register.fulfilled, (state: IState, action: PayloadAction<IHospitalResponse>)=>{
                 const response = (action.payload as IHospitalResponse);
+                //Success
                 state.success = true;
                 state.successMessage = response.message;
+                //Loading
                 state.loading = false;
+                //Error
                 state.errorMessage = null;
                 state.errors = null;
-                
+                //Hospitals
                 if(response.data && Array.isArray(response.data)){
                     const hospitals:IHospital[] = response.data;
                     state.hospitals.unshift(hospitals[0]);
@@ -79,20 +90,22 @@ export const hospitalSlice = createSlice({
             })
             .addCase(register.rejected, (state: IState, action: PayloadAction<IHospitalResponse | unknown>)=>{
                 const response = (action.payload as IHospitalResponse);
-                state.success = true;
+                //Success
+                state.success = false;
                 state.successMessage = null;
+                //Loading
                 state.loading = false;
+                //Error
                 state.errorMessage = response.message;
-                
                 if(response.data){
                     state.errors = response.data as IHospitalErrors;
+                } else {
+                    state.errors = null;
                 }
                 
             })
             .addCase(list.fulfilled, (state: IState, action: PayloadAction<IHospitalResponse>)=>{
                 const response = (action.payload as IHospitalResponse);
-                state.success = true;
-                state.successMessage = response.message;
                 state.loading = false;
                 state.errorMessage = null;
                 state.errors = null;
@@ -101,4 +114,5 @@ export const hospitalSlice = createSlice({
     }
 });
 
+export const { reset } = hospitalSlice.actions;
 export default hospitalSlice.reducer;
