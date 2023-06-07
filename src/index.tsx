@@ -8,6 +8,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 
 //styles
 import './index.css';
+import 'react-tooltip/dist/react-tooltip.css';
 //App
 import App from './App';
 //Redux

@@ -6,7 +6,7 @@
 }
 
 .hospitals_container .item {
-    height: 16rem;
+    height: 15rem;
     border-radius: 1rem;
 }
 
@@ -36,8 +36,6 @@
     width: 50%;
     fill: var(--bs-body-bg);
 }
-
-
 
 .modal_header_bg,
 .modal_footer_bg {
@@ -78,13 +76,38 @@
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
+/* Identity  hospital */
+
+.identity {
+    display: flex;
+    flex-direction: column;
+}
+
+.identity p {
+    color: var(--bs-gray-500);
+    font-size: .9rem;
+}
+
+.identity h5 {
+    color: var(--bs-gray-600);
+}
+
+/* Actions */
 .actions {
     background-color: transparent;
+    width: 1.5em;
+    margin-right: 0.5rem;
+}
+
+.actions ul {
+    display: flex;
+    flex-direction: column;
 }
 
 .actions li {
     margin: .3em;
 }
+
 .actions li a {
     cursor: pointer;
     width: 2.2em;
@@ -93,11 +116,12 @@
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border: .1rem solid var(--secundary-color);
+    fill: var(--secundary-color);
 }
 
 .actions li a:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
 }
 
 /* End: Hospital card */
