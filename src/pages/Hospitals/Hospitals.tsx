@@ -85,7 +85,7 @@ const Hospitals = () => {
                 {
                     hospitals && hospitals.map((hospital, i)=>(
                         <div key={hospital.id} className={`card border-0 ${styles.item} ${styles.hospital}`}>
-                            <div className='card-body position-relative d-flex'>
+                            <div className='card-body position-relative d-flex justify-content-between'>
                                 <div className={`${styles.identity}`}>
                                     <h5>
                                         { hospital.acronym }

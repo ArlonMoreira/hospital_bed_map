@@ -139,11 +139,10 @@ input[type="submit"]:hover {
 .switch {
     position: relative;
     display: inline-block;
-    width: 60px;
+    width: 60px !important;
     height: 34px;
     margin-left: 1rem;
     margin-right: 1rem;
-    width: 3.2vw !important;
 }
 
 .switch input { 
