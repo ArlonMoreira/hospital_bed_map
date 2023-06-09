@@ -3,18 +3,27 @@
     --secundary-color: #1d8cf8;
     --gradient-color: linear-gradient(0deg,var(--primary-color),var(--secundary-color));
     --font-default: #fff;
-    --font-dark: #3f3f3f;
+    --font-dark: var(--bs-gray-800);
     --background-default: #f5f6fa;
     --active-shadow: #ffffff26;
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / .1), 0 1px 2px -1px rgb(0 0 0 / .1);
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Roboto', sans-serif;
     background: var(--background-default);
     width: 100%; 
     height: 100%;
     position: absolute;
     overflow-x: hidden;
+}
+
+.shadow {
+    --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / .1), 0 1px 2px -1px rgb(0 0 0 / .1) !important;
+    --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color) !important;
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow)!important;
 }
 
 /* Start: Font */

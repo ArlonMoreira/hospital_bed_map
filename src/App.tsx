@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import HospitalBeds from './pages/HospitalBeds/HospitalBeds';
 import Hospitals from './pages/Hospitals/Hospitals';
 import Authentication from './pages/Authentication/Authentication';
+import EditHospital from './pages/EditHospital/EditHospital';
 //Components
 import Sidebar from './components/Sidebar/Sidebar';
 import Navbar from './components/NavBar/Navbar';
@@ -51,9 +52,10 @@ function App() {
               <div className='container-fluid py-1 px-1 py-sm-1 px-sm-1 py-md-2 px-md-2'>
                 <Routes>
                   <Route path='/' element={<Dashboard />}/>
-                  <Route path='/login' element={!auth ? <Authentication />: <Navigate to='/'/> }/>
-                  <Route path='/leitos' element={<HospitalBeds />} />
-                  <Route path='/hospitais' element={ auth ? <Hospitals /> : <Navigate to='/'/>} />
+                  <Route path='login' element={!auth ? <Authentication />: <Navigate to='/'/> }/>
+                  <Route path='leitos' element={<HospitalBeds />} />
+                  <Route path="hospitais" element={auth ? <Hospitals /> : <Navigate to="/" />}/>
+                  <Route path="hospitais/editar/:id" element={auth ? <EditHospital /> : <Navigate to="/" />}/>                  
                 </Routes>
               </div>        
           </div>
