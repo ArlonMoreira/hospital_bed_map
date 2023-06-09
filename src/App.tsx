@@ -25,7 +25,7 @@ import { useAuth } from './hooks/useAuth';
 function App() {
   
   const { auth } = useAuth();
-
+  
   /**
    * Start: Atualizar token de autenticação;
    */

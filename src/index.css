@@ -130,6 +130,7 @@ input[type="submit"]:hover {
 /* End: Modal custom */
 
 #logout-modal p {
+    color: var(--font-default);
     font-weight: 300;
     font-size: 1.2em;
 }
@@ -236,3 +237,9 @@ input::placeholder {
 
 /* End: Warning */
 
+/* Others */
+
+hr {
+    border-top: 0.1rem solid #000;
+    width: 36%; 
+}

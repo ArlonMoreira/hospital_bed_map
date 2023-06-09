@@ -10,7 +10,7 @@
     border-radius: 0.5em;
     opacity: 0;
     transform: translateX(-100%);
-    animation: slideIn 0.5s forwards;   
+    animation: slideIn 0.5s forwards;
 }
 
 .error.alert {
@@ -77,7 +77,7 @@
     justify-content: center;
     margin-right: 0.5em;
     margin-left: 0.5em;
-    fill: #fff;
+    fill: var(--font-default);
     border-radius: 0.5em;
 }
 
@@ -106,6 +106,7 @@
     margin: 0;
     line-height: 1.2;
     font-size: .75rem;
+    color: var(--font-default);
 }
 
 

@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
 //styles
 import styles from './Hospitals.module.css';
+import { Tooltip } from 'react-tooltip'
 //Redux
 import { register, list, reset } from '../../slices/hospitalSlice';
 import { refreshToken } from '../../slices/authSlice';
@@ -11,8 +12,6 @@ import { RootState } from '../../store';
 import { IHospitalParams, IHospital, IHospitalErrors } from '../../interfaces/Hospital';
 //Components
 import Alert from '../../components/Alert/Alert';
-
-import { Tooltip } from 'react-tooltip'
 
 const Hospitals = () => {
 
@@ -86,11 +85,19 @@ const Hospitals = () => {
                     hospitals && hospitals.map((hospital, i)=>(
                         <div key={hospital.id} className={`card border-0 ${styles.item} ${styles.hospital}`}>
                             <div className='card-body position-relative d-flex justify-content-between'>
-                                <div className={`${styles.identity}`}>
-                                    <h5>
-                                        { hospital.acronym }
-                                    </h5>
-                                    <p>{ hospital.name }</p>
+                                <div className='d-block'>
+                                    <div className={`${styles.identity} p-0 px-0`}>
+                                        <h5>
+                                            { hospital.acronym }
+                                        </h5>
+                                        <p>{ hospital.name }</p>
+                                    </div>
+                                    <hr></hr>
+                                    <ul className={`list-group p-0 list-group-flush ${styles.info}`}>
+                                        <li className="list-group-item p-0 border-0">
+                                            <span>00 leitos</span>
+                                        </li>
+                                    </ul>                                   
                                 </div>
                                 <div className={`${styles.actions}`}>
                                     <ul className='nav justify-content-start'>
