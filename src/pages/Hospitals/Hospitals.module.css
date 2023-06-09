@@ -39,9 +39,8 @@
 
 .modal_header_bg,
 .modal_footer_bg {
-    background: var(--bs-gray-100) !important;
     display: flex;
-    justify-content: space-between;    
+    justify-content: space-between;
 }
 
 .modal_footer_bg input,
@@ -57,7 +56,7 @@
 }
 
 .register_form label {
-    margin-bottom: 2em;
+    margin-bottom: 1em;
     font-size: .8rem;
     font-weight: 400;
 }
@@ -124,6 +123,9 @@
     align-items: center;
     border-radius: 50%;
     border: .1rem solid transparent;
+}
+
+.actions li svg {
     fill: var(--secundary-color);
 }
 
