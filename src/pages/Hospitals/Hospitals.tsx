@@ -19,7 +19,7 @@ import { Link } from 'react-router-dom';
 const Hospitals = () => {
 
     const dispatch = useDispatch<ThunkDispatch<RootState, IHospitalParams, AnyAction>>();
-    const { success, successMessage, loading, hospitals, errorMessage, errors }: { success:boolean | null, successMessage:string | null, loading:boolean, hospitals: IHospital[], errorMessage: string | null, errors: IHospitalErrors | null} = useSelector((state: RootState) => state.hospital)
+    const { successRegister, successRegisterMessage, loading, hospitals, errorRegisterMessage, errorsRegister }: { successRegister:boolean | null, successRegisterMessage:string | null, loading:boolean, hospitals: IHospital[], errorRegisterMessage: string | null, errorsRegister: IHospitalErrors | null} = useSelector((state: RootState) => state.hospital)
 
     /**
      * Register Hospital
@@ -54,7 +54,7 @@ const Hospitals = () => {
     const buttonCloseModal = useRef<HTMLInputElement>(null);
 
     useEffect(()=>{
-        if(success) {
+        if(successRegister) {
             buttonCloseModal.current?.click();
             setCnes('');
             setCnpj('');
@@ -63,25 +63,27 @@ const Hospitals = () => {
             setIs_active(true);
         }
 
-    }, [success]);
+    }, [successRegister]);
 
     /**
      * List all hospital when dispatch update
      */
 
     useEffect(() => {
+        dispatch(reset());
+
         (async () => {
             await dispatch(refreshToken()); //Update token access after to send data
             await dispatch(list());
-            dispatch(reset());
+            
         })();
         
     }, [dispatch]);
 
     return (
         <>
-            { successMessage && <Alert message={successMessage} trigger={success} type='success' />}
-            { errorMessage && <Alert message={errorMessage} trigger={errors} type='error' /> }
+            { successRegisterMessage && <Alert message={successRegisterMessage} trigger={successRegister} type='success' />}
+            { errorRegisterMessage && <Alert message={errorRegisterMessage} trigger={errorsRegister} type='error' /> }
             <div className={`${styles.hospitals_container}`}>
                 <div data-bs-toggle="modal" data-bs-target="#register-hospital" className={`card ${styles.item} ${styles.insert_container}`}>
                     <a className={`${styles.insert_body}`}>
@@ -165,17 +167,17 @@ const Hospitals = () => {
                                 <label className='col-6'>
                                     <span>CNES</span>
                                     <input
-                                        className={`form-control ${errors?.cnes && 'border border-danger'}`}
+                                        className={`form-control ${errorsRegister?.cnes && 'border border-danger'}`}
                                         type='text'
                                         value={cnes}
                                         placeholder='0000000'
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => setCnes(e.target.value)}
                                     />
                                     {
-                                        errors?.cnes && (
+                                        errorsRegister?.cnes && (
                                             <ul className='error-message'>
                                                 {
-                                                    errors.cnes.map((error, i) => (
+                                                    errorsRegister.cnes.map((error, i) => (
                                                         <li key={i}>
                                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                                                 <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
@@ -192,17 +194,17 @@ const Hospitals = () => {
                                     <span>CNPJ</span>
                                     <MaskedInput
                                         mask="99.999.999/9999-99"
-                                        className={`form-control ${errors?.cnpj && 'border border-danger'}`}
+                                        className={`form-control ${errorsRegister?.cnpj && 'border border-danger'}`}
                                         type='text'
                                         value={cnpj}
                                         placeholder='00.000.000/0000-00'
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => setCnpj(e.target.value)}
                                     />
                                     {
-                                        errors?.cnpj && (
+                                        errorsRegister?.cnpj && (
                                             <ul className='error-message'>
                                                 {
-                                                    errors.cnpj.map((error, i) => (
+                                                    errorsRegister.cnpj.map((error, i) => (
                                                         <li key={i}>
                                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                                                 <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
@@ -218,17 +220,17 @@ const Hospitals = () => {
                                 <label className='col-6'>
                                     <span>Nome</span>
                                     <input
-                                        className={`form-control ${errors?.name && 'border border-danger'}`}
+                                        className={`form-control ${errorsRegister?.name && 'border border-danger'}`}
                                         type='text'
                                         value={name}
                                         placeholder='Razão Social/Nome Fantasia'
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                                     />
                                     {
-                                        errors?.name && (
+                                        errorsRegister?.name && (
                                             <ul className='error-message'>
                                                 {
-                                                    errors.name.map((error, i) => (
+                                                    errorsRegister.name.map((error, i) => (
                                                         <li key={i}>
                                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                                                 <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
@@ -244,17 +246,17 @@ const Hospitals = () => {
                                 <label className='col-6'>
                                     <span>Sigla</span>
                                     <input 
-                                        className={`form-control ${errors?.acronym && 'border border-danger'}`}
+                                        className={`form-control ${errorsRegister?.acronym && 'border border-danger'}`}
                                         type='text'
                                         value={acronym}
                                         placeholder='Sigla/Apelido'
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => setAcronym(e.target.value)}
                                     />
                                     {
-                                        errors?.acronym && (
+                                        errorsRegister?.acronym && (
                                             <ul className='error-message'>
                                                 {
-                                                    errors.acronym.map((error, i) => (
+                                                    errorsRegister.acronym.map((error, i) => (
                                                         <li key={i}>
                                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                                                 <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>

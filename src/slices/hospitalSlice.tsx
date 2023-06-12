@@ -8,21 +8,25 @@ import { IAuth } from "../interfaces/Authentication";
 
 
 interface IState {
-    success: boolean | null,
-    successMessage: string | null,
+    successRegister: boolean | null,
+    successRegisterMessage: string | null,
+    successUpdate: boolean | null,
+    successUpdateMessage: string | null,
     loading: boolean,
-    errorMessage: string | null,
-    errors: IHospitalErrors | null,
+    errorRegisterMessage: string | null,
+    errorsRegister: IHospitalErrors | null,
     hospitals: IHospital[],
     hospital: IHospital | null
 };
 
 const initialState: IState = {
-    success: null,
-    successMessage: null,
+    successRegister: null,
+    successRegisterMessage: null,
+    successUpdate: null,
+    successUpdateMessage: null,
     loading: false,
-    errorMessage: null,
-    errors: null,
+    errorRegisterMessage: null,
+    errorsRegister: null,
     hospitals: [],
     hospital: null
 };
@@ -76,16 +80,38 @@ export const hospital = createAsyncThunk(
     }
 );
 
+export const update = createAsyncThunk(
+    'hospital/update',
+    async({data, id}:{data: IHospitalParams, id: string}, {getState, rejectWithValue}) => {
+        const userAuth:IAuth = (getState() as any).auth.userAuth;
+        const response:IHospitalResponse = await useHospital().update({
+            params: {
+                token: userAuth.access,
+                data
+            },
+            id
+        });
+
+        if(response.success){
+            return response;
+        } else {
+            return rejectWithValue(response);
+        }
+    }
+)
+
 export const hospitalSlice = createSlice({
     name: 'hospital',
     initialState,
     reducers: {
         reset: (state: IState) => {
-            state.success = null;
-            state.successMessage = null;
+            state.successRegister = null;
+            state.successRegisterMessage = null;
+            state.successUpdate = null;
+            state.successUpdateMessage = null;
             state.loading = false;
-            state.errorMessage = null;
-            state.errors = null;
+            state.errorRegisterMessage = null;
+            state.errorsRegister = null;
             state.hospital = null;
         }
     },
@@ -94,13 +120,13 @@ export const hospitalSlice = createSlice({
             .addCase(register.fulfilled, (state: IState, action: PayloadAction<IHospitalResponse>)=>{
                 const response = (action.payload as IHospitalResponse);
                 //Success
-                state.success = true;
-                state.successMessage = response.message;
+                state.successRegister = true;
+                state.successRegisterMessage = response.message;
                 //Loading
                 state.loading = false;
                 //Error
-                state.errorMessage = null;
-                state.errors = null;
+                state.errorRegisterMessage = null;
+                state.errorsRegister = null;
                 //Hospitals
                 if(response.data && Array.isArray(response.data)){
                     const hospitals:IHospital[] = response.data;
@@ -114,41 +140,29 @@ export const hospitalSlice = createSlice({
             .addCase(register.rejected, (state: IState, action: PayloadAction<IHospitalResponse | unknown>)=>{
                 const response = (action.payload as IHospitalResponse);
                 //Success
-                state.success = false;
-                state.successMessage = null;
+                state.successRegister = false;
+                state.successRegisterMessage = null;
                 //Loading
                 state.loading = false;
                 //Error
-                state.errorMessage = response.message;
+                state.errorRegisterMessage = response.message;
                 if(response.data){
-                    state.errors = response.data as IHospitalErrors;
+                    state.errorsRegister = response.data as IHospitalErrors;
                 } else {
-                    state.errors = null;
+                    state.errorsRegister = null;
                 }
                 
             })
             .addCase(list.fulfilled, (state: IState, action: PayloadAction<IHospitalResponse>)=>{
                 const response = (action.payload as IHospitalResponse);
-                //Success
-                state.success = true;
-                state.successMessage = response.message;
                 //Loading
                 state.loading = false;
-                //Error
-                state.errorMessage = null;
-                state.errors = null;
                 //Hospitals
                 state.hospitals = response.data as IHospital[];
             })
             .addCase(hospital.fulfilled, (state: IState, action: PayloadAction<IHospitalResponse>)=>{
-                //Success
-                state.success = true;
-                state.successMessage = action.payload.message;
                 //Loading
                 state.loading = false;
-                //Error
-                state.errorMessage = action.payload.message;
-                state.errors = null;
                 //Hospital
                 if(action.payload.data && Array.isArray(action.payload.data)){
                     state.hospital = (action.payload.data[0] as IHospital);
@@ -156,6 +170,23 @@ export const hospitalSlice = createSlice({
             })
             .addCase(hospital.pending, (state: IState)=>{
                 state.loading = true;
+            })
+            .addCase(update.fulfilled, (state: IState, action: PayloadAction<IHospitalResponse>)=>{
+                //Success
+                state.successUpdate = true;
+                state.successUpdateMessage = action.payload.message;
+                //Loading
+                state.loading = false;
+                //Hospital
+                if(action.payload.data && Array.isArray(action.payload.data)){
+                    state.hospital = (action.payload.data[0] as IHospital);
+                }
+            })
+            .addCase(update.pending, (state: IState)=>{
+                state.loading = true;
+            })
+            .addCase(update.rejected, (state: IState, action: PayloadAction<IHospitalResponse | unknown>)=>{
+
             })
     }
 });

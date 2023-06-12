@@ -10,6 +10,31 @@ interface Params {
 
 const useHospital = () => {
 
+    const update = async({params, id}:{params: Params, id: string}): Promise<IHospitalResponse> =>{
+        try {
+            const response:Response = await fetch(`${url}hospital/${id}/`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${params.token}`
+                },
+                body: JSON.stringify(params.data)
+            });
+            const result = await response.json();
+        
+            return {
+                success: response.ok,
+                ...result
+            } as IHospitalResponse;
+
+        } catch(error) {
+            return {
+                success: false,
+                message: 'Erro interno no sistema. Contate o administrador.'
+            } as IHospitalResponse
+        }
+    };
+
     const hospital = async({params, id}:{params: Params, id: string}):Promise<IHospitalResponse> => {
         try {
             const response:Response = await fetch(`${url}hospital/${id}/`, {
@@ -90,8 +115,9 @@ const useHospital = () => {
 
     return {
         hospital,
+        hospitals,
         register,
-        hospitals
+        update,
     }
 };
 

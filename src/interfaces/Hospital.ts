@@ -11,7 +11,7 @@ export interface IHospitalParams {
     cnpj: string | null;
     name: string;
     acronym: string;
-    is_active: boolean;    
+    is_active?: boolean;    
 }
 
 export interface IHospital {
