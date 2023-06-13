@@ -15,6 +15,8 @@ interface IState {
     loading: boolean,
     errorRegisterMessage: string | null,
     errorsRegister: IHospitalErrors | null,
+    errorUpdateMessage: string | null,
+    errorsUpdate: IHospitalErrors | null,
     hospitals: IHospital[],
     hospital: IHospital | null
 };
@@ -27,6 +29,8 @@ const initialState: IState = {
     loading: false,
     errorRegisterMessage: null,
     errorsRegister: null,
+    errorUpdateMessage: null,
+    errorsUpdate: null,
     hospitals: [],
     hospital: null
 };
@@ -98,7 +102,7 @@ export const update = createAsyncThunk(
             return rejectWithValue(response);
         }
     }
-)
+);
 
 export const hospitalSlice = createSlice({
     name: 'hospital',
@@ -112,6 +116,8 @@ export const hospitalSlice = createSlice({
             state.loading = false;
             state.errorRegisterMessage = null;
             state.errorsRegister = null;
+            state.errorUpdateMessage = null;
+            state.errorsUpdate = null;
             state.hospital = null;
         }
     },
@@ -186,6 +192,19 @@ export const hospitalSlice = createSlice({
                 state.loading = true;
             })
             .addCase(update.rejected, (state: IState, action: PayloadAction<IHospitalResponse | unknown>)=>{
+                const response = (action.payload as IHospitalResponse);
+                //Success
+                state.successUpdate = false;
+                state.successUpdateMessage = null;
+                //loading
+                state.loading = false;
+                //Error
+                state.errorUpdateMessage = response.message;
+                if(response.data){
+                    state.errorsUpdate = response.data as IHospitalErrors;
+                } else {
+                    state.errorsUpdate = null;
+                }
 
             })
     }

@@ -15,7 +15,7 @@ import { RootState } from '../../store';
 //Hooks
 import { useParams } from 'react-router-dom';
 //Interface
-import { IHospital, IHospitalParams } from '../../interfaces/Hospital';
+import { IHospital, IHospitalParams, IHospitalErrors } from '../../interfaces/Hospital';
 
 type Props = {}
 
@@ -28,10 +28,12 @@ const EditHospital = (props: Props) => {
   /**
    * Get data Hospital
    */
-  const { hospital: hospitalData, successUpdate, successUpdateMessage, loading }: { 
+  const { hospital: hospitalData, successUpdate, successUpdateMessage, loading, errorsUpdate, errorUpdateMessage}: { 
     hospital: IHospital | null,
     successUpdate: boolean | null,
     successUpdateMessage: string | null,
+    errorsUpdate: IHospitalErrors | null,
+    errorUpdateMessage: string | null,
     loading: boolean } = useSelector((state: RootState) => state.hospital);
 
   const [cnes, setCnes] = useState<string>("");
@@ -88,7 +90,8 @@ const EditHospital = (props: Props) => {
   return (
     <>
       {successUpdateMessage && <Alert trigger={successUpdate} message={successUpdateMessage} type='success'/>}
-      <div className={`${styles.page} p-4`}>
+      {errorsUpdate && <Alert trigger={errorsUpdate} message={errorUpdateMessage} type='error'/>}
+      <div className={`${styles.page} p-2`}>
         <div className={`${styles.navigate} px-0`}>
           <Link to='/hospitais'>
           <svg width="1.16em" height="1.16em" version="1.0" viewBox="0 0 148 130">
@@ -108,43 +111,107 @@ const EditHospital = (props: Props) => {
               <label className='col-12'>
                 <span>CNES</span>
                 <input
-                  className='form-control'
+                  className={`form-control ${errorsUpdate?.cnes && 'border border-danger'}`}
                   type='text'
                   value={cnes}
                   placeholder='0000000'
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setCnes(e.target.value)}
                 />
+                {
+                  errorsUpdate?.cnes && (
+                    <ul className='error-message'>
+                    {
+                      errorsUpdate.cnes.map((error, i)=>(
+                        <li key={i}>
+                          <svg viewBox="0 0 512 512">
+                              <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                          </svg>
+                          <p>{error}</p>
+                        </li>
+                      ))
+                    }
+                    </ul>
+                  )
+                }
               </label>
               <label className='col-12'>
                 <span>CNPJ</span>
                 <MaskedInput
                   mask="99.999.999/9999-99"
-                  className='form-control'
+                  className={`form-control ${errorsUpdate?.cnpj && 'border border-danger'}`}
                   type='text'
                   value={cnpj}
                   placeholder='00.000.000/0000-00'
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setCnpj(e.target.value)}
                 />
+                {
+                  errorsUpdate?.cnpj && (
+                    <ul className='error-message'>
+                      {
+                        errorsUpdate.cnpj.map((error, i)=>(
+                          <li key={i}>
+                            <svg viewBox="0 0 512 512">
+                                <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                            </svg>
+                            <p>{error}</p>
+                          </li>
+                        ))
+                      }
+                    </ul>
+                  )
+                }
               </label>
               <label className='col-12'>
                 <span>Sigla</span>
                 <input
-                  className='form-control'
+                  className={`form-control ${errorsUpdate?.acronym && 'border border-danger'}`}
                   type='text'
                   value={acronym}
                   placeholder='Sigla/Apelido'
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setAcronym(e.target.value)}
                 />
+                {
+                  errorsUpdate?.acronym && (
+                    <ul className='error-message'>
+                      {
+                        errorsUpdate.acronym.map((error, i)=>(
+                          <li key={i}>
+                            <svg viewBox="0 0 512 512">
+                                <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                            </svg>
+                            <p>{error}</p>
+                          </li>
+                        ))
+                      }
+                    </ul>
+                  )
+                }
               </label>
               <label className='col-12'>
                 <span>Nome</span>
                 <input
-                  className='form-control'
+                  className={`form-control ${errorsUpdate?.name && 'border border-danger'}`}
                   type='text'
                   value={name}
                   placeholder='Razão Social/Nome Fantasia'
                   onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                 />
+                {
+                  errorsUpdate?.name && (
+                    <ul className='error-message'>
+                      {
+                        errorsUpdate.name.map((error, i)=>(
+                          <li key={i}>
+                            <svg viewBox="0 0 512 512">
+                                <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                            </svg>
+                            <p>{error}</p>
+                          </li>
+                        ))
+                      }
+                    </ul>
+                  )
+                }
               </label>
             </div>
             <div className='card-footer border-0 bg-transparent'>
