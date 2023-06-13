@@ -134,3 +134,10 @@
 .info li {
     color: var(--bs-gray-600);
 }
+
+.loading_hospital {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;   
+}

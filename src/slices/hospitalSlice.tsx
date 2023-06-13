@@ -95,7 +95,6 @@ export const update = createAsyncThunk(
             },
             id
         });
-
         if(response.success){
             return response;
         } else {
@@ -186,6 +185,10 @@ export const hospitalSlice = createSlice({
                 //Hospital
                 if(action.payload.data && Array.isArray(action.payload.data)){
                     state.hospital = (action.payload.data[0] as IHospital);
+
+                    const indexUpdate = state.hospitals.findIndex((hospital) => hospital.id === state.hospital?.id);
+                    state.hospitals[indexUpdate] = state.hospital; //Replace old hospital data for new data of hospital
+
                 }
             })
             .addCase(update.pending, (state: IState)=>{
