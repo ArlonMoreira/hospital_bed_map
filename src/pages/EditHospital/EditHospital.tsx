@@ -91,7 +91,7 @@ const EditHospital = (props: Props) => {
     <>
       {successUpdateMessage && <Alert trigger={successUpdate} message={successUpdateMessage} type='success'/>}
       {errorsUpdate && <Alert trigger={errorsUpdate} message={errorUpdateMessage} type='error'/>}
-      <div className={`${styles.page} p-2`}>
+      <div className={`${styles.page} p-2 pt-0`}>
         <div className={`${styles.navigate} px-0`}>
           <Link to='/hospitais'>
           <svg width="1.16em" height="1.16em" version="1.0" viewBox="0 0 148 130">
@@ -107,7 +107,7 @@ const EditHospital = (props: Props) => {
         </div>
         <div className={`card ${styles.form_edit} shadow px-2`}>
           <form className={`${styles.register_form}`} onSubmit={handleSubmit}>
-            <div className='card-body row p-4'>
+            <div className='card-body row p-4 pb-0'>
               <label className='col-12'>
                 <span>CNES</span>
                 <input

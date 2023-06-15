@@ -38,6 +38,7 @@ svg {
 
 p {
     color: var(--bs-gray);
+    font-weight: 400;
 }
 
 /* End: Font */
@@ -257,3 +258,46 @@ hr {
     border-top: 0.1rem solid #000;
     width: 36%; 
 }
+
+/* Start: NavButton */
+
+.nav_button > span {
+    display: block;
+    width: 32px;
+    height: 2px;
+    border-radius: 9999px;
+    background-color: var(--bs-body-bg);
+}
+
+.nav_button > span:not(:last-child) {
+    margin-bottom: 7px;
+}
+
+.nav_button, .nav_button > span {
+    transition: all .2s ease-in-out;
+}
+
+.nav_button.active {
+    transition-delay: 0.4s;
+    transform: rotate(45deg);
+    background: transparent;
+}
+
+.nav_button.active > span:nth-child(2) {
+    width: 0;
+}
+
+.nav_button.active > span:nth-child(1),
+.nav_button.active > span:nth-child(3) {
+    transition-delay: .2s;
+}
+
+.nav_button.active > span:nth-child(1) {
+    transform:translateY(9px);
+}
+
+.nav_button.active > span:nth-child(3) {
+    transform:translateY(-9px) rotate(90deg);
+}
+
+/*End: NavButton*/

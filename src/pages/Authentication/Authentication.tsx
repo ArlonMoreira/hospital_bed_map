@@ -67,7 +67,7 @@ const Authentication = () => {
     return (
         <>
             { errorMessage && <Alert message={errorMessage} trigger={errors} type='error'/> }
-            <div className={`${styles.coontainer_auth} p-0 p-sm-2 p-md-3 p-lg-4 p-xxl-5 bg-transparent`}>
+            <div className={`${styles.coontainer_auth} p-0 bg-transparent`}>
                 <div className={`${styles.auth_item}`}>
                     <div className={`${styles.slogan_area}`}>
                         <div className={`${styles.logo_area}`}>
@@ -85,8 +85,8 @@ const Authentication = () => {
                         </div>
                     </div>
                     <div className={`${styles.auth_form}`}>
-                        <div className='card m-0 m-sm-2 m-md-3 m-xl-4 m-xxl-5 border-0'>
-                            <div className='card-body'>
+                        <div className='card m-0 m-sm-2 m-md-3 m-xl-4 m-xxl-5 border-0 bg-transparent'>
+                            <div className='card-body pb-0'>
                                 <div className={`${styles.icon_form}`}>
                                     <img src={logo}/>
                                     <h4>Acessar</h4>

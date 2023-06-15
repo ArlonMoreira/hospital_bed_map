@@ -1,0 +1,77 @@
+.area{
+    border-radius: .5rem;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.fade {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    position: absolute;
+    display: none;
+    opacity: .5;
+}
+
+.aside {
+    height: 100vh;
+    width: 0;
+    background-color: var(--bs-body-bg);
+    z-index: 1;
+    transition: 0.5s;
+    overflow: hidden;
+}
+
+.open .aside {
+    width: 320px;
+}
+
+@media only screen and (max-width: 768px) {
+    .aside {
+        position: absolute;
+    }
+    
+    .open .fade {
+        display: block;
+    }
+    
+}
+
+.main {
+    width: 100%;
+    transition: 0.5s;
+}
+
+.nav {
+    background-color: var(--bs-body-bg);
+    height: 4em;
+    display: flex;
+    overflow: hidden;
+    border-radius: .5rem;
+}
+
+.open .nav {
+    border-radius: 0 .5rem .5rem 0;
+} 
+
+.closebtn {
+    width: 4em;
+    border: 0;
+    background-color: var(--bs-body-bg);
+}
+
+.closebtn > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;    
+}
+
+.closebtn > div span {
+    background-color: var(--secundary-color);
+}
+
+.side_button span {
+    background: var(--secundary-color);
+}
