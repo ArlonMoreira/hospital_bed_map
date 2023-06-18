@@ -62,13 +62,5 @@
     font-weight: 400;
 }
 
-.register_form input {
-    font-size: .86rem;
-    margin-top: 0.5rem;
-    transition: all .5s ease-in-out;
-    font-weight: 400;
-    display: flex;    
-}
-
 /* End: Form */
 

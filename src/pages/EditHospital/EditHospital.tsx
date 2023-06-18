@@ -106,7 +106,7 @@ const EditHospital = (props: Props) => {
           <h5 className='fw-bold'>Editar Cadastro</h5>
         </div>
         <div className={`card ${styles.form_edit} shadow px-2`}>
-          <form className={`${styles.register_form}`} onSubmit={handleSubmit}>
+          <form className='register_form' onSubmit={handleSubmit}>
             <div className='card-body row p-4 pb-0'>
               <label className='col-12'>
                 <span>CNES</span>

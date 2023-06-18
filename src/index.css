@@ -29,11 +29,11 @@ body {
 /* Start: Font */
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-    color: var(--bs-gray-800);
+    color: var(--bs-gray-600);
 }
 
 svg {
-    fill: var(--bs-gray-800);
+    fill: var(--bs-gray-600);
 }
 
 p {
@@ -65,20 +65,33 @@ input[type="submit"], input[type="cancel"], button.form-control {
     margin-bottom: 0 !important;
     border-radius: 2em !important;
     font-size: 1rem !important;
-    height: 3rem;
+    height: 2.6rem;
     padding: 0 !important;
     justify-content: center;  
     text-align: center;
     cursor: pointer;
     caret-color: transparent;
+    font-weight: 300;
 }
 
-.form-control:focus {
-    background-color: transparent;
+input[type="cancel"] {
+    font-weight: 400;
+}
+
+.form-control:focus,
+.form-select:focus {
     outline: 0;
     box-shadow: none;
-    border: 1px solid var(--secundary-color);
-    color: var(--secundary-color);
+}
+
+button.form-control:focus {
+    color: var(--font-default);
+    background: var(--secundary-color);
+}
+
+button.form-control:focus svg,
+button.form-control:focus g {
+    fill: var(--font-default);
 }
 
 input:focus {
@@ -141,6 +154,46 @@ input[type="submit"]:hover {
     margin: 1rem auto;   
 }
 
+.modal_header_bg,
+.modal_footer_bg {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal_header_bg h5 {
+    font-weight: 400;
+}
+
+.modal_footer_bg input,
+.modal_footer_bg button {
+    margin: 0 !important;
+    width: 23%;    
+}
+
+.cancel {
+    background-color: transparent !important;
+    color: var(--primary-color) !important;
+    border: 1px solid var(--primary-color) !important;
+}
+
+.register_form label {
+    margin-bottom: 1em;
+    font-size: .8rem;
+    font-weight: 400;
+}
+
+.register_form .card-body input,
+.register_form .modal-body input,
+.register_form .card-body select,
+.register_form .modal-body select {
+    font-size: .86rem;
+    margin-top: 0.25rem;
+    transition: all .5s ease-in-out;
+    font-weight: 400;
+    display: flex;
+    height: 3em;   
+}
+
 /* End: Modal custom */
 
 #logout-modal p {
@@ -156,8 +209,9 @@ input[type="submit"]:hover {
     display: inline-block;
     width: 60px !important;
     height: 34px;
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0.25rem;
 }
 
 .switch input { 
