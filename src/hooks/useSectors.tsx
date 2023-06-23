@@ -4,12 +4,36 @@ import { ISectorParams, ISectorResponse } from "../interfaces/Sector";
 const url = `${process.env.REACT_APP_BASE_URL}`;
 
 interface Params {
-    id: number,
+    id?: number,
     token: string,
     data?: ISectorParams
 }
 
 const useSectors = () => {
+
+    const list = async({token}: Params):Promise<ISectorResponse> => {
+        try {
+            const response: Response = await fetch(`${url}setor/`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+            });
+            const result = await response.json();
+
+            return {
+                success: response.ok,
+                ...result
+            } as ISectorResponse;
+
+        } catch(error) {
+            return {
+                success: false,
+                message: 'Erro interno no sistema. Contate o administrador.'
+            } as ISectorResponse;
+        };
+    };
 
     const register = async ({id, token, data}: Params):Promise<ISectorResponse> => {
 
@@ -39,7 +63,8 @@ const useSectors = () => {
     };
 
     return {
-        register
+        register,
+        list
     };
 
 };

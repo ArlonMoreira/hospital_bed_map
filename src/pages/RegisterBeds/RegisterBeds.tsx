@@ -8,8 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { hospital } from '../../slices/hospitalSlice';
-import { list, reset } from '../../slices/typeAccomodationSlice';
-import { register, reset as resetSector } from '../../slices/sectorSlice';
+import { list as listTypeAccomodation, reset as resetTypeAccomodation } from '../../slices/typeAccomodationSlice';
+import { register, reset as resetSector, list as listSector } from '../../slices/sectorSlice';
 import { refreshToken } from '../../slices/authSlice';
 //Hooks
 import { useParams } from 'react-router-dom';
@@ -47,17 +47,24 @@ const RegisterBeds = (props: Props) => {
     const { typeAccommodation } : { typeAccommodation:ITypeAccommodation[] } = useSelector((state: RootState) => state.typeAccomodation)
 
     useEffect(()=>{
-        dispatch(reset());
+        dispatch(resetTypeAccomodation());
+        dispatch(resetSector());
 
-        if(id){
-            dispatch(hospital(id));
-            dispatch(list());
+        const refresh = async() => {
+            if(id){
+                await dispatch(refreshToken());
+                dispatch(hospital(id));
+                dispatch(listTypeAccomodation());
+                dispatch(listSector());
+            }
         }
+
+        refresh();
 
     }, [dispatch]);
 
     /**
-     * Submit form
+     * Submit form Sectors
      */
     const { sectors,
             successRegister,
@@ -104,10 +111,13 @@ const RegisterBeds = (props: Props) => {
             buttonClose.current?.click();
             setName('');
             setDescription('');
-            setTip_acc(typeAccommodation[0].description);
             setIs_active(false);
         }
     }, [successRegister, typeAccommodation]);
+
+    useEffect(()=>{
+        console.log(sectors);
+    }, [sectors]);
     
     return (
         <>
@@ -151,12 +161,13 @@ const RegisterBeds = (props: Props) => {
                             </div>
                             <div className={`w-100 d-flex flex-column flex-shrink-0 pt-3 ${styles.navigate}`}>
                                 <ul className='nav nav-pills flex-column mb-auto'>
-                                    <li className='nav-item'>
-                                        <a className='nav-link'>Teste testando</a>
-                                    </li>
-                                    <li className='nav-item'>
-                                        <a className='nav-link'>Teste testando</a>
-                                    </li>
+                                    {
+                                        sectors.map((sector)=>(
+                                            <li className='nav-item' key={sector.id}>
+                                                <a className='nav-link'>{sector.name}</a>
+                                            </li>
+                                        ))
+                                    }
                                 </ul>
                             </div>
                         </div>

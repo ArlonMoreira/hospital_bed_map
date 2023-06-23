@@ -25,5 +25,5 @@ export interface ISector {
 export interface ISectorResponse {
     success: boolean;
     message: string;
-    data?: ISector | ISectorErrors
+    data?: ISector[] | ISectorErrors
 };

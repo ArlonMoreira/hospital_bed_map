@@ -110,6 +110,7 @@ const Hospitals = () => {
             ...hospital
         };
         newData.is_active = newData.is_active ? false: true;
+        await dispatch(refreshToken()); //Update token access after to send data
         await dispatch(update({data:newData, id:hospital.id.toString()}));
 
         if(loadingHospitals){ //Loading card hospital end

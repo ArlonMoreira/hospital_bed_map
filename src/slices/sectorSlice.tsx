@@ -41,6 +41,20 @@ export const register = createAsyncThunk(
     }
 );
 
+export const list = createAsyncThunk(
+    'sector/list',
+    async(_, { getState, rejectWithValue }) => {
+        const useAuth:IAuth = await (getState() as any).auth.userAuth;
+        const response:ISectorResponse = await useSectors().list({token: useAuth.access});
+
+        if(response.success) {
+            return response;
+        } else {
+            return rejectWithValue(response);
+        }
+    }
+)
+
 export const sectorSlice = createSlice({
     name: 'sector',
     initialState,
@@ -57,7 +71,7 @@ export const sectorSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(register.fulfilled, (state: IState, action: PayloadAction<ISectorResponse>) => {
-                const response = (action.payload.data as ISector);
+                const response = (action.payload.data as ISector[]);
                 //Success
                 state.successRegister = true;
                 state.successRegisterMessage = action.payload.message;
@@ -67,7 +81,7 @@ export const sectorSlice = createSlice({
                 state.errorsRegister = null;
                 state.errorRegisterMessage = null;
                 //Sector
-                state.sector = response;
+                state.sector = response[0];
                 state.sectors.push(state.sector);
             })
             .addCase(register.pending, (state: IState) => {
@@ -89,6 +103,10 @@ export const sectorSlice = createSlice({
                 }
                 //Sector
                 state.sector = null;
+            })
+            .addCase(list.fulfilled, (state: IState, action: PayloadAction<ISectorResponse>) => {
+                //Sectors
+                state.sectors = action.payload.data as ISector[];
             })
     }
 });
