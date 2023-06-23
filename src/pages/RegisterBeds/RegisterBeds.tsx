@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react'
 //Styles
 import styles from './RegisterBeds.module.css';
 //Router
@@ -8,15 +8,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { hospital } from '../../slices/hospitalSlice';
+import { list, reset } from '../../slices/typeAccomodationSlice';
+import { register, reset as resetSector } from '../../slices/sectorSlice';
+import { refreshToken } from '../../slices/authSlice';
 //Hooks
 import { useParams } from 'react-router-dom';
 import { useRef } from 'react';
 //Interface
 import { IHospital } from '../../interfaces/Hospital';
+import { ITypeAccommodation } from '../../interfaces/TypeAccommodation';
+import { ISector, ISectorParams, ISectorErrors } from '../../interfaces/Sector';
+//Component
+import Alert from '../../components/Alert/Alert';
 
 type Props = {}
 
 const RegisterBeds = (props: Props) => {
+
+    const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>();
+
     //Params
     const { id } = useParams();
 
@@ -33,17 +43,75 @@ const RegisterBeds = (props: Props) => {
     /**
      * Get data hospital
      */
-    const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>();
     const { hospital: hospitalData }: { hospital: IHospital | null } = useSelector((state: RootState) => state.hospital);
+    const { typeAccommodation } : { typeAccommodation:ITypeAccommodation[] } = useSelector((state: RootState) => state.typeAccomodation)
 
     useEffect(()=>{
+        dispatch(reset());
+
         if(id){
             dispatch(hospital(id));
+            dispatch(list());
         }
+
     }, [dispatch]);
+
+    /**
+     * Submit form
+     */
+    const { sectors,
+            successRegister,
+            errorRegisterMessage,
+            errorsRegister } : { 
+                sectors: ISector[],
+                successRegister: boolean | null,
+                errorRegisterMessage: string | null,
+                errorsRegister: ISectorErrors | null
+            } = useSelector((state: RootState) => state.sector);
+
+    const [name, setName] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
+    const [tip_acc, setTip_acc] = useState<string>('');
+    const [is_active, setIs_active] = useState<boolean>(false);
+    const buttonClose = useRef<HTMLInputElement>(null);
+
+    useEffect(()=>{
+        if(typeAccommodation.length > 0){
+            setTip_acc(typeAccommodation[0].description);
+        }
+    }, [typeAccommodation]);
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) =>{
+        e.preventDefault();
+
+        const data: ISectorParams = {
+            name,
+            description,
+            tip_acc,
+            is_active
+        };
+        
+        if (hospitalData){
+            dispatch(resetSector());
+            await dispatch(refreshToken());
+            await dispatch(register({id: hospitalData.id, data}));
+        }
+
+    };
+
+    useEffect(()=>{
+        if(successRegister){
+            buttonClose.current?.click();
+            setName('');
+            setDescription('');
+            setTip_acc(typeAccommodation[0].description);
+            setIs_active(false);
+        }
+    }, [successRegister, typeAccommodation]);
     
     return (
         <>
+            { errorRegisterMessage && <Alert message={errorRegisterMessage} trigger={errorRegisterMessage} type='error'/> }
             <div className={`${styles.open} ${styles.area}`} ref={page}>
                 <div className={`${styles.fade}`} onClick={handleShow}></div>
                 <div className='d-flex'>
@@ -119,38 +187,61 @@ const RegisterBeds = (props: Props) => {
                                 </h5>
                             </div>
                         </div>
-                        <form className='register_form'>
+                        <form className='register_form' onSubmit={handleSubmit}>
                             <div className='modal-body p-4 row'>
                                 <label className='col-3'>
                                     <span>Nome</span>
                                     <input
                                         className='form-control'
+                                        value={name}
+                                        placeholder='Setor'
+                                        onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                                     />
                                 </label>
                                 <label className='col-9'>
                                     <span>Descrição</span>
                                     <input
                                         className='form-control'
+                                        value={description}
+                                        placeholder='Descrição do Setor'
+                                        onChange={(e: ChangeEvent<HTMLInputElement>) => setDescription(e.target.value)}
                                     />
                                 </label>
                                 <label className='col-6'>
                                     <span>Tipo de acomodação</span>
-                                    <select className='form-select'>
-                                        <option>UTI ADULTO</option>
-                                        <option>ENFERMARIA ADULTO</option>
+                                    <select 
+                                        className='form-select'
+                                        value={tip_acc}
+                                        onChange={(e: ChangeEvent<HTMLSelectElement>) => setTip_acc(e.target.value)}
+                                        >
+                                        {
+                                            typeAccommodation && typeAccommodation.map((type_acc)=>(
+                                                <option key={type_acc.id} value={type_acc.description}>{type_acc.description}</option>
+                                            ))
+                                        }
                                     </select>
                                 </label>
                                 <label className='col-2 d-flex flex-column'>
                                     <span>Ativo:</span>
                                     <label className='switch mb-0'>
-                                        <input  type='checkbox'/>
+                                        <input  type='checkbox'
+                                                checked={is_active}
+                                                onChange={(e: ChangeEvent<HTMLInputElement>) => setIs_active(e.target.checked)}
+                                                />
                                         <span className="slider round"></span>
                                     </label>                                    
                                 </label>
                             </div>
                             <div className='modal-footer border-0 modal_footer_bg px-4'>
                                 <input type='submit' value='Cadastrar'/>
-                                <input className='cancel' type='cancel' defaultValue='Cancelar' data-bs-dismiss="modal" aria-label="Close"/>
+                                <input 
+                                    className='cancel'
+                                    type='cancel'
+                                    defaultValue='Cancelar'
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                    ref={buttonClose}
+                                    />
                             </div>
                         </form>
                     </div>
@@ -161,9 +252,3 @@ const RegisterBeds = (props: Props) => {
 }
 
 export default RegisterBeds;
-
-/*
-                                                checked={is_active}
-    onChange={(e: ChangeEvent<HTMLInputElement>) => setIs_active(e.target.checked)}
-
-*/

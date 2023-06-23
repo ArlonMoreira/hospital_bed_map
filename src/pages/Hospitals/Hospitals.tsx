@@ -54,7 +54,8 @@ const Hospitals = () => {
             acronym,
             is_active
         };
-   
+        
+        dispatch(reset());
         await dispatch(refreshToken()); //Update token access after to send data
         await dispatch(register(data));
         
