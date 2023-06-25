@@ -74,9 +74,11 @@ const Hospital = (props: Props) => {
     const { sectors,
             successRegister,
             errorRegisterMessage,
+            loading,
             errorsRegister } : { 
                 sectors: ISector[],
                 successRegister: boolean | null,
+                loading: boolean,
                 errorRegisterMessage: string | null,
                 errorsRegister: ISectorErrors | null
             } = useSelector((state: RootState) => state.sector);
@@ -228,23 +230,55 @@ const Hospital = (props: Props) => {
                         </div>
                         <form className='register_form' onSubmit={handleSubmit}>
                             <div className='modal-body p-4 row'>
-                                <label className='col-3'>
+                                <label className='col-4'>
                                     <span>Nome</span>
                                     <input
-                                        className='form-control'
+                                        className={`form-control ${errorsRegister?.name && 'border border-danger'}`}
                                         value={name}
                                         placeholder='Setor'
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                                     />
+                                    {
+                                        errorsRegister?.name && (
+                                            <ul className='error-message'>
+                                                {
+                                                    errorsRegister.name.map((error, i) => (
+                                                        <li key={i}>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                                <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                                                            </svg>
+                                                            <p>{error}</p> 
+                                                        </li>
+                                                    ))
+                                                }
+                                            </ul>
+                                        )
+                                    }
                                 </label>
-                                <label className='col-9'>
+                                <label className='col-8'>
                                     <span>Descrição</span>
                                     <input
-                                        className='form-control'
+                                        className={`form-control ${errorsRegister?.description && 'border border-danger'}`}
                                         value={description}
                                         placeholder='Descrição do Setor'
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => setDescription(e.target.value)}
                                     />
+                                    {
+                                        errorsRegister?.description && (
+                                            <ul className='error-message'>
+                                                {
+                                                    errorsRegister.description.map((error, i) => (
+                                                        <li key={i}>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                                <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                                                            </svg>
+                                                            <p>{error}</p> 
+                                                        </li>
+                                                    ))
+                                                }
+                                            </ul>
+                                        )
+                                    }
                                 </label>
                                 <label className='col-6'>
                                     <span>Tipo de acomodação</span>
@@ -272,7 +306,17 @@ const Hospital = (props: Props) => {
                                 </label>
                             </div>
                             <div className='modal-footer border-0 modal_footer_bg px-4'>
-                                <input type='submit' value='Cadastrar'/>
+                                {
+                                    loading ? (
+                                        <button className='form-control' disabled>
+                                            <div className="spinner-border" role="status">
+                                                <span className="sr-only"></span>
+                                            </div>
+                                        </button>
+                                    ): (
+                                        <input type='submit' value='Cadastrar'/>
+                                    )
+                                }
                                 <input 
                                     className='cancel'
                                     type='cancel'

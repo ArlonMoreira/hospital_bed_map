@@ -160,6 +160,10 @@ input[type="submit"]:hover {
     font-weight: 400;
 }
 
+.modal_header_bg svg {
+    fill: var(--bs-gray-600);
+}
+
 .modal_footer_bg input,
 .modal_footer_bg button {
     margin: 0 !important;
