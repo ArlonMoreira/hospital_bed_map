@@ -3,7 +3,7 @@
     --secundary-color: #1d8cf8;
     --gradient-color: linear-gradient(0deg,var(--primary-color),var(--secundary-color));
     --font-default: #fff;
-    --font-dark: var(--bs-gray-800);
+    --font-dark: #000;
     --background-default: #f5f6fa;
     --active-shadow: #ffffff26;
     --tw-ring-offset-shadow: 0 0 #0000;
@@ -30,10 +30,6 @@ body {
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     color: var(--bs-gray-600);
-}
-
-svg {
-    fill: var(--bs-gray-600);
 }
 
 p {
@@ -355,3 +351,13 @@ hr {
 }
 
 /*End: NavButton*/
+
+/* Start: NavButton */
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    background-color: #f4f4f5;
+    color: var(--font-dark);
+    fill: var(--font-dark) !important;
+}
+
+/* End: NavButton */

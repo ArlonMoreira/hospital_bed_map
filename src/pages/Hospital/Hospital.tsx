@@ -1,9 +1,12 @@
-import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react'
+import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
+//Router
+import { Routes, Route, NavLink } from "react-router-dom";
 //Styles
-import styles from './RegisterBeds.module.css';
+import styles from './Hospital.module.css';
 //Router
 import { Link } from 'react-router-dom';
 //Redux
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
@@ -20,10 +23,12 @@ import { ITypeAccommodation } from '../../interfaces/TypeAccommodation';
 import { ISector, ISectorParams, ISectorErrors } from '../../interfaces/Sector';
 //Component
 import Alert from '../../components/Alert/Alert';
+//Pages
+import ConfigHospital from './ConfigHospital/ConfigHospital';
 
 type Props = {}
 
-const RegisterBeds = (props: Props) => {
+const Hospital = (props: Props) => {
 
     const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>();
 
@@ -115,8 +120,15 @@ const RegisterBeds = (props: Props) => {
         }
     }, [successRegister, typeAccommodation]);
 
+    /**
+     * Navigate first type accomodation default
+     */
+    const navegate = useNavigate();
+
     useEffect(()=>{
-        console.log(sectors);
+        if(sectors.length > 0){
+            navegate(`configurar/${sectors[0].id}`)
+        }
     }, [sectors]);
     
     return (
@@ -126,7 +138,7 @@ const RegisterBeds = (props: Props) => {
                 <div className={`${styles.fade}`} onClick={handleShow}></div>
                 <div className='d-flex'>
                     <div className={`${styles.aside} shadow`}>
-                        <div className='p-3'>
+                        <div className={`p-4 pt-3 ${styles.content}`}>
                             <div className={`${styles.toolarea} px-0 d-flex justify-content-between align-items-center position-relative`}>
                                 <Link to='/hospitais'>
                                     <svg width="1.16em" height="1.16em" version="1.0" viewBox="0 0 148 130">
@@ -136,9 +148,9 @@ const RegisterBeds = (props: Props) => {
                                     </svg>
                                     Hospitais
                                 </Link>
-                                <div className='position-absolute top-0 end-0'>
+                                <div className='top-0 end-0'>
                                     <button className='border-0 bg-transparent p-0' onClick={handleShow}>
-                                        <svg width="1.2em" height="1.2em" version="1.0" viewBox="0 0 108 108" style={{'fill':'var(--secundary-color)'}}>
+                                        <svg width="1.2em" height="1.2em" version="1.0" viewBox="0 0 108 108">
                                             <g transform="translate(0 108) scale(.1 -.1)">
                                                 <path d="m52 1028c-34-34-16-58 200-275l212-212-212-214c-170-170-212-218-212-240 0-26 23-47 51-47 7 0 110 97 229 215l215 215 205-206c113-113 213-210 223-215 25-14 67 14 67 43 0 15-66 88-212 234l-211 213 211 216c122 125 212 224 212 235 0 23-26 50-48 50-10 0-71-54-137-121-66-66-164-161-218-211l-98-91-212 211c-210 209-236 229-265 200z"/>
                                             </g>
@@ -153,18 +165,29 @@ const RegisterBeds = (props: Props) => {
                                     <p>{hospitalData?.name}</p>
                                 </div>
                             </div>
-                            <div className={`w-100 mt-3 ${styles.add}`}>
+                            <div className={`w-100 mt-3 mb-3 ${styles.add}`}>
                                 <button className='form-control' data-bs-toggle="modal" data-bs-target="#register-sector">
                                     <svg height="1em" viewBox="0 0 448 512" style={{'fill': '#fff'}}><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
                                     <span>Setores</span>
                                 </button>
                             </div>
+                            <p className='pt-2 mb-0' style={{color: 'var(--secundary-color)', fontSize: '.86rem', fontWeight: '500'}}>SETORES</p>
                             <div className={`w-100 d-flex flex-column flex-shrink-0 pt-3 ${styles.navigate}`}>
                                 <ul className='nav nav-pills flex-column mb-auto'>
                                     {
                                         sectors.map((sector)=>(
-                                            <li className='nav-item' key={sector.id}>
-                                                <a className='nav-link'>{sector.name}</a>
+                                            <li className='nav-item mb-2 sub-item' key={sector.id}>
+                                                <NavLink to={`configurar/${sector.id}`} className={`nav-link ${styles.sub_navigate}`}>
+                                                    <div className={`${styles.label_sub_navigate}`}>
+                                                        <svg version="1.0" viewBox="0 0 207 164" width='1.6em' height='1.6em'>
+                                                            <path d="M145.8 3.2c-1.4 1.1-6.3 12.5-17 39.8-.9 2.3-1.3 1.8-6-7.5-2.8-5.5-5.7-10.8-6.6-11.8-1.4-1.5-3.9-1.7-24.9-1.7-14.2 0-24.2.4-25.4 1-1.2.7-1.9 2.1-1.9 4s.7 3.3 1.9 4c1.2.6 10.5 1 23.3 1h21.3l7.3 14.4c7.1 14.2 8.9 16.4 12.5 15 .9-.3 5-9.2 9.7-21 4.5-11.2 8.5-20.4 8.9-20.4.4 0 1.8 2.3 3.1 5.1s3.2 5.5 4.1 6c1 .5 11.2.9 22.8.9 22.3 0 24.1-.4 24.1-5s-1.9-5-22.6-5H161l-4.1-8.3C151 2 149.4.5 145.8 3.2z"/><path d="M5.8 23.1C4.1 24 4 28.4 4 92c0 66.1.1 68 1.9 69 2.7 1.4 3.7 1.3 5.5-.6 1.2-1.2 1.6-3.6 1.6-10V142h181v9c0 8 .2 9 2 10 2.8 1.5 5.9.4 6.6-2.4.3-1.2.4-19.7.2-41.2l-.3-38.9-3.3-6.7c-3.8-7.7-9.2-13-17.1-16.6-5.1-2.4-7-2.7-20.3-3l-14.8-.4-2 4.7c-1.1 2.6-2 4.9-2 5.1 0 .2 6.9.4 15.3.4 10.1.1 16.5.5 19 1.4 5.8 2.1 10.5 6.2 13.4 11.9 2.5 4.9 2.7 6.2 3.1 20.9l.4 15.8H93V88.6c0-20 .2-23.7 1.6-25 1.2-1.2 3.6-1.6 10-1.6 4.6 0 8.4-.2 8.4-.5 0-.2-1-2.5-2.2-5l-2.2-4.5h-6c-7.7 0-13.9 2.7-16.6 7.2-1.9 3.1-2 5-2 28V112H13V68.6c0-38.2-.2-43.6-1.6-45-1.8-1.8-3.2-2-5.6-.5zM194 127v5H13v-10h181v5z"/><path d="M40.6 53.6c-6.2 2-13.7 9.3-15.4 15-2.9 9.9-.8 18.8 5.9 25.6 17 17.1 45.1 2.4 41.5-21.7-2.1-13.7-18.2-23.3-32-18.9zm18 12.4c6.6 6.5 6.6 15.5 0 21.9-6.4 6.2-17.6 5.1-22.8-2.2-3.2-4.4-3.4-11.3-.6-16.1 3.2-5.4 7.9-7.8 14.6-7.3 4.3.3 5.9 1 8.8 3.7z"/>
+                                                        </svg>
+                                                        <span>{sector.name}</span>
+                                                    </div>
+                                                    <div className={`${styles.begde}`}>
+                                                        00
+                                                    </div>
+                                                </NavLink>
                                             </li>
                                         ))
                                     }
@@ -181,6 +204,11 @@ const RegisterBeds = (props: Props) => {
                                     <span></span> 
                                 </div>
                             </button>
+                        </div>
+                        <div className={`${styles.body} p-2`}>
+                            <Routes>
+                                <Route path="configurar/:sector" element={<ConfigHospital/>}/>
+                            </Routes>
                         </div>
                     </div>
                 </div>
@@ -262,4 +290,4 @@ const RegisterBeds = (props: Props) => {
     )
 }
 
-export default RegisterBeds;
+export default Hospital;

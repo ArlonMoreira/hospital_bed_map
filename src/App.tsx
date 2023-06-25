@@ -4,11 +4,10 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import styles from './App.module.css';
 //Pages
 import Dashboard from './pages/Dashboard/Dashboard';
-import HospitalBeds from './pages/HospitalBeds/HospitalBeds';
 import Hospitals from './pages/Hospitals/Hospitals';
 import Authentication from './pages/Authentication/Authentication';
 import EditHospital from './pages/EditHospital/EditHospital';
-import RegisterBeds from './pages/RegisterBeds/RegisterBeds';
+import Hospital from './pages/Hospital/Hospital';
 //Components
 import Sidebar from './components/Sidebar/Sidebar';
 import Navbar from './components/NavBar/Navbar';
@@ -54,10 +53,9 @@ function App() {
                 <Routes>
                   <Route path='/' element={<Dashboard />}/>
                   <Route path='login' element={!auth ? <Authentication />: <Navigate to='/'/> }/>
-                  <Route path='leitos' element={<HospitalBeds />} />
                   <Route path="hospitais" element={auth ? <Hospitals /> : <Navigate to="/" />}/>
                   <Route path="hospitais/editar/:id" element={auth ? <EditHospital /> : <Navigate to="/" />}/>
-                  <Route path='hospitais/cadastrar/:id' element={auth ? <RegisterBeds /> : <Navigate to="/" />}/>
+                  <Route path='hospitais/cadastrar/:id/*' element={auth ? <Hospital /> : <Navigate to="/" />}/>
                 </Routes>
               </div>        
           </div>
