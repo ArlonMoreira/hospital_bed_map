@@ -28,9 +28,9 @@ const initialState: IState = {
 
 export const register = createAsyncThunk(
     'sector/register',
-    async ({id, data}: {id:number, data: ISectorParams}, { getState, rejectWithValue }) => {
+    async ({hospital, data}: {hospital:string, data: ISectorParams}, { getState, rejectWithValue }) => {
         const useAuth:IAuth = await (getState() as any).auth.userAuth;
-        const response:ISectorResponse = await useSectors().register({id, token: useAuth.access, data});
+        const response:ISectorResponse = await useSectors().register({id: hospital, token: useAuth.access, data});
 
         if(response.success){
             return response;
@@ -43,9 +43,9 @@ export const register = createAsyncThunk(
 
 export const list = createAsyncThunk(
     'sector/list',
-    async(_, { getState, rejectWithValue }) => {
+    async(hospital:string, { getState, rejectWithValue }) => {
         const useAuth:IAuth = await (getState() as any).auth.userAuth;
-        const response:ISectorResponse = await useSectors().list({token: useAuth.access});
+        const response:ISectorResponse = await useSectors().list({id: hospital, token: useAuth.access});
 
         if(response.success) {
             return response;
@@ -66,6 +66,7 @@ export const sectorSlice = createSlice({
             state.errorsRegister = null;
             state.errorRegisterMessage = null;
             state.sector = null;
+            state.sectors = [];
         }
     },
     extraReducers: (builder) => {

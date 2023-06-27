@@ -4,16 +4,16 @@ import { ISectorParams, ISectorResponse } from "../interfaces/Sector";
 const url = `${process.env.REACT_APP_BASE_URL}`;
 
 interface Params {
-    id?: number,
+    id?: number | string,
     token: string,
     data?: ISectorParams
 }
 
 const useSectors = () => {
 
-    const list = async({token}: Params):Promise<ISectorResponse> => {
+    const list = async({id, token}: Params):Promise<ISectorResponse> => {
         try {
-            const response: Response = await fetch(`${url}setor/`, {
+            const response: Response = await fetch(`${url}setor/${id}/`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

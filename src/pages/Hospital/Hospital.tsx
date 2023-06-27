@@ -66,13 +66,13 @@ const Hospital = (props: Props) => {
                 await dispatch(refreshToken()); //Update authentication tokens to fetch data from the backend
                 dispatch(getDataHospital(hospital)); //Update data of hospital
                 dispatch(listTypeAccomodation()); //Update data of list select the type accomodation
-                dispatch(listSector()); //Update data of sectors
+                dispatch(listSector(hospital)); //Update data of sectors
             }
         }
 
         refresh();
 
-    }, [dispatch]);
+    }, [dispatch, hospital]);
 
     /**
      * Submit form Sectors
@@ -94,7 +94,7 @@ const Hospital = (props: Props) => {
     const [tip_acc, setTip_acc] = useState<string>('');
     const [is_active, setIs_active] = useState<boolean>(false);
     const buttonClose = useRef<HTMLInputElement>(null);
-    
+
     //Populate tip_acc state with fist data in typeAccommodation like default
     useEffect(()=>{
         if(typeAccommodation.length > 0){
@@ -116,7 +116,7 @@ const Hospital = (props: Props) => {
         if (hospitalData){
             dispatch(resetSector());
             await dispatch(refreshToken());
-            await dispatch(register({id: hospitalData.id, data}));
+            await dispatch(register({hospital: hospitalData.id.toString(), data}));
         }
 
     };
@@ -134,13 +134,17 @@ const Hospital = (props: Props) => {
     /**
      * Navigate first type accomodation default
      */
-    const navegate = useNavigate();
+    const navigate = useNavigate();
     
-    useEffect(()=>{
-        if(sectors.length > 0){
-            navegate(`configurar/${sectors[0].id}/leitos`);
+    useEffect(() => {
+        const lastSectorIndex = sectors.indexOf(sectors[0]);
+        if(lastSectorIndex !== -1){
+            navigate(`configurar/${sectors[lastSectorIndex].id}/leitos`);
+        } else {
+            navigate(``);
         }
-    }, [sectors]);
+
+      }, [sectors]);
     
     return (
         <>
