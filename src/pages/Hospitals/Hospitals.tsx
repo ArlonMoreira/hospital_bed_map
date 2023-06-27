@@ -18,7 +18,11 @@ import { Link } from 'react-router-dom';
 
 const Hospitals = () => {
 
-    const dispatch = useDispatch<ThunkDispatch<RootState, IHospitalParams, AnyAction>>();
+    /**
+     * Hospital Slices
+     */
+
+    const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>();
     const { successRegister, 
             successRegisterMessage,
             loading,
@@ -111,7 +115,7 @@ const Hospitals = () => {
         };
         newData.is_active = newData.is_active ? false: true;
         await dispatch(refreshToken()); //Update token access after to send data
-        await dispatch(update({data:newData, id:hospital.id.toString()}));
+        await dispatch(update({data:newData, hospital:hospital.id.toString()}));
 
         if(loadingHospitals){ //Loading card hospital end
             loadingHospitals[indexUpdate] = false;

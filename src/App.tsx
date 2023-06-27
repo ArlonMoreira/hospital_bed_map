@@ -23,6 +23,8 @@ import { IAuth } from './interfaces/Authentication';
 //Hooks
 import { useAuth } from './hooks/useAuth';
 
+//tsrace
+
 function App() {
   
   const { auth } = useAuth();
@@ -54,8 +56,8 @@ function App() {
                   <Route path='/' element={<Dashboard />}/>
                   <Route path='login' element={!auth ? <Authentication />: <Navigate to='/'/> }/>
                   <Route path="hospitais" element={auth ? <Hospitals /> : <Navigate to="/" />}/>
-                  <Route path="hospitais/editar/:id" element={auth ? <EditHospital /> : <Navigate to="/" />}/>
-                  <Route path='hospitais/cadastrar/:id/*' element={auth ? <Hospital /> : <Navigate to="/" />}/>
+                  <Route path="hospitais/editar/:hospital" element={auth ? <EditHospital /> : <Navigate to="/" />}/>
+                  <Route path='hospitais/cadastrar/:hospital/*' element={auth ? <Hospital /> : <Navigate to="/" />}/>
                 </Routes>
               </div>        
           </div>

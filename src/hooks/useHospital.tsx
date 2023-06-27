@@ -10,9 +10,9 @@ interface Params {
 
 const useHospital = () => {
 
-    const update = async({params, id}:{params: Params, id: string}): Promise<IHospitalResponse> =>{
+    const update = async({params, hospital}:{params: Params, hospital: string}): Promise<IHospitalResponse> =>{
         try {
-            const response:Response = await fetch(`${url}hospital/${id}/`, {
+            const response:Response = await fetch(`${url}hospital/${hospital}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -35,9 +35,9 @@ const useHospital = () => {
         }
     };
 
-    const hospital = async({params, id}:{params: Params, id: string}):Promise<IHospitalResponse> => {
+    const hospital = async({params, hospital}:{params: Params, hospital: string}):Promise<IHospitalResponse> => {
         try {
-            const response:Response = await fetch(`${url}hospital/${id}/`, {
+            const response:Response = await fetch(`${url}hospital/${hospital}/`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

@@ -8,7 +8,7 @@ import Alert from '../../components/Alert/Alert';
 import { Link } from 'react-router-dom';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { hospital, reset, update } from '../../slices/hospitalSlice';
+import { hospital as getDataHospital, reset, update } from '../../slices/hospitalSlice';
 import { refreshToken } from '../../slices/authSlice';
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
@@ -21,7 +21,7 @@ type Props = {}
 
 const EditHospital = (props: Props) => {
   //Params
-  const { id } = useParams();
+  const { hospital } = useParams();
   //dispatch
   const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>();
 
@@ -46,15 +46,15 @@ const EditHospital = (props: Props) => {
     dispatch(reset());
 
     const update = async () => {
-      if(id){
+      if(hospital){
         await dispatch(refreshToken());
-        await dispatch(hospital(id));
+        await dispatch(getDataHospital(hospital));
       }
     };
 
     update();
     
-  }, [dispatch, id]);
+  }, [dispatch, hospital]);
 
   useEffect(()=>{
     if(hospitalData){
@@ -80,9 +80,9 @@ const EditHospital = (props: Props) => {
       acronym
     };
 
-    if(id){
+    if(hospital){
       await dispatch(reset());
-      await dispatch(update({data, id}));
+      await dispatch(update({data, hospital}));
     }
 
   };

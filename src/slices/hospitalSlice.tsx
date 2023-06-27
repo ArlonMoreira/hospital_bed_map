@@ -66,13 +66,13 @@ export const list = createAsyncThunk(
 
 export const hospital = createAsyncThunk(
     'hospital/hospital',
-    async(id: string, { getState, rejectWithValue }) => {
+    async(hospital: string, { getState, rejectWithValue }) => {
         const userAuth:IAuth = (getState() as any).auth.userAuth;
         const response:IHospitalResponse = await useHospital().hospital({
             params: {
                 token: userAuth.access
             },
-            id
+            hospital
         });
         
         if(response.success){
@@ -86,14 +86,14 @@ export const hospital = createAsyncThunk(
 
 export const update = createAsyncThunk(
     'hospital/update',
-    async({data, id}:{data: IHospitalParams, id: string}, {getState, rejectWithValue}) => {
+    async({data, hospital}:{data: IHospitalParams, hospital: string}, {getState, rejectWithValue}) => {
         const userAuth:IAuth = (getState() as any).auth.userAuth;
         const response:IHospitalResponse = await useHospital().update({
             params: {
                 token: userAuth.access,
                 data
             },
-            id
+            hospital
         });
         if(response.success){
             return response;
