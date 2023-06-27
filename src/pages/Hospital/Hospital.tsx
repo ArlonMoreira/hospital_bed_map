@@ -12,7 +12,7 @@ import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { hospital as getDataHospital } from '../../slices/hospitalSlice';
 import { list as listTypeAccomodation, reset as resetTypeAccomodation } from '../../slices/typeAccomodationSlice';
-import { register, reset as resetSector, list as listSector } from '../../slices/sectorSlice';
+import { register, reset as resetSector, list as listSector, clearSectors } from '../../slices/sectorSlice';
 import { refreshToken } from '../../slices/authSlice';
 //Hooks
 import { useParams } from 'react-router-dom';
@@ -60,6 +60,8 @@ const Hospital = (props: Props) => {
         dispatch(resetTypeAccomodation());
         //Clear data sector
         dispatch(resetSector());
+        //Clear sectors
+        dispatch(clearSectors());
 
         const refresh = async() => {
             if(hospital){ //run only when params id is passed

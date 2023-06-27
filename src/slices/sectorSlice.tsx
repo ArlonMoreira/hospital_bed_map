@@ -53,12 +53,15 @@ export const list = createAsyncThunk(
             return rejectWithValue(response);
         }
     }
-)
+);
 
 export const sectorSlice = createSlice({
     name: 'sector',
     initialState,
     reducers: {
+        clearSectors: (state: IState) => {
+            state.sectors = [];
+        },
         reset: (state: IState) => {
             state.successRegister = null;
             state.successRegisterMessage = null;
@@ -111,5 +114,5 @@ export const sectorSlice = createSlice({
     }
 });
 
-export const { reset } = sectorSlice.actions;
+export const { reset, clearSectors } = sectorSlice.actions;
 export default sectorSlice.reducer;
