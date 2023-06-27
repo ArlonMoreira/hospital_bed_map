@@ -66,7 +66,6 @@ export const sectorSlice = createSlice({
             state.errorsRegister = null;
             state.errorRegisterMessage = null;
             state.sector = null;
-            state.sectors = [];
         }
     },
     extraReducers: (builder) => {
