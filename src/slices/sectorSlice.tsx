@@ -12,7 +12,6 @@ interface IState {
     loading: boolean,
     errorsRegister: ISectorErrors | null,
     errorRegisterMessage: string | null,
-    sector: ISector | null,
     sectors: ISector[]
 };
 
@@ -22,7 +21,6 @@ const initialState: IState = {
     loading: false,
     errorsRegister: null,
     errorRegisterMessage: null,
-    sector: null,
     sectors: []
 };
 
@@ -68,7 +66,6 @@ export const sectorSlice = createSlice({
             state.loading = false;
             state.errorsRegister = null;
             state.errorRegisterMessage = null;
-            state.sector = null;
         }
     },
     extraReducers: (builder) => {
@@ -84,8 +81,7 @@ export const sectorSlice = createSlice({
                 state.errorsRegister = null;
                 state.errorRegisterMessage = null;
                 //Sector
-                state.sector = response[0];
-                state.sectors.push(state.sector);
+                state.sectors.push(response[0]);
             })
             .addCase(register.pending, (state: IState) => {
                 state.loading = true;
@@ -104,8 +100,6 @@ export const sectorSlice = createSlice({
                 } else {
                     state.errorsRegister = null;
                 }
-                //Sector
-                state.sector = null;
             })
             .addCase(list.fulfilled, (state: IState, action: PayloadAction<ISectorResponse>) => {
                 //Sectors
