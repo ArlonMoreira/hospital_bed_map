@@ -53,6 +53,13 @@ export const list = createAsyncThunk(
     }
 );
 
+export const update = createAsyncThunk(
+    'sector/update',
+    (data:ISector, { getState, rejectWithValue })=>{
+        console.log(data);
+    }
+)
+
 export const sectorSlice = createSlice({
     name: 'sector',
     initialState,

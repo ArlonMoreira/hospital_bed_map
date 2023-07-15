@@ -126,7 +126,7 @@ export const hospitalSlice = createSlice({
                 const response = (action.payload as IHospitalResponse);
                 //Success
                 state.successRegister = true;
-                state.successRegisterMessage = response.message;
+                state.successRegisterMessage = response.message!;
                 //Loading
                 state.loading = false;
                 //Error
@@ -150,7 +150,12 @@ export const hospitalSlice = createSlice({
                 //Loading
                 state.loading = false;
                 //Error
-                state.errorRegisterMessage = response.message;
+                if (Object.keys(response).indexOf('message') !== -1) {
+                    state.errorRegisterMessage = response.message;
+                } else {
+                    state.errorUpdateMessage = 'Erro interno no sistema. Contate o administrador.'
+                };
+
                 if(response.data){
                     state.errorsRegister = response.data as IHospitalErrors;
                 } else {
@@ -179,7 +184,7 @@ export const hospitalSlice = createSlice({
             .addCase(update.fulfilled, (state: IState, action: PayloadAction<IHospitalResponse>)=>{
                 //Success
                 state.successUpdate = true;
-                state.successUpdateMessage = action.payload.message;
+                state.successUpdateMessage = action.payload.message!;
                 //Loading
                 state.loading = false;
                 //Hospital
@@ -202,7 +207,12 @@ export const hospitalSlice = createSlice({
                 //loading
                 state.loading = false;
                 //Error
-                state.errorUpdateMessage = response.message;
+                if(Object.keys(response).indexOf('message') !== -1) {
+                    state.errorUpdateMessage = response.message;
+                } else {
+                    state.errorUpdateMessage = 'Erro interno no sistema. Contate o administrador.'
+                }
+
                 if(response.data){
                     state.errorsUpdate = response.data as IHospitalErrors;
                 } else {

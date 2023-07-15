@@ -87,7 +87,7 @@ const useHospital = () => {
 
     const register = async (params: Params):Promise<IHospitalResponse> => {
         try {
-            const response:Response = await fetch(`${url}hospital/`, {
+            const response:Response = await fetch(`${url}hospital/cadastrar/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -95,14 +95,14 @@ const useHospital = () => {
                 },
                 body: JSON.stringify(params.data)
             });
-    
+            
             const result = await response.json();
-    
+            
             const request:IHospitalResponse = {
                 success: response.ok,
                 ...result
             };
-    
+     
             return request;
         } catch(error) {
             return {

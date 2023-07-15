@@ -2,7 +2,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 //Styles
 import styles from './EditSector.module.css'
 //Redux
-import { list } from '../../../../slices/sectorSlice';
+import { update } from '../../../../slices/sectorSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 //Hooks
@@ -10,13 +10,14 @@ import { useParams } from 'react-router-dom';
 //Interface
 import { ISector } from '../../../../interfaces/Sector';
 import { ITypeAccommodation } from '../../../../interfaces/TypeAccommodation';
+import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 
 type Props = {}
 
 const EditSector = (props: Props) => {
 
     //Dispath
-    const dispath = useDispatch();
+    const dispath = useDispatch<ThunkDispatch<RootState, any, AnyAction>>();
     //Params
     const { sector } = useParams();
 
@@ -51,17 +52,17 @@ const EditSector = (props: Props) => {
         
     }, [sectorSelect]);
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const data = {
+        const data: ISector = {
+            id: sector!,
             name,
             description,
             tip_acc
         };
 
-        console.log(data);
-
+        await dispath(update(data));
     };
 
     return (
