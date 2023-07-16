@@ -15,8 +15,10 @@ interface IState {
     loading: boolean,
     errorRegisterMessage: string | null,
     errorsRegister: IHospitalErrors | null,
+    errorRegister: boolean | null,
     errorUpdateMessage: string | null,
     errorsUpdate: IHospitalErrors | null,
+    errorUpdate: boolean | null,
     hospitals: IHospital[],
     hospital: IHospital | null
 };
@@ -29,8 +31,10 @@ const initialState: IState = {
     loading: false,
     errorRegisterMessage: null,
     errorsRegister: null,
+    errorRegister: false,
     errorUpdateMessage: null,
     errorsUpdate: null,
+    errorUpdate: false,
     hospitals: [],
     hospital: null
 };
@@ -115,7 +119,9 @@ export const hospitalSlice = createSlice({
             state.loading = false;
             state.errorRegisterMessage = null;
             state.errorsRegister = null;
+            state.errorRegister = false;
             state.errorUpdateMessage = null;
+            state.errorUpdate = false;
             state.errorsUpdate = null;
             state.hospital = null;
         }
@@ -129,9 +135,6 @@ export const hospitalSlice = createSlice({
                 state.successRegisterMessage = response.message!;
                 //Loading
                 state.loading = false;
-                //Error
-                state.errorRegisterMessage = null;
-                state.errorsRegister = null;
                 //Hospitals
                 if(response.data && Array.isArray(response.data)){
                     const hospitals:IHospital[] = response.data;
@@ -144,9 +147,6 @@ export const hospitalSlice = createSlice({
             })
             .addCase(register.rejected, (state: IState, action: PayloadAction<IHospitalResponse | unknown>)=>{
                 const response = (action.payload as IHospitalResponse);
-                //Success
-                state.successRegister = false;
-                state.successRegisterMessage = null;
                 //Loading
                 state.loading = false;
                 //Error
@@ -161,6 +161,8 @@ export const hospitalSlice = createSlice({
                 } else {
                     state.errorsRegister = null;
                 }
+                
+                state.errorRegister = true;
                 
             })
             .addCase(list.fulfilled, (state: IState, action: PayloadAction<IHospitalResponse>)=>{
@@ -201,9 +203,6 @@ export const hospitalSlice = createSlice({
             })
             .addCase(update.rejected, (state: IState, action: PayloadAction<IHospitalResponse | unknown>)=>{
                 const response = (action.payload as IHospitalResponse);
-                //Success
-                state.successUpdate = false;
-                state.successUpdateMessage = null;
                 //loading
                 state.loading = false;
                 //Error
@@ -218,6 +217,8 @@ export const hospitalSlice = createSlice({
                 } else {
                     state.errorsUpdate = null;
                 }
+
+                state.errorUpdate = true;
 
             })
     }

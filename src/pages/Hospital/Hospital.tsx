@@ -82,12 +82,14 @@ const Hospital = (props: Props) => {
     const { sectors,
             successRegister,
             errorRegisterMessage,
+            errorRegister,
             loading,
             errorsRegister } : { 
                 sectors: ISector[],
                 successRegister: boolean | null,
                 loading: boolean,
                 errorRegisterMessage: string | null,
+                errorRegister: boolean,
                 errorsRegister: ISectorErrors | null
             } = useSelector((state: RootState) => state.sector);
 
@@ -97,31 +99,18 @@ const Hospital = (props: Props) => {
     const [is_active, setIs_active] = useState<boolean>(false);
     const buttonClose = useRef<HTMLInputElement>(null);
 
-    //Populate tip_acc state with fist data in typeAccommodation like default
+    /**
+     * Populate tip_acc state with fist data in typeAccommodation like default
+     * */
     useEffect(()=>{
         if(typeAccommodation.length > 0){
             setTip_acc(typeAccommodation[0].description);
         }
     }, [typeAccommodation]);
     
-    //Register sector
-    const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false);
-
-    //Caso ocorra um erro irá apresentar o alert e depois de alguns segundos irá desaparecer
-    useEffect(()=>{
-        if(errorRegisterMessage){
-            setShowErrorAlert(true);
-
-            const timeout = setTimeout(()=>{
-                setShowErrorAlert(false);
-            }, 2600);
-
-            return () => {
-                clearTimeout(timeout);
-            }
-        }
-    }, [errorRegisterMessage]);
-
+    /**
+     * Register sector
+     */
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
 
@@ -133,14 +122,38 @@ const Hospital = (props: Props) => {
         };
         
         if (hospitalData){
-            dispatch(resetSector());
             await dispatch(refreshToken());
             await dispatch(register({hospital: hospitalData.id.toString(), data}));
         }
 
     };
 
-    //Clear data form when registered is success
+    /**
+     * Alert
+     */
+    const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false);
+
+    //Caso ocorra um erro irá apresentar o alert e depois de alguns segundos irá desaparecer
+    useEffect(()=>{
+        if(errorRegister){
+            setShowErrorAlert(true);
+
+            const timeout = setTimeout(()=>{
+                setShowErrorAlert(false);
+                dispatch(resetSector());
+            }, 2600);
+
+            return () => {
+                clearTimeout(timeout);
+            }
+        } else {
+            setShowErrorAlert(false);
+        }
+    }, [errorRegister]);
+
+    /**
+     * Clear data form when registered is success
+     */
     useEffect(()=>{
         if(successRegister){
             buttonClose.current?.click();

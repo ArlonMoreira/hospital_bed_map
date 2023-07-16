@@ -23,20 +23,26 @@ const Hospitals = () => {
      */
 
     const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>();
-    const { successRegister, 
+    const { successRegister,
             successRegisterMessage,
+            errorRegister,
             loading,
             hospitals,
-            errorRegisterMessage,
             errorsRegister,
-            errorUpdateMessage }: { 
+            errorRegisterMessage,
+            errorUpdate,
+            errorUpdateMessage
+            }: { 
                 successRegister:boolean | null,
-                successRegisterMessage:string | null,
+                successRegisterMessage: string | null,
+                errorRegister:boolean | null,
                 loading:boolean,
                 hospitals: IHospital[],
-                errorRegisterMessage: string | null,
                 errorsRegister: IHospitalErrors | null,
-                errorUpdateMessage: string | null} = useSelector((state: RootState) => state.hospital)
+                errorRegisterMessage: string | null,
+                errorUpdate: boolean | null,
+                errorUpdateMessage: string | null,
+            } = useSelector((state: RootState) => state.hospital)
 
     /**
      * Register Hospital
@@ -59,7 +65,6 @@ const Hospitals = () => {
             is_active
         };
         
-        dispatch(reset());
         await dispatch(refreshToken()); //Update token access after to send data
         await dispatch(register(data));
         
@@ -129,11 +134,73 @@ const Hospitals = () => {
         }
     }, [hospitals]);
 
+    /**
+     * Alert
+     */
+    const [ showErrorAlert, setShowErrorAlert ] = useState<boolean>(false);
+    const [ showSuccessAlert, setShowSuccessAlert ] = useState<boolean>(false);
+    const [ showErrorUpdateAlert, setErrorUpdateAlert ] = useState<boolean>(false);
+
+    useEffect(()=>{
+        if(errorRegister){
+            setShowErrorAlert(true);
+
+            const timeout = setTimeout(()=>{
+                setShowErrorAlert(false);
+                dispatch(reset());
+            }, 2600);
+
+            return () => {
+                clearTimeout(timeout);
+            };
+
+        } else {
+            setShowErrorAlert(false);
+        }
+
+    }, [errorRegister]);
+
+    useEffect(()=>{
+        if(successRegister){
+            setShowSuccessAlert(true);
+
+            const timeout = setTimeout(()=> {
+                setShowSuccessAlert(false);
+                dispatch(reset());
+            }, 2600);
+
+            return () => {
+                clearTimeout(timeout);
+            }
+        } else {
+            setShowSuccessAlert(false);
+        }
+
+    }, [successRegister]);
+
+    useEffect(()=>{
+        if(errorUpdate){
+            setErrorUpdateAlert(true);
+
+            const timeout = setTimeout(()=> {
+                setErrorUpdateAlert(false);
+                dispatch(reset());
+            }, 2600);
+
+            return () => {
+                clearTimeout(timeout);
+            } 
+        } else {
+            setErrorUpdateAlert(false);
+        }
+
+    }, [errorUpdate]);
+
     return (
         <>  
-            {/*{ errorUpdateMessage && <Alert message={errorUpdateMessage} trigger={errorUpdateMessage} type='error' />}
-            { successRegisterMessage && <Alert message={successRegisterMessage} trigger={successRegister} type='success' />}
-    { errorRegisterMessage && <Alert message={errorRegisterMessage} trigger={errorsRegister} type='error' /> }*/}
+            { showErrorAlert && <Alert message={errorRegisterMessage} type='error'/> }
+            { showSuccessAlert && <Alert message={successRegisterMessage} type='success'/> }
+            { showErrorUpdateAlert && <Alert message={errorUpdateMessage} type='error'/> }
             <div className={`${styles.hospitals_container}`}>
                 <div data-bs-toggle="modal" data-bs-target="#register-hospital" className={`card ${styles.item} ${styles.insert_container}`}>
                     <a className={`${styles.insert_body}`}>

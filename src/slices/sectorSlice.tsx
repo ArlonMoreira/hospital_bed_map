@@ -14,6 +14,7 @@ interface IState {
     loading: boolean,
     errorsRegister: ISectorErrors | null,
     errorRegisterMessage: string | null,
+    errorRegister: boolean,
     errorsUpdate: ISectorErrors | null,
     errorUpdateMessage: string | null,
     errorUpdate: boolean,
@@ -28,6 +29,7 @@ const initialState: IState = {
     loading: false,
     errorsRegister: null,
     errorRegisterMessage: null,
+    errorRegister: false,
     errorsUpdate: null,
     errorUpdateMessage: null,
     errorUpdate: false,
@@ -101,6 +103,7 @@ export const sectorSlice = createSlice({
             state.errorsUpdate = null;
             state.errorUpdateMessage = null;
             state.errorUpdate = false;
+            state.errorRegister = false;
         }
     },
     extraReducers: (builder) => {
@@ -112,20 +115,15 @@ export const sectorSlice = createSlice({
                 state.successRegisterMessage = action.payload.message;
                 //loading
                 state.loading = false;
-                //Error
-                state.errorsRegister = null;
-                state.errorRegisterMessage = null;
                 //Sector
                 state.sectors.push(response[0]);
             })
             .addCase(register.pending, (state: IState) => {
+                //loading
                 state.loading = true;
             })
             .addCase(register.rejected, (state: IState, action: PayloadAction<ISectorResponse | unknown>) => {
                 const response = (action.payload as ISectorResponse);
-                //Success
-                state.successRegister = false;
-                state.successRegisterMessage = null;
                 //loading
                 state.loading = false;
                 //Error
@@ -140,6 +138,8 @@ export const sectorSlice = createSlice({
                 } else {
                     state.errorsRegister = null;
                 }
+
+                state.errorRegister = true;
             })
             .addCase(list.fulfilled, (state: IState, action: PayloadAction<ISectorResponse>) => {
                 //Sectors
@@ -160,9 +160,6 @@ export const sectorSlice = createSlice({
                     const indexUpdate = state.sectors.findIndex((sector) => sector.id === data.id);
                     state.sectors[indexUpdate] = data;
                 }
-                //Errors
-                state.errorsUpdate = null;
-                state.errorUpdateMessage = null;
             })
             .addCase(update.pending, (start: IState) => {
                 //Loading
@@ -172,7 +169,7 @@ export const sectorSlice = createSlice({
                 const response = action.payload as ISectorResponse;
                 //Loading
                 state.loading = false;
-                //
+                //Error
                 state.errorUpdate = true;
                 state.errorsUpdate = response.data as ISectorErrors;
                 //Error message
