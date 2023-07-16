@@ -55,6 +55,10 @@ p {
 
 /* Start: Customizar formulário */
 
+.border-danger {
+    border-color: var(--bs-danger) !important;
+}
+
 input[type="submit"], input[type="cancel"], button.form-control {
     background: var(--primary-color);
     color: var(--font-default);
@@ -389,3 +393,26 @@ hr {
 }
 
 /* End: Navbar */
+
+/* Estiliza a barra de rolagem */
+/* Largura e cor da barra de rolagem */
+::-webkit-scrollbar {
+    width: .5em;
+}
+
+/* Fundo da barra de rolagem */
+::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 5px; /* Bordas arredondadas */
+}
+
+/* Cor da alça da barra de rolagem */
+::-webkit-scrollbar-thumb {
+background-color: var(--bs-gray-300);
+border-radius: 5px; /* Bordas arredondadas */
+}
+
+/* Ao passar o mouse sobre a área */
+::-webkit-scrollbar-thumb:hover {
+background-color: var(--bs-gray-500);
+}

@@ -8,7 +8,7 @@ import Alert from '../../components/Alert/Alert';
 import { Link } from 'react-router-dom';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { hospital as getDataHospital, reset, update } from '../../slices/hospitalSlice';
+import { hospital as getDataHospital, reset, update, hideAlerts } from '../../slices/hospitalSlice';
 import { refreshToken } from '../../slices/authSlice';
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
@@ -28,12 +28,21 @@ const EditHospital = (props: Props) => {
   /**
    * Get data Hospital
    */
-  const { hospital: hospitalData, successUpdate, successUpdateMessage, loading, errorsUpdate, errorUpdateMessage}: { 
+  const { 
+      hospital: hospitalData,
+      successUpdate,
+      successUpdateMessage,
+      loading,
+      errorsUpdate,
+      errorUpdateMessage,
+      errorUpdate
+    }: { 
     hospital: IHospital | null,
     successUpdate: boolean | null,
     successUpdateMessage: string | null,
     errorsUpdate: IHospitalErrors | null,
     errorUpdateMessage: string | null,
+    errorUpdate: boolean | null,
     loading: boolean } = useSelector((state: RootState) => state.hospital);
 
   const [cnes, setCnes] = useState<string>("");
@@ -44,6 +53,8 @@ const EditHospital = (props: Props) => {
   useEffect(()=>{
     //Reset data
     dispatch(reset());
+    //Reset alerts
+    dispatch(hideAlerts());
 
     const update = async () => {
       if(hospital){
@@ -81,16 +92,61 @@ const EditHospital = (props: Props) => {
     };
 
     if(hospital){
-      await dispatch(reset());
+      dispatch(reset());
+      await dispatch(refreshToken()); //Update token access after to send data
       await dispatch(update({data, hospital}));
     }
 
   };
 
+  /**
+   * Apresentar alerta de erro.
+   */
+  const [showErrorAlert, setShowErrorAlert] = useState<boolean>();
+  const [showSuccessAlert, setShowSuccessAlert] = useState<boolean>();
+
+  useEffect(()=>{
+    if(errorUpdate && errorUpdateMessage){
+      setShowErrorAlert(true);
+
+      const timeout = setTimeout(()=>{
+        setShowErrorAlert(false);
+        dispatch(hideAlerts());
+      }, 3200);
+
+      return () => {
+        clearTimeout(timeout)
+      };
+
+    } else {
+      setShowErrorAlert(false);
+    }
+
+  }, [errorUpdate, errorUpdateMessage]);
+
+  useEffect(()=>{
+    if(successUpdate && successUpdateMessage){
+      setShowSuccessAlert(true);
+
+      const timeout = setTimeout(()=>{
+        setShowSuccessAlert(false);
+        dispatch(hideAlerts());
+      }, 3200);
+
+      return () => {
+        clearTimeout(timeout)
+      };
+
+    } else {
+      setShowSuccessAlert(false);
+    }
+
+  }, [successUpdate, successUpdateMessage]);
+
   return (
     <>
-      {/*{successUpdateMessage && <Alert trigger={successUpdate} message={successUpdateMessage} type='success'/>}
-      {errorsUpdate && <Alert trigger={errorsUpdate} message={errorUpdateMessage} type='error'/>*/}
+      {showErrorAlert && <Alert message={errorUpdateMessage} type='error'/>}
+      {showSuccessAlert && <Alert message={successUpdateMessage} type='success'/>}
       <div className={`${styles.page} p-2 pt-0`}>
         <div className={`${styles.navigate} px-0`}>
           <Link to='/hospitais'>
@@ -105,7 +161,7 @@ const EditHospital = (props: Props) => {
         <div className='p-4 px-0'>
           <h5 className='fw-bold'>Editar Cadastro</h5>
         </div>
-        <div className={`card ${styles.form_edit} shadow px-2`}>
+        <div className={`card ${styles.form_edit} px-2`}>
           <form className='register_form' onSubmit={handleSubmit}>
             <div className='card-body row p-4 pb-0'>
               <label className='col-12'>

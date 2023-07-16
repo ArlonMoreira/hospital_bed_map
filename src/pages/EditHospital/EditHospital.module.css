@@ -50,7 +50,9 @@
 .form_edit {
     width: 50%;
     border: 0;
-    border-radius: .5rem;
+    box-shadow: none;
+    padding: 2em;
+    border-radius: 1em;
 }
 
 .register_form label {

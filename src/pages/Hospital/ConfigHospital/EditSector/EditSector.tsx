@@ -2,14 +2,14 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 //Styles
 import styles from './EditSector.module.css'
 //Redux
-import { update, reset } from '../../../../slices/sectorSlice';
+import { update, reset, hideAlert } from '../../../../slices/sectorSlice';
 import { refreshToken } from '../../../../slices/authSlice'; 
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 //Hooks
 import { useParams } from 'react-router-dom';
 //Interface
-import { ISector } from '../../../../interfaces/Sector';
+import { ISector, ISectorErrors } from '../../../../interfaces/Sector';
 import { ITypeAccommodation } from '../../../../interfaces/TypeAccommodation';
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 //Componenets
@@ -25,6 +25,10 @@ const EditSector = (props: Props) => {
     const { sector } = useParams();
 
     useEffect(()=>{
+        dispath(hideAlert());
+    }, []);
+
+    useEffect(()=>{
         dispath(reset());
     }, [dispath])
 
@@ -36,14 +40,16 @@ const EditSector = (props: Props) => {
             successUpdateMessage,
             errorUpdateMessage,
             errorUpdate,
-            loading
+            loading,
+            errorsUpdate
         }: { 
             sectors: ISector[], 
             successUpdate: boolean,
             successUpdateMessage: string | null,
             errorUpdateMessage: string | null,
             errorUpdate: boolean,
-            loading: boolean
+            loading: boolean,
+            errorsUpdate: ISectorErrors | null
         } = useSelector((state: RootState) => state.sector);
     const [ sectorSelect, setSectorSelect ] = useState<ISector>();
 
@@ -93,12 +99,12 @@ const EditSector = (props: Props) => {
     //Caso ocorrer sucesso na requisição a mensagem de alert será disparada e depois
     //de alguns segundos a mesma será removida.
     useEffect(()=>{
-        if(successUpdate){
+        if(successUpdate && successUpdateMessage){
             setShowSucessAlert(true);
 
             const timeout = setTimeout(() => {
                 setShowSucessAlert(false);
-                dispath(reset());
+                dispath(hideAlert());
             }, 2600);
             
             return () =>{
@@ -109,15 +115,15 @@ const EditSector = (props: Props) => {
             setShowSucessAlert(false);
         }
 
-    }, [successUpdate]);
+    }, [successUpdate, successUpdateMessage]);
 
     useEffect(()=>{
-        if(errorUpdate){
+        if(errorUpdate && errorUpdateMessage){
             setShowErrorAlert(true);
 
             const timeout = setTimeout(() => {
                 setShowErrorAlert(false);
-                dispath(reset());
+                dispath(hideAlert());
             }, 2600);
 
             return () => {
@@ -128,7 +134,7 @@ const EditSector = (props: Props) => {
             setShowErrorAlert(false);
         }
         
-    }, [errorUpdate]);
+    }, [errorUpdate, errorUpdateMessage]);
 
     return (
         <>
@@ -147,20 +153,52 @@ const EditSector = (props: Props) => {
                                 <label>
                                     <span>Nome</span>
                                     <input
-                                        className='form-control'
+                                        className={`form-control ${errorsUpdate?.name && 'border border-danger'}`}
                                         placeholder='Setor'
                                         value={name}
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                                     />
+                                    {
+                                        errorsUpdate?.name && (
+                                            <ul className='error-message'>
+                                                {
+                                                    errorsUpdate.name.map((error, i) => (
+                                                        <li key={i}>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                                <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                                                            </svg>
+                                                            <p>{error}</p> 
+                                                        </li>
+                                                    ))
+                                                }
+                                            </ul>
+                                        )
+                                    }
                                 </label>
                                 <label>
                                     <span>Descrição</span>
                                     <input
-                                        className='form-control'
+                                        className={`form-control ${errorsUpdate?.description && 'border border-danger'}`}
                                         placeholder='Descrição do Setor'
                                         value={description}
                                         onChange={(e: ChangeEvent<HTMLInputElement>) => setDescription(e.target.value)}
                                     />
+                                    {
+                                        errorsUpdate?.description && (
+                                            <ul className='error-message'>
+                                                {
+                                                    errorsUpdate.description.map((error, i) => (
+                                                        <li key={i}>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                                <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                                                            </svg>
+                                                            <p>{error}</p> 
+                                                        </li>
+                                                    ))
+                                                }
+                                            </ul>
+                                        )
+                                    }
                                 </label>
                                 <label>
                                     <span>Tipo de acomodação</span>

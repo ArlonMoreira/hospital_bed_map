@@ -93,17 +93,19 @@ export const sectorSlice = createSlice({
             state.sectors = [];
         },
         reset: (state: IState) => {
-            state.successRegister = null;
             state.successRegisterMessage = null;
             state.loading = false;
             state.errorsRegister = null;
             state.errorRegisterMessage = null;
-            state.successUpdate = false;
             state.successUpdateMessage = null;
             state.errorsUpdate = null;
             state.errorUpdateMessage = null;
-            state.errorUpdate = false;
+        },
+        hideAlert: (state: IState) => {
+            state.successRegister = false;
             state.errorRegister = false;
+            state.successUpdate = false;
+            state.errorUpdate = false;
         }
     },
     extraReducers: (builder) => {
@@ -184,5 +186,5 @@ export const sectorSlice = createSlice({
     }
 });
 
-export const { reset, clearSectors } = sectorSlice.actions;
+export const { reset, clearSectors, hideAlert } = sectorSlice.actions;
 export default sectorSlice.reducer;

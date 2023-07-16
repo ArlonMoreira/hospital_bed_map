@@ -12,7 +12,7 @@ import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { hospital as getDataHospital } from '../../slices/hospitalSlice';
 import { list as listTypeAccomodation, reset as resetTypeAccomodation } from '../../slices/typeAccomodationSlice';
-import { register, reset as resetSector, list as listSector, clearSectors } from '../../slices/sectorSlice';
+import { register, reset as resetSector, list as listSector, clearSectors, hideAlert } from '../../slices/sectorSlice';
 import { refreshToken } from '../../slices/authSlice';
 //Hooks
 import { useParams } from 'react-router-dom';
@@ -122,6 +122,7 @@ const Hospital = (props: Props) => {
         };
         
         if (hospitalData){
+            dispatch(resetSector());
             await dispatch(refreshToken());
             await dispatch(register({hospital: hospitalData.id.toString(), data}));
         }
@@ -135,12 +136,12 @@ const Hospital = (props: Props) => {
 
     //Caso ocorra um erro irá apresentar o alert e depois de alguns segundos irá desaparecer
     useEffect(()=>{
-        if(errorRegister){
+        if(errorRegister && errorRegisterMessage){
             setShowErrorAlert(true);
 
             const timeout = setTimeout(()=>{
                 setShowErrorAlert(false);
-                dispatch(resetSector());
+                dispatch(hideAlert());
             }, 2600);
 
             return () => {
@@ -149,7 +150,7 @@ const Hospital = (props: Props) => {
         } else {
             setShowErrorAlert(false);
         }
-    }, [errorRegister]);
+    }, [errorRegister, errorRegisterMessage]);
 
     /**
      * Clear data form when registered is success
@@ -218,7 +219,7 @@ const Hospital = (props: Props) => {
                                 </button>
                             </div>
                             <p className='pt-2 mb-0' style={{color: 'var(--secundary-color)', fontSize: '.86rem', fontWeight: '500'}}>SETORES</p>
-                            <div className={`w-100 d-flex flex-column flex-shrink-0 pt-3 ${styles.navigate}`}>
+                            <div className={`d-flex flex-column flex-shrink-0 pt-3 ${styles.navigate}`}>
                                 <ul className='nav nav-pills flex-column mb-auto'>
                                     {
                                         sectors.map((sector)=>(

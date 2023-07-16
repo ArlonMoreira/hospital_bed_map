@@ -4,7 +4,7 @@ import styles from './Hospitals.module.css';
 import { Tooltip } from 'react-tooltip';
 import MaskedInput from 'react-input-mask';
 //Redux
-import { register, list, reset, update } from '../../slices/hospitalSlice';
+import { register, list, reset, update, hideAlerts } from '../../slices/hospitalSlice';
 import { refreshToken } from '../../slices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
@@ -65,6 +65,7 @@ const Hospitals = () => {
             is_active
         };
         
+        dispatch(reset());
         await dispatch(refreshToken()); //Update token access after to send data
         await dispatch(register(data));
         
@@ -84,6 +85,7 @@ const Hospitals = () => {
             setName('');
             setAcronym('');
             setIs_active(true);
+            
         }
 
     }, [successRegister]);
@@ -91,6 +93,10 @@ const Hospitals = () => {
     /**
      * List all hospital when dispatch update
      */
+    useEffect(()=>{
+        dispatch(hideAlerts());
+    }, []);
+
     useEffect(() => {
         dispatch(reset());
 
@@ -142,12 +148,12 @@ const Hospitals = () => {
     const [ showErrorUpdateAlert, setErrorUpdateAlert ] = useState<boolean>(false);
 
     useEffect(()=>{
-        if(errorRegister){
+        if(errorRegister && errorRegisterMessage){
             setShowErrorAlert(true);
 
             const timeout = setTimeout(()=>{
                 setShowErrorAlert(false);
-                dispatch(reset());
+                dispatch(hideAlerts());
             }, 2600);
 
             return () => {
@@ -158,15 +164,15 @@ const Hospitals = () => {
             setShowErrorAlert(false);
         }
 
-    }, [errorRegister]);
+    }, [errorRegister, errorRegisterMessage]);
 
     useEffect(()=>{
-        if(successRegister){
+        if(successRegister && successRegisterMessage){
             setShowSuccessAlert(true);
 
             const timeout = setTimeout(()=> {
                 setShowSuccessAlert(false);
-                dispatch(reset());
+                dispatch(hideAlerts());
             }, 2600);
 
             return () => {
@@ -176,15 +182,15 @@ const Hospitals = () => {
             setShowSuccessAlert(false);
         }
 
-    }, [successRegister]);
+    }, [successRegister, successRegisterMessage]);
 
     useEffect(()=>{
-        if(errorUpdate){
+        if(errorUpdate && errorUpdateMessage){
             setErrorUpdateAlert(true);
 
             const timeout = setTimeout(()=> {
                 setErrorUpdateAlert(false);
-                dispatch(reset());
+                dispatch(hideAlerts());
             }, 2600);
 
             return () => {
@@ -194,7 +200,7 @@ const Hospitals = () => {
             setErrorUpdateAlert(false);
         }
 
-    }, [errorUpdate]);
+    }, [errorUpdate, errorUpdateMessage]);
 
     return (
         <>  

@@ -112,18 +112,20 @@ export const hospitalSlice = createSlice({
     initialState,
     reducers: {
         reset: (state: IState) => {
-            state.successRegister = null;
             state.successRegisterMessage = null;
-            state.successUpdate = null;
             state.successUpdateMessage = null;
             state.loading = false;
             state.errorRegisterMessage = null;
             state.errorsRegister = null;
-            state.errorRegister = false;
             state.errorUpdateMessage = null;
-            state.errorUpdate = false;
             state.errorsUpdate = null;
             state.hospital = null;
+        },
+        hideAlerts: (state: IState) => {
+            state.successRegister = false;
+            state.successUpdate = false;
+            state.errorRegister = false;
+            state.errorUpdate = false;
         }
     },
     extraReducers: (builder) => {
@@ -224,5 +226,5 @@ export const hospitalSlice = createSlice({
     }
 });
 
-export const { reset } = hospitalSlice.actions;
+export const { reset, hideAlerts } = hospitalSlice.actions;
 export default hospitalSlice.reducer;

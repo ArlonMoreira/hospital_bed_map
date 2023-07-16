@@ -39,13 +39,14 @@
     z-index: 1;
     transition: 0.5s;
     overflow: hidden;
+    overflow-y: auto;
     visibility: hidden;
+    position: relative;
 }
 
 .contentAside {
     opacity: 0;
-    position: absolute;
-    width: 275px;
+    position: relative;
 }
 
 .open .aside {
@@ -127,6 +128,11 @@
     font-size: .85em !important;
     background: var(--secundary-color);
     font-weight: 400;
+}
+
+.navigate {
+    position: absolute;
+    width: 85%;
 }
 
 .navigate a {
