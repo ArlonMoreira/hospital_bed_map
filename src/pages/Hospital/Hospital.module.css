@@ -33,7 +33,7 @@
 /* Start: Aside */
 
 .aside {
-    height: 100vh;
+    height: 100%;
     width: 0;
     background-color: var(--bs-body-bg);
     z-index: 1;
@@ -207,7 +207,7 @@
 
 .contentBody {
     width: 100%;
-    height: 100%;
+    height: calc(100% - 100px);
 }
 
 

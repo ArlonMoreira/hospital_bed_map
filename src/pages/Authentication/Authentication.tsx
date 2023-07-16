@@ -66,7 +66,7 @@ const Authentication = () => {
 
     return (
         <>
-            { errorMessage && <Alert message={errorMessage} trigger={errors} type='error'/> }
+            {/* errorMessage && <Alert message={errorMessage} trigger={errors} type='error'/> */}
             <div className={`${styles.coontainer_auth} p-0 bg-transparent`}>
                 <div className={`${styles.auth_item}`}>
                     <div className={`${styles.slogan_area}`}>

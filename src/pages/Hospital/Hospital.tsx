@@ -105,6 +105,23 @@ const Hospital = (props: Props) => {
     }, [typeAccommodation]);
     
     //Register sector
+    const [showErrorAlert, setShowErrorAlert] = useState<boolean>(false);
+
+    //Caso ocorra um erro irá apresentar o alert e depois de alguns segundos irá desaparecer
+    useEffect(()=>{
+        if(errorRegisterMessage){
+            setShowErrorAlert(true);
+
+            const timeout = setTimeout(()=>{
+                setShowErrorAlert(false);
+            }, 2600);
+
+            return () => {
+                clearTimeout(timeout);
+            }
+        }
+    }, [errorRegisterMessage]);
+
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) =>{
         e.preventDefault();
 
@@ -139,21 +156,20 @@ const Hospital = (props: Props) => {
     const navigate = useNavigate();
     
     useEffect(() => {
-        const lastSectorIndex = sectors.indexOf(sectors[0]);
-        if(lastSectorIndex !== -1){
-            navigate(`configurar/${sectors[lastSectorIndex].id}/leitos`);
-        } else {
-            navigate(``);
+        if (!window.location.href.includes('editar') && !window.location.href.includes('leitos')) {
+            if(sectors.length > 0){
+                navigate(`configurar/${sectors[0].id}/leitos`);
+            }
         }
 
       }, [sectors]);
     
     return (
         <>
-            { errorRegisterMessage && <Alert message={errorRegisterMessage} trigger={errorRegisterMessage} type='error'/> }
+            {showErrorAlert && <Alert message={errorRegisterMessage} type='error'/>}
             <div className={`${styles.open} ${styles.container}`} ref={pageAside}>
                 <div className={`${styles.fade}`} onClick={handleShow}></div>
-                <div className='d-flex'>
+                <div className='d-flex h-100'>
                     <div className={`${styles.aside} shadow`}>
                         <div className={`p-4 pt-3 ${styles.contentAside}`}>
                             <div className={`${styles.navBarAside} px-0 d-flex justify-content-between align-items-center position-relative`}>

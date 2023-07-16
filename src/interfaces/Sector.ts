@@ -6,10 +6,10 @@ export interface ISectorErrors {
 };
 
 export interface ISectorParams {
-    name: string | null;
-    description: string | null;
-    tip_acc: string;
-    is_active: boolean;
+    name?: string | null;
+    description?: string | null;
+    tip_acc?: string;
+    is_active?: boolean;
 }
 
 export interface ISector {

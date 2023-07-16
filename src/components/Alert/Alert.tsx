@@ -4,11 +4,10 @@ import styles from './Alert.module.css';
 
 type Props = {
     message: string | null,
-    trigger: any,
     type: 'error' | 'success';
 }
 
-const Alert = ({message, trigger, type}: Props) => {
+const Alert = ({message, type}: Props) => {
 
     const alertRef = useRef<HTMLDivElement | null>(null);
 
@@ -23,15 +22,7 @@ const Alert = ({message, trigger, type}: Props) => {
     useEffect(()=>{
         showAlert();
 
-        const timeoutId = setTimeout(() => {
-            hideAlert();
-        }, 2600);
-     
-        return () => {
-            clearTimeout(timeoutId);
-        };
-
-    }, [trigger]);
+    }, [message]);
 
     return (
         <div className={`${styles.alert} ${type === 'success' && styles.success} ${type === 'error' && styles.error} ${styles.hide}`} ref={alertRef}>

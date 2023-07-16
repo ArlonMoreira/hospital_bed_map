@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 //Styles
 import styles from './ConfigHospital.module.css'
 //Router
-import { Routes, Route, NavLink } from 'react-router-dom';
+import { Routes, Route, NavLink, useLocation } from 'react-router-dom';
 //Hooks
 import { useParams, useNavigate } from 'react-router-dom';
 //Pages
@@ -16,13 +16,17 @@ const ConfigHospital = (props: Props) => {
 
   const { hospital, sector } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   
   useEffect(()=>{
-    navigate(`/hospitais/cadastrar/${hospital}/configurar/${sector}/leitos`);
-  }, [hospital, sector]);
+    //Assim que abro uma página por padrão será sempre pra rota pai, antes do /leitos e /editar
+    if(location.pathname === `/hospitais/cadastrar/${hospital}/configurar/${sector}`){
+      navigate(`/hospitais/cadastrar/${hospital}/configurar/${sector}/leitos`);
+    }
+  }, [hospital, sector, location, navigate]);
 
   return (
-    <div>
+    <>
       <ul className="nav nav-tabs border-0">
         <li className="nav-item border-0">
           <NavLink className={`nav-link ${styles.nav_tab}`} aria-current="page" to={`/hospitais/cadastrar/${hospital}/configurar/${sector}/leitos`}>
@@ -43,7 +47,7 @@ const ConfigHospital = (props: Props) => {
           <Route path="editar" element={<EditSector/>}/>
         </Routes>
       </div>
-    </div>
+    </>
   )
 }
 

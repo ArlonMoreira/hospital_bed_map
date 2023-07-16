@@ -9,6 +9,8 @@
     --tw-ring-offset-shadow: 0 0 #0000;
     --tw-ring-shadow: 0 0 #0000;
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / .1), 0 1px 2px -1px rgb(0 0 0 / .1);
+    --bs-success: #00bf9a;
+    --bs-danger: #fd77a4;
 }
 
 body {
@@ -189,6 +191,8 @@ input[type="submit"]:hover {
     font-size: .86rem;
     margin-top: 0.25rem;
     transition: all .5s ease-in-out;
+    background-color: transparent;
+    color: var(--bs-gray);
     font-weight: 400;
     display: flex;
     height: 3em;   

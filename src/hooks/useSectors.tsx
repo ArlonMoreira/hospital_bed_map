@@ -1,5 +1,5 @@
 //interface
-import { ISectorParams, ISectorResponse } from "../interfaces/Sector";
+import { ISectorParams, ISectorResponse, ISector } from "../interfaces/Sector";
 
 const url = `${process.env.REACT_APP_BASE_URL}`;
 
@@ -62,9 +62,35 @@ const useSectors = () => {
 
     };
 
+    const update = async ({id, token, data}: Params) => {
+        try {
+            const response:Response = await fetch(`${url}setor/atualizar/${id}/`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+
+            return {
+                success: response.ok,
+                ...result
+            } as ISectorResponse
+
+        } catch (error) {
+            return {
+                success: false,
+                message: 'Erro interno no sistema. Contate o administrador.'
+            } as ISectorResponse
+        }
+    };
+
     return {
         register,
-        list
+        list,
+        update
     };
 
 };

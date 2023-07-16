@@ -89,8 +89,8 @@ const EditHospital = (props: Props) => {
 
   return (
     <>
-      {successUpdateMessage && <Alert trigger={successUpdate} message={successUpdateMessage} type='success'/>}
-      {errorsUpdate && <Alert trigger={errorsUpdate} message={errorUpdateMessage} type='error'/>}
+      {/*{successUpdateMessage && <Alert trigger={successUpdate} message={successUpdateMessage} type='success'/>}
+      {errorsUpdate && <Alert trigger={errorsUpdate} message={errorUpdateMessage} type='error'/>*/}
       <div className={`${styles.page} p-2 pt-0`}>
         <div className={`${styles.navigate} px-0`}>
           <Link to='/hospitais'>

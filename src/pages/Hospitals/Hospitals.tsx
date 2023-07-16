@@ -131,9 +131,9 @@ const Hospitals = () => {
 
     return (
         <>  
-            { errorUpdateMessage && <Alert message={errorUpdateMessage} trigger={errorUpdateMessage} type='error' />}
+            {/*{ errorUpdateMessage && <Alert message={errorUpdateMessage} trigger={errorUpdateMessage} type='error' />}
             { successRegisterMessage && <Alert message={successRegisterMessage} trigger={successRegister} type='success' />}
-            { errorRegisterMessage && <Alert message={errorRegisterMessage} trigger={errorsRegister} type='error' /> }
+    { errorRegisterMessage && <Alert message={errorRegisterMessage} trigger={errorsRegister} type='error' /> }*/}
             <div className={`${styles.hospitals_container}`}>
                 <div data-bs-toggle="modal" data-bs-target="#register-hospital" className={`card ${styles.item} ${styles.insert_container}`}>
                     <a className={`${styles.insert_body}`}>

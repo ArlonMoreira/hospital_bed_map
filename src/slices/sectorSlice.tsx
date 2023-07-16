@@ -9,18 +9,28 @@ import { IAuth } from "../interfaces/Authentication";
 interface IState {
     successRegister: boolean | null,
     successRegisterMessage: string | null,
+    successUpdate: boolean,
+    successUpdateMessage: string | null,   
     loading: boolean,
     errorsRegister: ISectorErrors | null,
     errorRegisterMessage: string | null,
+    errorsUpdate: ISectorErrors | null,
+    errorUpdateMessage: string | null,
+    errorUpdate: boolean,
     sectors: ISector[]
 };
 
 const initialState: IState = {
     successRegister: null,
     successRegisterMessage: null,
+    successUpdate: false,
+    successUpdateMessage: null, 
     loading: false,
     errorsRegister: null,
     errorRegisterMessage: null,
+    errorsUpdate: null,
+    errorUpdateMessage: null,
+    errorUpdate: false,
     sectors: []
 };
 
@@ -55,8 +65,21 @@ export const list = createAsyncThunk(
 
 export const update = createAsyncThunk(
     'sector/update',
-    (data:ISector, { getState, rejectWithValue })=>{
-        console.log(data);
+    async (data:ISector, { getState, rejectWithValue })=>{
+        const useAuth:IAuth = await (getState() as any).auth.userAuth;
+
+        const response:ISectorResponse = await useSectors().update({
+            id: data.id,
+            token: useAuth.access,
+            data
+        })
+
+        if(response.success){
+            return response;
+        } else {
+            return rejectWithValue(response);
+        }
+        
     }
 )
 
@@ -73,6 +96,11 @@ export const sectorSlice = createSlice({
             state.loading = false;
             state.errorsRegister = null;
             state.errorRegisterMessage = null;
+            state.successUpdate = false;
+            state.successUpdateMessage = null;
+            state.errorsUpdate = null;
+            state.errorUpdateMessage = null;
+            state.errorUpdate = false;
         }
     },
     extraReducers: (builder) => {
@@ -101,7 +129,12 @@ export const sectorSlice = createSlice({
                 //loading
                 state.loading = false;
                 //Error
-                state.errorRegisterMessage = response.message;
+                if(Object.keys(response).indexOf('message') !== -1){
+                    state.errorRegisterMessage = response.message;
+                } else {
+                    state.errorRegisterMessage = 'Erro interno no sistema. Contate o administrador.'
+                };
+                
                 if(response.data){
                     state.errorsRegister = response.data as ISectorErrors;
                 } else {
@@ -112,6 +145,45 @@ export const sectorSlice = createSlice({
                 //Sectors
                 state.sectors = action.payload.data as ISector[];
             })
+            .addCase(update.fulfilled, (state: IState, action: PayloadAction<ISectorResponse>) => {
+                const response = (action.payload as ISectorResponse);
+                //Success
+                state.successUpdate = true;
+                state.successUpdateMessage = response.message;
+                //loading
+                state.loading = false;
+                //Sectors
+                //Tenho que falar que response.data é um array
+                if(response && Array.isArray(response.data)){
+                    const data = (response.data[0] as ISector);
+                    //Retorna o índice em que desejo alterar
+                    const indexUpdate = state.sectors.findIndex((sector) => sector.id === data.id);
+                    state.sectors[indexUpdate] = data;
+                }
+                //Errors
+                state.errorsUpdate = null;
+                state.errorUpdateMessage = null;
+            })
+            .addCase(update.pending, (start: IState) => {
+                //Loading
+                start.loading = true;
+            })
+            .addCase(update.rejected, (state:IState, action: PayloadAction<ISectorResponse | unknown>)=>{
+                const response = action.payload as ISectorResponse;
+                //Loading
+                state.loading = false;
+                //
+                state.errorUpdate = true;
+                state.errorsUpdate = response.data as ISectorErrors;
+                //Error message
+                if(Object.keys(response).indexOf('message') !== -1){
+                    state.errorUpdateMessage = response.message;
+                } else {
+                    state.errorUpdateMessage = 'Erro interno no sistema. Contate o administrador.';
+                }
+                
+            })
+
     }
 });
 
