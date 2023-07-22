@@ -14,9 +14,9 @@ export interface ISectorParams {
 
 export interface ISector {
     id?: number | string;
-    name: string;
-    description: string;
-    tip_acc: string;
+    name?: string;
+    description?: string;
+    tip_acc?: string;
     activation_date?: string;
     deactivation_date?: string;
     is_active?: boolean

@@ -85,6 +85,22 @@ export const update = createAsyncThunk(
     }
 )
 
+export const active = createAsyncThunk(
+    'sector/active',
+    async ({sector, active}: {sector: string | number, active: boolean}, { getState, rejectWithValue }) => {
+        const useAuth:IAuth = await (getState() as any).auth.userAuth;
+        const response:ISectorResponse = await useSectors().update({
+            id: sector,
+            token: useAuth.access,
+            data: {
+                is_active: active
+            }
+        });
+
+        return response;
+    }
+)
+
 export const sectorSlice = createSlice({
     name: 'sector',
     initialState,
@@ -182,7 +198,18 @@ export const sectorSlice = createSlice({
                 }
                 
             })
-
+            .addCase(active.fulfilled, (state: IState, action: PayloadAction<ISectorResponse>) => {
+                const response = action.payload as ISectorResponse;
+                //Success
+                state.successUpdate = true;
+                state.successUpdateMessage = response.message;
+                //Array
+                if(Array.isArray(response.data)){
+                    const data = (response.data[0] as ISector);
+                    const indexUpdate = state.sectors.findIndex((sector) => sector.id === data.id);
+                    state.sectors[indexUpdate].is_active = data.is_active;
+                }
+            })
     }
 });
 

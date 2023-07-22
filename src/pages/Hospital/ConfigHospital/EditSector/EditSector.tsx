@@ -2,7 +2,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 //Styles
 import styles from './EditSector.module.css'
 //Redux
-import { update, reset, hideAlert } from '../../../../slices/sectorSlice';
+import { update, reset, hideAlert, active } from '../../../../slices/sectorSlice';
 import { refreshToken } from '../../../../slices/authSlice'; 
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
@@ -71,9 +71,9 @@ const EditSector = (props: Props) => {
 
     useEffect(()=>{
         if(sectorSelect) {
-            setName(sectorSelect?.name);
-            setDescription(sectorSelect?.description); 
-            setTip_acc(sectorSelect.tip_acc);           
+            setName(sectorSelect.name!);
+            setDescription(sectorSelect.description!); 
+            setTip_acc(sectorSelect.tip_acc!);
         }
         
     }, [sectorSelect]);
@@ -136,13 +136,38 @@ const EditSector = (props: Props) => {
         
     }, [errorUpdate, errorUpdateMessage]);
 
+    const handleActiveDeactive = async (e: FormEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
+        if(sectorSelect){
+            const data: ISector = {
+                id: sectorSelect.id,
+                is_active: sectorSelect.is_active ? false: true
+            };
+
+            await dispath(refreshToken());
+            await dispath(active({sector: data.id!, active: data.is_active!}));
+        }
+
+    };
+
     return (
         <>
             {showSucessAlert && <Alert type='success' message={successUpdateMessage}></Alert>}
             {showErrorAlert && <Alert type='error' message={errorUpdateMessage}></Alert>}
             <div className={`${styles.container}`}>
                 <div className={`${styles.toolarea}`}>
-                    <button>Desativar</button>
+                    {
+                        sectorSelect?.is_active ? (
+                            <button onClick={handleActiveDeactive}>
+                                Desativar
+                            </button>
+                        ) : (
+                            <button onClick={handleActiveDeactive}>
+                                Ativar
+                            </button>
+                        )
+                    }
                     <button>Deletar</button>
                 </div>
                 <div className={`${styles.content}`}>
