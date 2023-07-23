@@ -7,6 +7,7 @@ import { ISector, ISectorParams, ISectorResponse, ISectorErrors } from "../inter
 import { IAuth } from "../interfaces/Authentication";
 
 interface IState {
+    successRemove: boolean,
     successRegister: boolean | null,
     successRegisterMessage: string | null,
     successUpdate: boolean,
@@ -18,10 +19,13 @@ interface IState {
     errorsUpdate: ISectorErrors | null,
     errorUpdateMessage: string | null,
     errorUpdate: boolean,
+    errorRemoveMessage: string | null,
+    errorRemove: boolean,
     sectors: ISector[]
 };
 
 const initialState: IState = {
+    successRemove: false,
     successRegister: null,
     successRegisterMessage: null,
     successUpdate: false,
@@ -33,6 +37,8 @@ const initialState: IState = {
     errorsUpdate: null,
     errorUpdateMessage: null,
     errorUpdate: false,
+    errorRemoveMessage: null,
+    errorRemove: false,
     sectors: []
 };
 
@@ -87,7 +93,7 @@ export const update = createAsyncThunk(
 
 export const active = createAsyncThunk(
     'sector/active',
-    async ({sector, active}: {sector: string | number, active: boolean}, { getState, rejectWithValue }) => {
+    async ({sector, active}: {sector: string | number, active: boolean}, { getState }) => {
         const useAuth:IAuth = await (getState() as any).auth.userAuth;
         const response:ISectorResponse = await useSectors().update({
             id: sector,
@@ -98,6 +104,23 @@ export const active = createAsyncThunk(
         });
 
         return response;
+    }
+)
+
+export const remove = createAsyncThunk(
+    'sector/remove',
+    async (sector:string, { getState, rejectWithValue }) => {
+        const useAuth:IAuth = await (getState() as any).auth.userAuth;
+        const response:ISectorResponse = await useSectors().remove({
+            id: sector,
+            token: useAuth.access
+        });
+
+        if(response.success){
+            return response;
+        } else {
+            return rejectWithValue(response);
+        }
     }
 )
 
@@ -116,16 +139,36 @@ export const sectorSlice = createSlice({
             state.successUpdateMessage = null;
             state.errorsUpdate = null;
             state.errorUpdateMessage = null;
+            state.errorRemoveMessage = null;
         },
         hideAlert: (state: IState) => {
+            state.successRemove = false;
             state.successRegister = false;
             state.errorRegister = false;
             state.successUpdate = false;
             state.errorUpdate = false;
+            state.errorRemove = false;
         }
     },
     extraReducers: (builder) => {
         builder
+            .addCase(remove.fulfilled, (state: IState, action: PayloadAction<ISectorResponse>) => {
+                const response = (action.payload.data as ISector[]);
+                //Success
+                state.successRemove = true;
+                //Sector
+                state.sectors = state.sectors.filter((sector)=> sector.id !== response[0].id);
+            })
+            .addCase(remove.rejected, (state: IState, action: PayloadAction<ISectorResponse | unknown>) => {
+                const response = (action.payload as ISectorResponse);
+                state.errorRemove = true;
+                //Error
+                if(Object.keys(response).indexOf('message') !== -1){
+                    state.errorRemoveMessage = response.message;
+                } else {
+                    state.errorRemoveMessage = 'Erro interno no sistema. Contate o administrador.'
+                };
+            })
             .addCase(register.fulfilled, (state: IState, action: PayloadAction<ISectorResponse>) => {
                 const response = (action.payload.data as ISector[]);
                 //Success

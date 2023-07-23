@@ -8,9 +8,17 @@
 
 .toolarea button {
     border-radius: 2em;
-    background: var(--background-default);
+    background: var(--secundary-color);
     border: 0;
-    color: var(--bs-gray);
+    color: var(--bs-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25em;
+    fill: var(--bs-white);
+    padding-top: 0;
+    font-size: .8rem;
+    font-weight: 400;
 }
 
 .container {

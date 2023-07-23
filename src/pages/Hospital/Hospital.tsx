@@ -1,10 +1,10 @@
-import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
+import React, { useEffect, useState, useRef, ChangeEvent, FormEvent } from 'react';
 //Router
 import { Routes, Route, NavLink } from "react-router-dom";
 //Styles
 import styles from './Hospital.module.css';
 //Router
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 //Redux
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,11 +12,8 @@ import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { hospital as getDataHospital } from '../../slices/hospitalSlice';
 import { list as listTypeAccomodation, reset as resetTypeAccomodation } from '../../slices/typeAccomodationSlice';
-import { register, reset as resetSector, list as listSector, clearSectors, hideAlert } from '../../slices/sectorSlice';
+import { register, reset as resetSector, list as listSector, clearSectors, hideAlert, remove } from '../../slices/sectorSlice';
 import { refreshToken } from '../../slices/authSlice';
-//Hooks
-import { useParams } from 'react-router-dom';
-import { useRef } from 'react';
 //Interface
 import { IHospital } from '../../interfaces/Hospital';
 import { ITypeAccommodation } from '../../interfaces/TypeAccommodation';
@@ -25,10 +22,15 @@ import { ISector, ISectorParams, ISectorErrors } from '../../interfaces/Sector';
 import Alert from '../../components/Alert/Alert';
 //Pages
 import ConfigHospital from './ConfigHospital/ConfigHospital';
+//Context
+import { useSectorContext } from '../../components/Context/SectorContext';
 
 type Props = {}
 
 const Hospital = (props: Props) => {
+
+    //Setor selecionado
+    const sectorSelected = useSectorContext();
 
     //Redux dispatch
     const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>();
@@ -84,12 +86,18 @@ const Hospital = (props: Props) => {
             errorRegisterMessage,
             errorRegister,
             loading,
+            successRemove,
+            errorRemove,
+            errorRemoveMessage,
             errorsRegister } : { 
                 sectors: ISector[],
                 successRegister: boolean | null,
                 loading: boolean,
                 errorRegisterMessage: string | null,
                 errorRegister: boolean,
+                successRemove: boolean,
+                errorRemove: boolean,
+                errorRemoveMessage: string | null,
                 errorsRegister: ISectorErrors | null
             } = useSelector((state: RootState) => state.sector);
 
@@ -176,10 +184,53 @@ const Hospital = (props: Props) => {
             }
         }
 
-      }, [sectors]);
+    }, [sectors]);
+
+    /**
+     * Excluir setor
+     */
+    const [showErrrorRemoveAlert, setShowErrrorRemoveAlert] = useState<boolean>(false);
+    const cancelButton = useRef<HTMLButtonElement>(null);
+
+    const handleExcludeSector = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        if(sectorSelected?.sectorSelected){
+            await dispatch(refreshToken());
+            await dispatch(remove(sectorSelected?.sectorSelected));
+            cancelButton.current?.click();
+        }
+    };
+
+    useEffect(()=>{
+        if(successRemove){
+            if(sectors.length > 0){
+                navigate(`configurar/${sectors[0].id}/leitos`);
+            }
+            
+        }
+    }, [successRemove]);
+
+    useEffect(()=>{
+        if(errorRemove && errorRemoveMessage){
+            setShowErrrorRemoveAlert(true);
+            
+            const timeout = setTimeout(()=>{
+                setShowErrrorRemoveAlert(false);
+                dispatch(hideAlert());
+            }, 2700);
+
+            return () => {
+                clearTimeout(timeout);
+            }
+        } else {
+            setShowErrrorRemoveAlert(false);
+        }
+
+    }, [errorRemove, errorRemoveMessage]);
     
     return (
         <>
+            {showErrrorRemoveAlert && <Alert message={errorRemoveMessage} type='error'/>}
             {showErrorAlert && <Alert message={errorRegisterMessage} type='error'/>}
             <div className={`${styles.open} ${styles.container}`} ref={pageAside}>
                 <div className={`${styles.fade}`} onClick={handleShow}></div>
@@ -225,10 +276,18 @@ const Hospital = (props: Props) => {
                                         sectors.map((sector)=>(
                                             <li className='nav-item mb-2 sub-item' key={sector.id}>
                                                 <NavLink to={`configurar/${sector.id}`} className={`nav-link ${styles.navSector}`}>
-                                                    <div className={`${styles.label_navSector}`}>
-                                                        <svg version="1.0" viewBox="0 0 207 164" width='1.6em' height='1.6em'>
-                                                            <path d="M145.8 3.2c-1.4 1.1-6.3 12.5-17 39.8-.9 2.3-1.3 1.8-6-7.5-2.8-5.5-5.7-10.8-6.6-11.8-1.4-1.5-3.9-1.7-24.9-1.7-14.2 0-24.2.4-25.4 1-1.2.7-1.9 2.1-1.9 4s.7 3.3 1.9 4c1.2.6 10.5 1 23.3 1h21.3l7.3 14.4c7.1 14.2 8.9 16.4 12.5 15 .9-.3 5-9.2 9.7-21 4.5-11.2 8.5-20.4 8.9-20.4.4 0 1.8 2.3 3.1 5.1s3.2 5.5 4.1 6c1 .5 11.2.9 22.8.9 22.3 0 24.1-.4 24.1-5s-1.9-5-22.6-5H161l-4.1-8.3C151 2 149.4.5 145.8 3.2z"/><path d="M5.8 23.1C4.1 24 4 28.4 4 92c0 66.1.1 68 1.9 69 2.7 1.4 3.7 1.3 5.5-.6 1.2-1.2 1.6-3.6 1.6-10V142h181v9c0 8 .2 9 2 10 2.8 1.5 5.9.4 6.6-2.4.3-1.2.4-19.7.2-41.2l-.3-38.9-3.3-6.7c-3.8-7.7-9.2-13-17.1-16.6-5.1-2.4-7-2.7-20.3-3l-14.8-.4-2 4.7c-1.1 2.6-2 4.9-2 5.1 0 .2 6.9.4 15.3.4 10.1.1 16.5.5 19 1.4 5.8 2.1 10.5 6.2 13.4 11.9 2.5 4.9 2.7 6.2 3.1 20.9l.4 15.8H93V88.6c0-20 .2-23.7 1.6-25 1.2-1.2 3.6-1.6 10-1.6 4.6 0 8.4-.2 8.4-.5 0-.2-1-2.5-2.2-5l-2.2-4.5h-6c-7.7 0-13.9 2.7-16.6 7.2-1.9 3.1-2 5-2 28V112H13V68.6c0-38.2-.2-43.6-1.6-45-1.8-1.8-3.2-2-5.6-.5zM194 127v5H13v-10h181v5z"/><path d="M40.6 53.6c-6.2 2-13.7 9.3-15.4 15-2.9 9.9-.8 18.8 5.9 25.6 17 17.1 45.1 2.4 41.5-21.7-2.1-13.7-18.2-23.3-32-18.9zm18 12.4c6.6 6.5 6.6 15.5 0 21.9-6.4 6.2-17.6 5.1-22.8-2.2-3.2-4.4-3.4-11.3-.6-16.1 3.2-5.4 7.9-7.8 14.6-7.3 4.3.3 5.9 1 8.8 3.7z"/>
-                                                        </svg>
+                                                    <div className={`${styles.label_navSector} ${!sector.is_active ? styles.desactive : ''}`}>
+                                                        {
+                                                            sector.is_active ? (
+                                                                <svg viewBox="0 0 576 512" width={'1em'} height={'1em'}>
+                                                                    <path d="M352 144c0-44.2 35.8-80 80-80s80 35.8 80 80v48c0 17.7 14.3 32 32 32s32-14.3 32-32V144C576 64.5 511.5 0 432 0S288 64.5 288 144v48H64c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V256c0-35.3-28.7-64-64-64H352V144z"/>
+                                                                </svg>
+                                                            ) : (
+                                                                <svg viewBox="0 0 448 512" width={'.86em'} height={'.86em'}>
+                                                                    <path d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z"/>
+                                                                </svg>
+                                                            )
+                                                        }
                                                         <span>{sector.name}</span>
                                                     </div>
                                                     <div className={`${styles.begde}`}>
@@ -256,6 +315,24 @@ const Hospital = (props: Props) => {
                             <Routes>
                                 <Route path="configurar/:sector/*" element={<ConfigHospital/>}/>
                             </Routes>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className='modal fade pb-5' id='exclude-sector-modal' data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div className='modal-dialog modal-dialog-centered'>
+                    <div className='modal-content border-0'>
+                        <div className='modal-body pb-0 text-center'>
+                            <h5>Deseja remover este setor?</h5>
+                            <p>Cuidado. Ao deletar o setor todos os leitos relacionados ao mesmo também serão deletados.</p>
+                        </div>
+                        <div className='modal-footer border-0 modal_footer_bg px-4'>
+                            <button className='form-control cancel' data-bs-dismiss="modal" aria-label="Close" ref={cancelButton}>
+                                Cancelar
+                            </button>
+                            <button className='form-control bg-danger' onClick={handleExcludeSector}>
+                                Deletar
+                            </button>
                         </div>
                     </div>
                 </div>

@@ -34,12 +34,12 @@ const Logout = (props: Props) => {
                             <p>Deseja encerrar a sessão?</p>
                         </div>
                         <div className={`modal-footer ${styles.submit_logout}`}>
+                            <button className={`form-control cancel`} data-bs-dismiss="modal" aria-label="Close">
+                                <span>Cancelar</span>
+                            </button>  
                             <button className='form-control' onClick={handleLogout} data-bs-dismiss="modal" aria-label="Close">
                                 <span>Sim</span>
-                            </button>
-                            <button className={`form-control ${styles.cancel}`} data-bs-dismiss="modal" aria-label="Close">
-                                <span>Cancelar</span>
-                            </button>                    
+                            </button>                  
                         </div>
                     </div>
                 </div>

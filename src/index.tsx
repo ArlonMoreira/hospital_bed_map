@@ -14,14 +14,18 @@ import App from './App';
 //Redux
 import { Provider } from 'react-redux';
 import { store } from './store';
+//Context
+import { SectorProvider } from './components/Context/SectorContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   //<React.StrictMode>
-  <Provider store={store}>
-    <App />
-  </Provider>
+  <SectorProvider>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </SectorProvider>
   //</React.StrictMode>
 );

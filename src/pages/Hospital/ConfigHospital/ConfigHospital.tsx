@@ -8,11 +8,15 @@ import { useParams, useNavigate } from 'react-router-dom';
 //Pages
 import Beds from './Beds/Beds';
 import EditSector from './EditSector/EditSector';
+//Context
+import { useSectorContext } from '../../../components/Context/SectorContext';
 
 type Props = {
 }
 
 const ConfigHospital = (props: Props) => {
+
+  const sectorSelected = useSectorContext();
 
   const { hospital, sector } = useParams();
   const navigate = useNavigate();
@@ -23,6 +27,11 @@ const ConfigHospital = (props: Props) => {
     if(location.pathname === `/hospitais/cadastrar/${hospital}/configurar/${sector}`){
       navigate(`/hospitais/cadastrar/${hospital}/configurar/${sector}/leitos`);
     }
+
+    if(sector){
+      sectorSelected?.setSectorSelected(sector);
+    }
+
   }, [hospital, sector, location, navigate]);
 
   return (

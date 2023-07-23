@@ -11,6 +11,29 @@ interface Params {
 
 const useSectors = () => {
 
+    const remove = async({id, token}: Params):Promise<ISectorResponse> => {
+        try {
+            const response: Response = await fetch(`${url}setor/remover/${id}/`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            const result = await response.json();
+
+            return {
+                success: response.ok,
+                ...result
+            } as ISectorResponse
+
+        } catch (error) {
+            return {
+                success: false,
+                message: 'Erro interno no sistema. Contate o administrador.'
+            } as ISectorResponse;
+        }
+    };
+
     const list = async({id, token}: Params):Promise<ISectorResponse> => {
         try {
             const response: Response = await fetch(`${url}setor/${id}/`, {
@@ -90,7 +113,8 @@ const useSectors = () => {
     return {
         register,
         list,
-        update
+        update,
+        remove
     };
 
 };

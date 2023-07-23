@@ -138,15 +138,17 @@
 .navigate a {
     font-size: .9rem;
     padding: .76rem;
-    color: var(--bs-gray-600);
-    fill: var(--bs-gray-600);
+    color: var(--font-dark) !important;
+    fill: var(--font-dark) !important;
     cursor: pointer;
 }
 
 .navigate a:hover {
     background-color: #f4f4f5 !important;
-    color: var(--font-dark) !important;
-    fill: var(--font-dark) !important;
+}
+
+.desactive {
+    opacity: .28;
 }
 
 .navSector {
@@ -158,8 +160,8 @@
 
 .label_navSector {
     display: flex;
-    align-items: flex-end;
-    gap: .5em;
+    align-items: baseline;
+    gap: 0.5em;
 }
 
 .begde {
