@@ -51,10 +51,12 @@ const ConfigHospital = (props: Props) => {
         </li>
       </ul>
       <div className={styles.container}>
-        <Routes>
-          <Route path="leitos" element={<Beds/>}/>
-          <Route path="editar" element={<EditSector/>}/>
-        </Routes>
+        <div className={styles.content}>
+          <Routes>
+            <Route path="leitos" element={<Beds/>}/>
+            <Route path="editar" element={<EditSector/>}/>
+          </Routes>
+        </div>
       </div>
     </>
   )
