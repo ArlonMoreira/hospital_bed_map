@@ -18,6 +18,15 @@ export interface IBedParams {
     is_extra: boolean;
 }
 
+export interface IBedErrors {
+    sector?: string[];
+    name?: string[];
+    type_occupation?: string[];
+    type?: string[];
+    is_active?: string[];
+    is_extra?: string[];
+}
+
 export interface IBed {
     id: number;
     hospital_id: number;
@@ -31,7 +40,7 @@ export interface IBed {
 }
 
 export interface IBedResponse {
-    success: boolean | null;
-    message: string | null;
-    data?: IStatus[] | IType[] | IBed[];
+    success: boolean;
+    message: string;
+    data?: IStatus[] | IType[] | IBed[] | IBedErrors;
 }
