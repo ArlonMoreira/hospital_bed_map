@@ -4,17 +4,14 @@ import { Routes, Route, NavLink } from "react-router-dom";
 //Styles
 import styles from './Hospital.module.css';
 //Router
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 //Redux
-import { status, type } from '../../slices/formBedSlice';
-//import { register as registerBed, resetAlertBed, reset as resetBed } from '../../slices/bedSlice';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { hospital as getDataHospital } from '../../slices/hospitalSlice';
 import { list as listTypeAccomodation, reset as resetTypeAccomodation } from '../../slices/typeAccomodationSlice';
-import { register, reset as resetSector, list as listSector, clearSectors, hideAlert, remove } from '../../slices/sectorSlice';
+import { register, reset as resetSector, list as listSector, clearSectors, hideAlert } from '../../slices/sectorSlice';
 import { refreshToken } from '../../slices/authSlice';
 //Interface
 import { IHospital } from '../../interfaces/Hospital';
@@ -23,17 +20,13 @@ import { ISector, ISectorParams, ISectorErrors } from '../../interfaces/Sector';
 //Component
 import Alert from '../../components/Alert/Alert';
 import RegisterBed from '../../components/RegisterBed/RegisterBed';
+import RemoveSector from '../../components/RemoveSector/RemoveSector';
 //Pages
 import ConfigHospital from './ConfigHospital/ConfigHospital';
-//Context
-import { useSectorContext } from '../../components/Context/SectorContext';
 
 type Props = {}
 
 const Hospital = (props: Props) => {
-
-    //Setor selecionado
-    const sectorSelected = useSectorContext();
 
     //Redux dispatch
     const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>();
@@ -67,8 +60,6 @@ const Hospital = (props: Props) => {
         dispatch(resetSector());
         //Clear sectors
         dispatch(clearSectors());
-        //Clear reset bed
-        //dispatch(resetBed());
 
         const refresh = async() => {
             if(hospital){ //run only when params id is passed
@@ -91,18 +82,12 @@ const Hospital = (props: Props) => {
             errorRegisterMessage,
             errorRegister,
             loading,
-            successRemove,
-            errorRemove,
-            errorRemoveMessage,
             errorsRegister } : { 
                 sectors: ISector[],
                 successRegister: boolean | null,
                 loading: boolean,
                 errorRegisterMessage: string | null,
                 errorRegister: boolean,
-                successRemove: boolean,
-                errorRemove: boolean,
-                errorRemoveMessage: string | null,
                 errorsRegister: ISectorErrors | null
             } = useSelector((state: RootState) => state.sector);
 
@@ -191,51 +176,8 @@ const Hospital = (props: Props) => {
 
     }, [sectors]);
     
-    /**
-     * Excluir setor
-     */
-    const [showErrrorRemoveAlert, setShowErrrorRemoveAlert] = useState<boolean>(false);
-    const cancelButton = useRef<HTMLButtonElement>(null);
-
-    const handleExcludeSector = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        if(sectorSelected?.sectorSelected){
-            await dispatch(refreshToken());
-            await dispatch(remove(sectorSelected?.sectorSelected));
-            cancelButton.current?.click();
-        }
-    };
-
-    useEffect(()=>{
-        if(successRemove){
-            if(sectors.length > 0){
-                navigate(`configurar/${sectors[0].id}/leitos`);
-            }
-            
-        }
-    }, [successRemove]);
-
-    useEffect(()=>{
-        if(errorRemove && errorRemoveMessage){
-            setShowErrrorRemoveAlert(true);
-            
-            const timeout = setTimeout(()=>{
-                setShowErrrorRemoveAlert(false);
-                dispatch(hideAlert());
-            }, 2700);
-
-            return () => {
-                clearTimeout(timeout);
-            }
-        } else {
-            setShowErrrorRemoveAlert(false);
-        }
-
-    }, [errorRemove, errorRemoveMessage]);
-
     return (
         <>
-            {showErrrorRemoveAlert && <Alert message={errorRemoveMessage} type='error'/>}
             {showErrorAlert && <Alert message={errorRegisterMessage} type='error'/>}
             <div className={`${styles.open} ${styles.container}`} ref={pageAside}>
                 <div className={`${styles.fade}`} onClick={handleShow}></div>
@@ -325,24 +267,7 @@ const Hospital = (props: Props) => {
                 </div>
             </div>
             <RegisterBed></RegisterBed>
-            <div className='modal fade pb-5' id='exclude-sector-modal' data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div className='modal-dialog modal-dialog-centered'>
-                    <div className='modal-content border-0'>
-                        <div className='modal-body pb-0 text-center'>
-                            <h5>Deseja remover este setor?</h5>
-                            <p>Cuidado. Ao deletar o setor todos os leitos relacionados ao mesmo também serão deletados.</p>
-                        </div>
-                        <div className='modal-footer border-0 modal_footer_bg px-4'>
-                            <button className='form-control cancel' data-bs-dismiss="modal" aria-label="Close" ref={cancelButton}>
-                                Cancelar
-                            </button>
-                            <button className='form-control bg-danger' onClick={handleExcludeSector}>
-                                Deletar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <RemoveSector></RemoveSector>
             <div className='modal fade pb-5' id='register-sector' data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className='modal-dialog modal-dialog-centered modal-lg'>
                     <div className='modal-content border-0'>
