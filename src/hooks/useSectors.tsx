@@ -11,110 +11,69 @@ interface Params {
 
 const useSectors = () => {
 
-    const remove = async({id, token}: Params):Promise<ISectorResponse> => {
+    const config = async({params, url, method}:{params:Params, url:string, method:string}) => {
         try {
-            const response: Response = await fetch(`${url}setor/remover/${id}/`, {
-                method: 'DELETE',
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            const result = await response.json();
-
-            return {
-                success: response.ok,
-                ...result
-            } as ISectorResponse
-
-        } catch (error) {
-            return {
-                success: false,
-                message: 'Erro interno no sistema. Contate o administrador.'
-            } as ISectorResponse;
-        }
-    };
-
-    const list = async({id, token}: Params):Promise<ISectorResponse> => {
-        try {
-            const response: Response = await fetch(`${url}setor/${id}/`, {
-                method: 'GET',
+            const response:Response = await fetch(url, {
+                method,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${params.token}`
                 },
+                body: JSON.stringify(params.data)
             });
+            
             const result = await response.json();
 
             return {
                 success: response.ok,
                 ...result
-            } as ISectorResponse;
+            } as ISectorResponse;     
 
         } catch(error) {
             return {
                 success: false,
                 message: 'Erro interno no sistema. Contate o administrador.'
-            } as ISectorResponse;
-        };
-    };
-
-    const register = async ({id, token, data}: Params):Promise<ISectorResponse> => {
-
-        try {
-            const response: Response = await fetch(`${url}setor/${id}/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
-                },
-                body: JSON.stringify(data)
-            });
-            const result = await response.json();
-
-            return {
-                success: response.ok,
-                ...result
-            } as ISectorResponse;
-
-        } catch(error) {
-            return {
-                success: false,
-                message: 'Erro interno no sistema. Contate o administrador.'
-            } as ISectorResponse;
-        };
-
-    };
-
-    const update = async ({id, token, data}: Params) => {
-        try {
-            const response:Response = await fetch(`${url}setor/atualizar/${id}/`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(data)
-            });
-            const result = await response.json();
-
-            return {
-                success: response.ok,
-                ...result
-            } as ISectorResponse
-
-        } catch (error) {
-            return {
-                success: false,
-                message: 'Erro interno no sistema. Contate o administrador.'
-            } as ISectorResponse
+            } as ISectorResponse;         
         }
     };
 
     return {
-        register,
-        list,
-        update,
-        remove
+        register: ({id, token, data}: Params) => {
+            return config({
+                params: {
+                    id, token, data 
+                },
+                url: `${url}setor/${id}/`,
+                method: 'POST'
+            });
+        },
+        list: ({id, token}: Params) => {
+            return config({
+                params: {
+                    id, token 
+                },
+                url: `${url}setor/${id}/`,
+                method: 'GET'
+            });
+        },
+        update: ({id, token, data}: Params) => {
+            return config({
+                params: {
+                    id, token, data 
+                },
+                url: `${url}setor/atualizar/${id}/`,
+                method: 'PUT'
+            });
+        },
+        remove: ({id, token}: Params) => {
+            return config({
+                params: {
+                    id, token 
+                },
+                url: `${url}setor/remover/${id}/`,
+                method: 'DELETE'
+            });
+        },
     };
 
 };
