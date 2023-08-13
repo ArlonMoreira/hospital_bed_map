@@ -40,8 +40,8 @@ const RegisterBed = () => {
         statusData,
         typeData
     }: {
-        statusData: IStatus[] | null,
-        typeData: IType[] | null
+        statusData: IStatus[],
+        typeData: IType[]
     } = useSelector((state: RootState) => state.formBed);
 
     const {
@@ -62,16 +62,30 @@ const RegisterBed = () => {
      * Submit form
      */
     const [nameBed, setNameBed] = useState<string>('');
-    const [statusBed, setStatusBed] = useState<number | null>(null);
-    const [typeBed, setTypeBed] = useState<number | null>(null);
+    const [statusBed, setStatusBed] = useState<number>(1);
+    const [typeBed, setTypeBed] = useState<number>(1);
     const [activeBed, setActiveBed] = useState<boolean>(true);
     const [extraBed, setExtraBed] = useState<boolean>(false);
+
+    useEffect(()=>{
+        //Selecionar por padrão o primeiro status
+        if(statusData && statusData.length > 0){
+            setStatusBed(statusData[0].id!);
+        }
+    }, [statusData]);
+
+    useEffect(()=>{
+        //Selecionar por padrão o primeiro status
+        if(typeData && typeData.length > 0){
+            setTypeBed(typeData[0].id!);
+        }
+    }, [typeData]);
 
     const handleSubmit = async(e:FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         
         const sector = sectorSelected?.sectorSelected && parseInt(sectorSelected?.sectorSelected);
-        
+    
         const data:IBedParams  = {
             sector: null,
             name: nameBed,
@@ -80,7 +94,7 @@ const RegisterBed = () => {
             is_active: activeBed,
             is_extra: extraBed
         }
-        
+
         if(sector){
             data.sector = sector;
         }
@@ -89,6 +103,10 @@ const RegisterBed = () => {
         await dispatch(register(data));
 
     };
+
+    useEffect(()=>{
+        console.log(statusBed)
+    }, [statusBed])
 
     const [showRegisterBed, SetShowRegisterBed] = useState<boolean>(false);
 
@@ -189,6 +207,7 @@ const RegisterBed = () => {
                                         <span>Status</span>
                                         <select
                                             className='form-select'
+                                            value={statusBed}
                                             onChange={(e: ChangeEvent<HTMLSelectElement>) => setStatusBed(parseInt(e.target.value))}>
                                             {
                                                 statusData && statusData.map((status,i)=>(

@@ -7,16 +7,16 @@ import { IStatus, IBedResponse, IType } from "../interfaces/Bed";
 import { IAuth } from "../interfaces/Authentication";
 
 interface IState {
-    typeData: IType[] | null,
+    typeData: IType[],
     errorType: boolean,
-    statusData: IStatus[] | null,
+    statusData: IStatus[],
     errorStatus: boolean
 }
 
 const initialState: IState = {
-    typeData: null,
+    typeData: [],
     errorType: false,
-    statusData: null,
+    statusData: [],
     errorStatus: false
 };
 

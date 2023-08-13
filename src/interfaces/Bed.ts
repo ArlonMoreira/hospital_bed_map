@@ -33,10 +33,10 @@ export interface IBed {
     sector_id: number;
     name: string;
     type_occupation_status: string;
-    type_occupation_description: string,
-    type: string,
-    is_active: boolean,
-    is_extra: boolean
+    type_occupation_description: string;
+    type: string;
+    is_active: boolean;
+    is_extra: boolean;
 }
 
 export interface IBedResponse {

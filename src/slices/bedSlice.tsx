@@ -25,11 +25,30 @@ const initialState = {
     beds: []
 };
 
+export const list = createAsyncThunk(
+    'bed/list',
+    async({sector}:{sector:string}, {getState, rejectWithValue}) => {
+        const userAuth:IAuth = (getState() as any).auth.userAuth;
+        const response:IBedResponse = await useBed().list({
+            params: {token: userAuth.access},
+            sector
+        });
+
+        if(response.success){
+            return response;
+        } else {
+            return rejectWithValue(response);
+        }
+    }
+)
+
 export const register = createAsyncThunk(
     'bed/register',
     async(data:IBedParams, {getState, rejectWithValue}) => {
         const userAuth:IAuth = (getState() as any).auth.userAuth;
-        const response:IBedResponse = await useBed().register({params: { token: userAuth.access, data }});
+        const response:IBedResponse = await useBed().register({
+            params: { token: userAuth.access, data }
+        });
 
         if(response.success){
             return response;
@@ -46,7 +65,6 @@ export const bedSlice = createSlice({
         reset: (state: IState) => {
             state.loadingRegister = false;
             state.errorsRegisterBed = {};
-            state.beds = [];
         },
         resetAlertBed: (state: IState) => {
             state.registerSuccess = false;
@@ -89,6 +107,11 @@ export const bedSlice = createSlice({
                 }
 
                 state.registerError = true;
+            })
+            .addCase(list.fulfilled, (state: IState, action: PayloadAction<IBedResponse>)=>{
+                const response = (action.payload.data as IBed[]);
+                //beds
+                state.beds = response;
             })
     }
 });

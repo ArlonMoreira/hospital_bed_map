@@ -45,6 +45,9 @@ const useBed = () => {
         },
         register: ({params}: {params: Params}) => {
             return config({params, url: `${url}leitos/cadastrar/`, method: 'POST'})
+        },
+        list: ({params, sector}: {params: Params, sector: string}) => {
+            return config({params, url: `${url}leitos/listar/${sector}/`, method: 'GET'})
         }
     }
 

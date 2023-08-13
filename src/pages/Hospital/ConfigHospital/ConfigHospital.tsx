@@ -11,10 +11,7 @@ import EditSector from './EditSector/EditSector';
 //Context
 import { useSectorContext } from '../../../components/Context/SectorContext';
 
-type Props = {
-}
-
-const ConfigHospital = (props: Props) => {
+const ConfigHospital = () => {
 
   const sectorSelected = useSectorContext();
 
@@ -53,7 +50,7 @@ const ConfigHospital = (props: Props) => {
       <div className={styles.container}>
         <div className={styles.content}>
           <Routes>
-            <Route path="leitos" element={<Beds/>}/>
+            <Route path="leitos" element={<Beds sector={sector}/>}/>
             <Route path="editar" element={<EditSector/>}/>
           </Routes>
         </div>
