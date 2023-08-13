@@ -10,12 +10,12 @@ export interface IStatus {
 }
 
 export interface IBedParams {
-    sector: number | null;
-    name: string | null;
+    sector?: number | null;
+    name?: string | null;
     type_occupation: number | null;
-    type: number | null;
-    is_active: boolean;
-    is_extra: boolean;
+    type?: number | null;
+    is_active?: boolean;
+    is_extra?: boolean;
 }
 
 export interface IBedErrors {
@@ -29,14 +29,15 @@ export interface IBedErrors {
 
 export interface IBed {
     id: number;
-    hospital_id: number;
-    sector_id: number;
-    name: string;
+    hospital_id?: number;
+    sector_id?: number;
+    name?: string;
+    type_occupation_id: number;
     type_occupation_status: string;
     type_occupation_description: string;
-    type: string;
-    is_active: boolean;
-    is_extra: boolean;
+    type?: string;
+    is_active?: boolean;
+    is_extra?: boolean;
 }
 
 export interface IBedResponse {

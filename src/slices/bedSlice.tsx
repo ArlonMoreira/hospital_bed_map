@@ -58,6 +58,23 @@ export const register = createAsyncThunk(
     }
 );
 
+export const occupation = createAsyncThunk(
+    'bed/occupation',
+    async({bed, data}:{bed:string, data:IBedParams}, {getState, rejectWithValue}) => {
+        const userAuth:IAuth = (getState() as any).auth.userAuth;
+        const response:IBedResponse = await useBed().occupation({
+            params: {token:userAuth.access, data},
+            bed
+        });
+
+        if(response.success){
+            return response;
+        } else {
+            return rejectWithValue(response);
+        }
+    }
+);
+
 export const bedSlice = createSlice({
     name: 'bed',
     initialState,
@@ -112,6 +129,14 @@ export const bedSlice = createSlice({
                 const response = (action.payload.data as IBed[]);
                 //beds
                 state.beds = response;
+            })
+            .addCase(occupation.fulfilled, (state: IState, action: PayloadAction<IBedResponse>)=>{
+                const response = (action.payload.data as IBed[])[0];
+                //beds
+                const index = state.beds.findIndex((bed) => bed.id === response.id)
+                state.beds[index].type_occupation_id = response.type_occupation_id;
+                state.beds[index].type_occupation_status = response.type_occupation_status;
+                state.beds[index].type_occupation_description = response.type_occupation_description;
             })
     }
 });

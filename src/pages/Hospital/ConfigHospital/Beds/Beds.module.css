@@ -30,3 +30,37 @@
 .BLOQUEADO {
     background-color: var(--bs-danger);
 }
+
+.RESERVADO {
+    background-color: var(--bs-gray-500);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    cursor: default;
+    align-items: flex-start;
+    padding: .5em;
+}
+
+.content h5 {
+    color: var(--bs-white);
+    font-weight: 600;
+    font-size: .8em;
+}
+
+.content svg {
+    fill: var(--bs-white);
+}
+
+.select {
+    padding: 0.5em;
+    padding-right: 2em;
+    font-size: .6em;
+    font-weight: 400;
+    box-shadow: none;
+    background-color: var(--active-shadow);
+    background-position: right 0rem center;
+    border-color: var(--bs-white);
+    cursor: pointer;
+}

@@ -48,6 +48,9 @@ const useBed = () => {
         },
         list: ({params, sector}: {params: Params, sector: string}) => {
             return config({params, url: `${url}leitos/listar/${sector}/`, method: 'GET'})
+        },
+        occupation: ({params, bed}: {params: Params, bed: string}) => {
+            return config({params, url: `${url}leitos/occupation/${bed}/`, method: 'PUT'})
         }
     }
 
