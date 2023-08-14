@@ -10,7 +10,7 @@
     width: 100%;
     height: 6.6em;
     background-color: var(--bs-gray-200);
-    border-radius: 1em;
+    border-radius: .5em;
     cursor: pointer;
 }
 
@@ -40,13 +40,15 @@
     flex-direction: column;
     cursor: default;
     align-items: flex-start;
-    padding: .5em;
+    padding: 0.5em;
+    justify-content: space-between;
 }
 
 .content h5 {
     color: var(--bs-white);
-    font-weight: 600;
+    font-weight: 400;
     font-size: .8em;
+    margin: 0;
 }
 
 .content svg {
@@ -54,13 +56,19 @@
 }
 
 .select {
-    padding: 0.5em;
-    padding-right: 2em;
-    font-size: .6em;
+    padding: 0;
+    font-size: .7em;
     font-weight: 400;
     box-shadow: none;
     background-color: var(--active-shadow);
     background-position: right 0rem center;
     border-color: var(--bs-white);
+    color: var(--bs-white);
     cursor: pointer;
+    appearance: auto;
+    background-image: none;
+}
+
+.select:focus {
+    border-color: var(--bs-white);
 }
