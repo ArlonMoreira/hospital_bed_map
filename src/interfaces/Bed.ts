@@ -12,7 +12,7 @@ export interface IStatus {
 export interface IBedParams {
     sector?: number | null;
     name?: string | null;
-    type_occupation: number | null;
+    type_occupation?: number | null;
     type?: number | null;
     is_active?: boolean;
     is_extra?: boolean;

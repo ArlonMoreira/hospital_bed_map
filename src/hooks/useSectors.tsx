@@ -11,7 +11,7 @@ interface Params {
 
 const useSectors = () => {
 
-    const config = async({params, url, method}:{params:Params, url:string, method:string}) => {
+    const config = async({params, url, method}:{params:Params, url:string, method: 'GET' | 'POST' | 'PUT' | 'DELETE'}) => {
         try {
             const response:Response = await fetch(url, {
                 method,

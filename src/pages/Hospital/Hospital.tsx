@@ -21,6 +21,7 @@ import { ISector } from '../../interfaces/Sector';
 import RegisterBed from '../../components/RegisterBed/RegisterBed';
 import RemoveSector from '../../components/RemoveSector/RemoveSector';
 import RegisterSector from '../../components/RegisterSector/RegisterSector';
+import RemoveBed from '../../components/RemoveBed/RemoveBed';
 //Pages
 import ConfigHospital from './ConfigHospital/ConfigHospital';
 
@@ -184,6 +185,7 @@ const Hospital = () => {
             </div>
             <RegisterBed/>
             <RemoveSector/>
+            <RemoveBed/>
             <RegisterSector hospital={hospitalData} typeAccommodation={typeAccommodation}/>
         </>
     )

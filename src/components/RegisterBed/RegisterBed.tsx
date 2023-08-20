@@ -104,10 +104,6 @@ const RegisterBed = () => {
 
     };
 
-    useEffect(()=>{
-        console.log(statusBed)
-    }, [statusBed])
-
     const [showRegisterBed, SetShowRegisterBed] = useState<boolean>(false);
 
     useEffect(()=>{

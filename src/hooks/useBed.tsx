@@ -51,6 +51,12 @@ const useBed = () => {
         },
         occupation: ({params, bed}: {params: Params, bed: string}) => {
             return config({params, url: `${url}leitos/occupation/${bed}/`, method: 'PUT'})
+        },
+        active: ({params, bed}: {params: Params, bed: string}) => {
+            return config({params, url: `${url}leitos/active/${bed}/`, method: 'PUT'})
+        },
+        remove: ({params, bed}: {params: Params, bed: string}) => {
+            return config({params, url: `${url}leitos/remove/${bed}/`, method: 'DELETE'})
         }
     }
 

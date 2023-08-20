@@ -12,7 +12,9 @@ interface IState {
     mensagemRegisterError: string | null,
     loadingRegister: boolean,
     errorsRegisterBed: IBedErrors,
-    beds: IBed[]
+    beds: IBed[],
+    removeError: boolean,
+    mensagemRemoverError: string | null
 }
 
 const initialState = {
@@ -22,7 +24,9 @@ const initialState = {
     mensagemRegisterError: null,
     loadingRegister: false,
     errorsRegisterBed: {},
-    beds: []
+    beds: [],
+    removeError: false,
+    mensagemRemoverError: null
 };
 
 export const list = createAsyncThunk(
@@ -75,6 +79,40 @@ export const occupation = createAsyncThunk(
     }
 );
 
+export const active = createAsyncThunk(
+    'bed/active',
+    async({bed, data}:{bed:string, data:IBedParams}, {getState, rejectWithValue}) => {
+        const userAuth:IAuth = (getState() as any).auth.userAuth;
+        const response:IBedResponse = await useBed().active({
+            params: {token:userAuth.access, data},
+            bed
+        });
+
+        if(response.success){
+            return response;
+        } else {
+            return rejectWithValue(response);
+        }
+    }
+)
+
+export const remove = createAsyncThunk(
+    'bed/remove',
+    async(bed:string, {getState, rejectWithValue}) => {
+        const userAuth:IAuth = (getState() as any).auth.userAuth;
+        const response:IBedResponse = await useBed().remove({
+            params: {token:userAuth.access},
+            bed
+        });
+
+        if(response.success){
+            return response;
+        } else {
+            return rejectWithValue(response);
+        }
+    }
+)
+
 export const bedSlice = createSlice({
     name: 'bed',
     initialState,
@@ -86,6 +124,7 @@ export const bedSlice = createSlice({
         resetAlertBed: (state: IState) => {
             state.registerSuccess = false;
             state.registerError = false;
+            state.removeError = false;
         }
     },
     extraReducers: (builder) => {
@@ -133,10 +172,32 @@ export const bedSlice = createSlice({
             .addCase(occupation.fulfilled, (state: IState, action: PayloadAction<IBedResponse>)=>{
                 const response = (action.payload.data as IBed[])[0];
                 //beds
-                const index = state.beds.findIndex((bed) => bed.id === response.id)
+                const index = state.beds.findIndex((bed) => bed.id === response.id);
                 state.beds[index].type_occupation_id = response.type_occupation_id;
                 state.beds[index].type_occupation_status = response.type_occupation_status;
                 state.beds[index].type_occupation_description = response.type_occupation_description;
+            })
+            .addCase(active.fulfilled, (state: IState, action: PayloadAction<IBedResponse>)=>{
+                const response = (action.payload.data as IBed[])[0];
+                //beds
+                const index = state.beds.findIndex((bed) => bed.id === response.id);
+                state.beds[index].is_active = response.is_active;
+            })
+            .addCase(remove.fulfilled, (state: IState, action: PayloadAction<IBedResponse>)=>{
+                const response = action.payload as IBedResponse;
+                const data = (response.data as IBed[])[0];
+                //bed
+                const index = state.beds.findIndex((bed)=> bed.id == data.id);
+                state.beds.splice(index, 1);
+            })
+            .addCase(remove.rejected, (state: IState, action: PayloadAction<IBedResponse | unknown>) => {
+                const response = (action.payload as IBedResponse);
+                //Error
+                if(Object.keys(response).indexOf('detail') === -1){
+                    state.mensagemRegisterError = response.message;
+                } else {
+                    state.mensagemRegisterError = 'Erro interno no sistema. Contate o administrador.'
+                }
             })
     }
 });
