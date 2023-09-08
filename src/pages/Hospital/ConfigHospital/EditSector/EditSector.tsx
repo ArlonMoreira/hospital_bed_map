@@ -184,8 +184,8 @@ const EditSector = (props: Props) => {
                         </button>
                     </div>
                 </div>
-                <div className={`${styles.content}`}>
-                    <div className='card w-50 border-0 m-0 mt-4'>
+                <div className={`${styles.content} col-12 col-lg-6`}>
+                    <div className='card border-0 m-0'>
                         <h5>Editar dados do Setor</h5>
                         <form className='register_form' onSubmit={handleSubmit}>
                             <div className='card-body row ps-0 pb-0'>
@@ -256,13 +256,13 @@ const EditSector = (props: Props) => {
                             <div className='card-footer bg-transparent border-0 ps-0 pe-0'>
                                 {
                                     loading ? (
-                                        <button className='w-25 form-control' disabled>
+                                        <button className='col-12 col-md-4 form-control' disabled>
                                             <div className='spinner-border' role="status">
                                                 <span className='sr-only'></span>
                                             </div>
                                         </button>
                                     ) : (
-                                        <input className='w-25' type='submit' value='Salvar'/>
+                                        <input className='col-12 col-md-4' type='submit' value='Salvar'/>
                                     )
                                 }
                             </div>

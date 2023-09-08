@@ -10,19 +10,21 @@ const storedUserAuth:IAuth|null = localStorage.getItem('userAuth') ? JSON.parse(
 
 interface IState {
     userAuth: IAuth | null,
-    success: boolean | null,
+    successLogin: boolean,
     successLogout: boolean,
     errorMessage: string | null,
     errors: IRefreshError | IAuthError | null,
+    errorLogin: boolean,
     loading: boolean
 }
 
 const initialState: IState = {
     userAuth: storedUserAuth,
-    success: null,
+    successLogin: false,
     successLogout: false,
     errorMessage: null,
     errors: null,
+    errorLogin: false,
     loading: false
 };
 
@@ -66,12 +68,17 @@ export const logout = createAsyncThunk(
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {},
+    reducers: {
+        hideAlert: (state: IState) => {
+            state.successLogin = false;
+            state.errorLogin = false;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(login.fulfilled, (state: IState, action: PayloadAction<IAuthentication>) => {
                 //Success
-                state.success = true;
+                state.successLogin = true;
                 state.successLogout = false;
                 //Loading
                 state.loading = false;
@@ -89,21 +96,18 @@ export const authSlice = createSlice({
             })
             .addCase(login.rejected, (state: IState, action: PayloadAction<IAuthentication | unknown>) => {
                 const response = (action.payload as IAuthentication);
-                //Success
-                state.success = false;
-                state.successLogout = false;
                 //Loading
                 state.loading = false;
                 //Errors
                 state.errorMessage = response.message;
                 state.errors = (response.data as IAuthError);
+                state.errorLogin = true;
                 //userAuth
                 state.userAuth = null;
                 localStorage.removeItem('userAuth'); //Remover o token do localStore
             })
             .addCase(logout.fulfilled, (state: IState, action: PayloadAction<boolean>) => {
                 //Success
-                state.success = false;
                 state.successLogout = true;
                 //Loading
                 state.loading = false;
@@ -116,7 +120,6 @@ export const authSlice = createSlice({
             })
             .addCase(refreshToken.fulfilled, (state: IState, action: PayloadAction<IAuthentication>) => {
                 //Success
-                state.success = true;
                 state.successLogout = false;
                 //Loading
                 state.loading = false;
@@ -130,7 +133,6 @@ export const authSlice = createSlice({
             .addCase(refreshToken.rejected, (state: IState, action: PayloadAction<IAuthentication | unknown>) => {
                 const response = (action.payload as IAuthentication);
                 //Success
-                state.success = false;
                 state.successLogout = false;
                 //Loading
                 state.loading = false;
@@ -147,4 +149,5 @@ export const authSlice = createSlice({
 });
 
 // Exportar o reducer gerado automaticamente
+export const { hideAlert } = authSlice.actions;
 export default authSlice.reducer;

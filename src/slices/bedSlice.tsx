@@ -120,6 +120,7 @@ export const bedSlice = createSlice({
         reset: (state: IState) => {
             state.loadingRegister = false;
             state.errorsRegisterBed = {};
+            state.mensagemRemoverError = null;
         },
         resetAlertBed: (state: IState) => {
             state.registerSuccess = false;
@@ -193,10 +194,12 @@ export const bedSlice = createSlice({
             .addCase(remove.rejected, (state: IState, action: PayloadAction<IBedResponse | unknown>) => {
                 const response = (action.payload as IBedResponse);
                 //Error
+                state.removeError = true;
+
                 if(Object.keys(response).indexOf('detail') === -1){
-                    state.mensagemRegisterError = response.message;
+                    state.mensagemRemoverError = response.message;
                 } else {
-                    state.mensagemRegisterError = 'Erro interno no sistema. Contate o administrador.'
+                    state.mensagemRemoverError = 'Erro interno no sistema. Contate o administrador.'
                 }
             })
     }

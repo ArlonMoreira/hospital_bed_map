@@ -74,7 +74,7 @@ const Beds = ({sector}: Props) => {
   };
 
   return (
-    <div className='p-4'>
+    <div className='p-0 p-lg-4'>
       <div className={`${styles.container}`}>
         <div className={`${styles.item} ${styles.add}`}>
           <a data-bs-toggle="modal" data-bs-target="#add-bed-modal" className={`w-100 h-100 d-flex justify-content-center align-items-center`}>

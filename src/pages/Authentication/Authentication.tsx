@@ -6,7 +6,7 @@ import logo from '../../logo-min.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { AnyAction } from '@reduxjs/toolkit';
-import { login } from '../../slices/authSlice';
+import { login, hideAlert } from '../../slices/authSlice';
 import { RootState } from '../../store';
 //interface
 import { ILogin, IAuthError, IRefreshError } from '../../interfaces/Authentication';
@@ -36,7 +36,7 @@ const Authentication = () => {
     /**
      * Loading and errors
      */
-    const { errorMessage, errors, loading }: {errorMessage: string | null, errors: IRefreshError | IAuthError | null, loading: boolean} = useSelector((state: RootState) => state.auth);
+    const { errorLogin, errorMessage, errors, loading }: {errorLogin: boolean, errorMessage: string | null, errors: IRefreshError | IAuthError | null, loading: boolean} = useSelector((state: RootState) => state.auth);
     const [ errorsAuth, setErrorsAuth ] = useState<IAuthError | null>(null); 
 
     useEffect(()=>{
@@ -62,11 +62,33 @@ const Authentication = () => {
         setUsername('');
         setPassword('');
         setErrorsAuth(null);
-    }, []);    
+    }, []);
+
+    const [showLoginErrorAlert, setShowLoginErrorAlert] = useState<boolean>(false);
+    
+    useEffect(()=>{
+        console.log(errorLogin)
+        if(errorLogin){
+            setShowLoginErrorAlert(true);
+
+            const timeout = setTimeout(()=>{
+                setShowLoginErrorAlert(false);
+                dispatch(hideAlert());
+            }, 2700);
+
+            return () => {
+                clearTimeout(timeout);
+            }
+
+        } else {
+            setShowLoginErrorAlert(false);
+        }
+
+    }, [errorLogin])
 
     return (
         <>
-            {/* errorMessage && <Alert message={errorMessage} trigger={errors} type='error'/> */}
+            { showLoginErrorAlert && <Alert message={errorMessage} type='error'/> }
             <div className={`${styles.coontainer_auth} p-0 bg-transparent`}>
                 <div className={`${styles.auth_item}`}>
                     <div className={`${styles.slogan_area}`}>
