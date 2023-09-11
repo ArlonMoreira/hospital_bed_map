@@ -64,12 +64,16 @@ const RemoveBed = () => {
                             <p>Cuidado. Ao deletar o leito essa ação será irreversível.</p>
                         </div>
                         <div className='modal-footer border-0 modal_footer_bg px-4'>
-                            <button className='form-control cancel' data-bs-dismiss="modal" aria-label="Close" ref={cancelButton}>
-                                Cancelar
-                            </button>
-                            <button className='form-control bg-danger' onClick={handleRemoveBed}>
-                                Deletar
-                            </button>
+                            <div className='col-4'>
+                                <button className='form-control cancel' data-bs-dismiss="modal" aria-label="Close" ref={cancelButton}>
+                                    <span>Cancelar</span>
+                                </button>
+                            </div>
+                            <div className='col-4'>
+                                <button className='form-control bg-danger' onClick={handleRemoveBed}>
+                                    <span>Deletar</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

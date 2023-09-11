@@ -27,6 +27,7 @@
     position: absolute;
     display: none;
     opacity: .5;
+    z-index: 1;
 }
 
 
@@ -78,6 +79,12 @@
     
 }
 
+@media only screen and (max-width: 375px) {
+    .open .containerAside {
+        width: 100%;
+    }
+}
+
 .title span {
     color: var(--secundary-color);
     font-size: .85rem;
@@ -103,6 +110,7 @@
 
 .navBarAside svg {
     fill: var(--bs-gray-700);
+    height: 1.5em;
 }
 
 .navBarAside button svg {
@@ -121,7 +129,8 @@
     transition: all .2s ease-in-out;
     gap: 0.5em;
     background: var(--bs-gray-200);
-    padding: 1em;    
+    padding: 1em;
+    font-weight: 500;
 }
 
 .navBarAside a:hover {
@@ -211,6 +220,11 @@
 
 .menuButton > div span {
     background-color: var(--secundary-color);
+}
+
+.menuButton svg {
+    height: 2.2em;
+    fill: var(--secundary-color);
 }
 
 /* End: Menu */

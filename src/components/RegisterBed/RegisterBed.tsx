@@ -171,7 +171,7 @@ const RegisterBed = () => {
                         </div>
                         <form className='register_form' onSubmit={handleSubmit}>
                             <div className='modal-body p-4 row'>
-                                <div className='col-4'>
+                                <div className='col-md-4'>
                                     <label className='w-100'>
                                         <span>Nome</span>
                                         <input
@@ -198,7 +198,7 @@ const RegisterBed = () => {
                                         }
                                     </label>
                                 </div>
-                                <div className='col-4'>
+                                <div className='col-md-4'>
                                     <label className='w-100'>
                                         <span>Status</span>
                                         <select
@@ -213,7 +213,7 @@ const RegisterBed = () => {
                                         </select>
                                     </label>
                                 </div>
-                                <div className='col-4'>
+                                <div className='col-md-4'>
                                     <label className='w-100'>
                                         <span>Tipo</span>
                                         <select
@@ -227,7 +227,7 @@ const RegisterBed = () => {
                                         </select>
                                     </label>
                                 </div>
-                                <div className='col-4'>
+                                <div className='col-6 col-md-4'>
                                     <label className='w-100 d-flex flex-column'>
                                         <span>Ativo:</span>
                                         <label className='switch mb-0'>
@@ -238,7 +238,7 @@ const RegisterBed = () => {
                                         </label>
                                     </label>
                                 </div>
-                                <div className='col-4'>
+                                <div className='col-6 col-md-4'>
                                     <label className='w-100 d-flex flex-column'>
                                         <span>Extra:</span>
                                         <label className='switch mb-0'>
@@ -251,9 +251,9 @@ const RegisterBed = () => {
                                 </div>
                             </div>
                             <div className='modal-footer border-0 modal_footer_bg px-4'>
-                                <input type='submit' value='Cadastrar'/>
+                                <input type='submit' value='Cadastrar' className='col-4'/>
                                 <input 
-                                    className='cancel'
+                                    className='cancel col-4'
                                     type='cancel'
                                     defaultValue='Cancelar'
                                     data-bs-dismiss="modal"

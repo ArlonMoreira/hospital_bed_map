@@ -174,7 +174,6 @@ input[type="submit"]:hover {
 .modal_footer_bg input,
 .modal_footer_bg button {
     margin: 0 !important;
-    width: 23%;    
 }
 
 .cancel {

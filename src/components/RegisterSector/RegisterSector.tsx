@@ -126,7 +126,7 @@ const RegisterSector = ({typeAccommodation, hospital}:Props) => {
                         </div>
                         <form className='register_form' onSubmit={handleSubmit}>
                             <div className='modal-body p-4 row'>
-                                <label className='col-4'>
+                                <label className='col-md-4'>
                                     <span>Nome</span>
                                     <input
                                         className={`form-control ${errorsRegister?.name && 'border border-danger'}`}
@@ -151,7 +151,7 @@ const RegisterSector = ({typeAccommodation, hospital}:Props) => {
                                         )
                                     }
                                 </label>
-                                <label className='col-8'>
+                                <label className='col-md-8'>
                                     <span>Descrição</span>
                                     <input
                                         className={`form-control ${errorsRegister?.description && 'border border-danger'}`}
@@ -176,7 +176,7 @@ const RegisterSector = ({typeAccommodation, hospital}:Props) => {
                                         )
                                     }
                                 </label>
-                                <label className='col-6'>
+                                <label className='col-md-6'>
                                     <span>Tipo de acomodação</span>
                                     <select 
                                         className='form-select'
@@ -190,7 +190,7 @@ const RegisterSector = ({typeAccommodation, hospital}:Props) => {
                                         }
                                     </select>
                                 </label>
-                                <label className='col-2 d-flex flex-column'>
+                                <label className='col-md-2 d-flex flex-column'>
                                     <span>Ativo:</span>
                                     <label className='switch mb-0'>
                                         <input  type='checkbox'
@@ -204,17 +204,17 @@ const RegisterSector = ({typeAccommodation, hospital}:Props) => {
                             <div className='modal-footer border-0 modal_footer_bg px-4'>
                                 {
                                     loading ? (
-                                        <button className='form-control' disabled>
-                                            <div className="spinner-border" role="status">
-                                                <span className="sr-only"></span>
-                                            </div>
-                                        </button>
+                                        <div className='col-4'>
+                                            <button className='form-control' disabled>
+                                                <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                                            </button>                                            
+                                        </div>
                                     ): (
-                                        <input type='submit' value='Cadastrar'/>
+                                        <input type='submit' value='Cadastrar' className='col-4'/>
                                     )
                                 }
                                 <input 
-                                    className='cancel'
+                                    className='cancel col-4'
                                     type='cancel'
                                     defaultValue='Cancelar'
                                     data-bs-dismiss="modal"

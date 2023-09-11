@@ -3,7 +3,7 @@
     grid-template-columns: repeat(auto-fill, minmax(6.6em, 1fr));
     grid-column-gap: 1em;
     grid-row-gap: 1em;
-    overflow: visible;  
+    overflow: visible;
 }
 
 .item {
@@ -11,7 +11,7 @@
     height: 6.6em;
     background-color: var(--bs-gray-200);
     border-radius: .5em;
-    cursor: pointer; 
+    cursor: pointer;
 }
 
 .add {
@@ -111,4 +111,8 @@
 .select:disabled {
     background-color: var(--active-shadow) !important;
     cursor: not-allowed;
+}
+
+.disabled {
+    opacity: .5
 }

@@ -130,19 +130,15 @@ const Hospital = () => {
                             <div className={`p-4 pt-3 ${styles.contentAside}`}>
                                 <div className={`${styles.navBarAside} px-0 d-flex justify-content-between align-items-center position-relative`}>
                                     <Link to='/hospitais'>
-                                        <svg width="1.5rem" height="1.5rem" version="1.0" viewBox="0 0 148 130">
-                                            <g transform="translate(0 130) scale(.1 -.1)">
-                                            <path d="m338 962c-220-219-288-293-288-312 0-18 67-91 282-307 156-156 291-286 301-289 21-7 57 21 57 43 0 8-106 123-235 256l-235 242 600 5c638 5 620 4 620 50s18 45-620 50l-600 5 235 242c129 133 235 248 235 256 0 17-32 47-51 47-7 0-143-129-301-288z"/>
-                                            </g>
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                                            <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 288 480 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-370.7 0 73.4-73.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-128 128z"/>
                                         </svg>
                                         Hospitais
                                     </Link>
                                     <div className='top-0 end-0 d-md-none d-xxl-none'>
                                         <button className='border-0 bg-transparent p-0' onClick={handleShow}>
-                                            <svg width="2rem" height="2rem" version="1.0" viewBox="0 0 108 108">
-                                                <g transform="translate(0 108) scale(.1 -.1)">
-                                                    <path d="m52 1028c-34-34-16-58 200-275l212-212-212-214c-170-170-212-218-212-240 0-26 23-47 51-47 7 0 110 97 229 215l215 215 205-206c113-113 213-210 223-215 25-14 67 14 67 43 0 15-66 88-212 234l-211 213 211 216c122 125 212 224 212 235 0 23-26 50-48 50-10 0-71-54-137-121-66-66-164-161-218-211l-98-91-212 211c-210 209-236 229-265 200z"/>
-                                                </g>
+                                            <svg xmlns="http://www.w3.org/2000/svg" style={{'height': '2em'}} viewBox="0 0 384 512">
+                                                <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
                                             </svg>
                                         </button>
                                     </div>
@@ -196,11 +192,9 @@ const Hospital = () => {
                     <div className={`${styles.containerBody}`}>
                         <div className={`${styles.menu} shadow`}>
                             <button className={`${styles.menuButton}`} onClick={handleShow}>
-                                <div className='nav_button'>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span> 
-                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
+                                    <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z"/>
+                                </svg>
                             </button>
                         </div>
                         <div className={`${styles.contentBody} p-2`}>
