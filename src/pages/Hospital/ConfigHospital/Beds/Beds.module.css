@@ -117,3 +117,12 @@
 .disabled {
     opacity: .5
 }
+
+.loading_bed {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5em;
+    background: var(--bs-gray-200);
+    height: 6em;    
+}
