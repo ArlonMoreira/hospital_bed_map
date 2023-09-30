@@ -11,7 +11,7 @@ import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { hospital as getDataHospital } from '../../slices/hospitalSlice';
 import { list as listTypeAccomodation, reset as resetTypeAccomodation } from '../../slices/typeAccomodationSlice';
-import { list as listSector, clearSectors } from '../../slices/sectorSlice';
+import { list as listSector, clearSectors, reset } from '../../slices/sectorSlice';
 import { refreshToken } from '../../slices/authSlice';
 //Interface
 import { IHospital } from '../../interfaces/Hospital';
@@ -119,6 +119,10 @@ const Hospital = () => {
         }
 
     }, [sectors]);
+
+    const clearModal = () => {
+        dispatch(reset());
+    };    
     
     return (
         <>
@@ -151,7 +155,7 @@ const Hospital = () => {
                                     </div>
                                 </div>
                                 <div className={`w-100 mt-3 mb-3 ${styles.addButton}`}>
-                                    <button className='form-control' data-bs-toggle="modal" data-bs-target="#register-sector">
+                                    <button className='form-control' data-bs-toggle="modal" data-bs-target="#register-sector" onClick={clearModal}>
                                         <svg height="1em" viewBox="0 0 448 512" style={{'fill': '#fff'}}><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
                                         <span>Setores</span>
                                     </button>
