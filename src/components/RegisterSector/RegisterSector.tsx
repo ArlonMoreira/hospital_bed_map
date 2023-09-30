@@ -202,6 +202,14 @@ const RegisterSector = ({typeAccommodation, hospital}:Props) => {
                                 </label>
                             </div>
                             <div className='modal-footer border-0 modal_footer_bg px-4'>
+                                <input 
+                                    className='cancel col-4'
+                                    type='cancel'
+                                    defaultValue='Cancelar'
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                    ref={buttonClose}
+                                />                                
                                 {
                                     loading ? (
                                         <div className='col-4'>
@@ -213,14 +221,6 @@ const RegisterSector = ({typeAccommodation, hospital}:Props) => {
                                         <input type='submit' value='Cadastrar' className='col-4'/>
                                     )
                                 }
-                                <input 
-                                    className='cancel col-4'
-                                    type='cancel'
-                                    defaultValue='Cancelar'
-                                    data-bs-dismiss="modal"
-                                    aria-label="Close"
-                                    ref={buttonClose}
-                                />
                             </div>
                         </form>                    
                     </div>

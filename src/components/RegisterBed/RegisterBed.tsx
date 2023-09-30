@@ -251,7 +251,6 @@ const RegisterBed = () => {
                                 </div>
                             </div>
                             <div className='modal-footer border-0 modal_footer_bg px-4'>
-                                <input type='submit' value='Cadastrar' className='col-4'/>
                                 <input 
                                     className='cancel col-4'
                                     type='cancel'
@@ -259,7 +258,8 @@ const RegisterBed = () => {
                                     data-bs-dismiss="modal"
                                     aria-label="Close"
                                     ref={cancelButtonRegisterBed}
-                                />
+                                />                                
+                                <input type='submit' value='Cadastrar' className='col-4'/>
                             </div>
                         </form>
                     </div>

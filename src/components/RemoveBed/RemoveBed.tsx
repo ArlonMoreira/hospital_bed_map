@@ -16,11 +16,11 @@ const RemoveBed = () => {
     //Redux dispatch
     const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>();
     //Cancel button
-    const cancelButton = useRef<HTMLButtonElement>(null);
+    const cancelButton = useRef<HTMLInputElement>(null);
     //Context
     const bedSelected = useBedContext();
     
-    const handleRemoveBed = async (e: FormEvent<HTMLButtonElement>) => {
+    const handleRemoveBed = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if(bedSelected?.bedSelected){
             await dispatch(refreshToken());
@@ -59,22 +59,21 @@ const RemoveBed = () => {
             <div className='modal fade pb-5' id='exclude-bed-modal' data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className='modal-dialog modal-dialog-centered'>
                     <div className='modal-content border-0'>
-                        <div className='modal-body pb-0 text-center'>
-                            <h5>Deseja remover este leito?</h5>
-                            <p>Cuidado. Ao deletar o leito essa ação será irreversível.</p>
-                        </div>
-                        <div className='modal-footer border-0 modal_footer_bg px-4'>
-                            <div className='col-4'>
-                                <button className='form-control cancel' data-bs-dismiss="modal" aria-label="Close" ref={cancelButton}>
-                                    <span>Cancelar</span>
-                                </button>
+                        <form onSubmit={handleRemoveBed}>
+                            <div className='modal-body pb-0 text-center'>
+                                <h5>Deseja remover este leito?</h5>
+                                <p>Cuidado. Ao deletar o leito essa ação será irreversível.</p>
                             </div>
-                            <div className='col-4'>
-                                <button className='form-control bg-danger' onClick={handleRemoveBed}>
-                                    <span>Deletar</span>
-                                </button>
+                            <div className='modal-footer border-0 modal_footer_bg px-4'>
+                                <input  className='cancel col-4'
+                                        type='cancel'
+                                        ref={cancelButton}
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"
+                                        defaultValue='Cancelar'/>
+                                <input className='bg-danger col-4' type='submit' defaultValue='Deletar'/>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>    

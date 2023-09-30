@@ -110,11 +110,6 @@
 
 .navBarAside svg {
     fill: var(--bs-gray-700);
-    height: 1.5em;
-}
-
-.navBarAside button svg {
-    fill: var(--bs-gray-700);
 }
 
 .navBarAside a {

@@ -18,25 +18,31 @@
 
 .navigate {
     width: 100%;
-    height: 2.6em;
+    height: 2.2em;
     display: flex;
     align-items: center;
 }
 
 .navigate svg {
     margin-right: 0.5rem;
-    fill: var(--secundary-color);
+    fill: var(--bs-gray-700);
 }
 
 .navigate a {
     text-decoration: none;
     font-size: 1.1rem;
     font-weight: 400;
-    color: var(--secundary-color);
+    color: var(--bs-gray-700);
     height: 100%;
+    fill: var(--bs-gray-700);
     display: flex;
     align-items: center;
     transition: all .2s ease-in-out;
+    background: var(--bs-border-color);
+    border-radius: 2em;
+    padding: 1em;
+    font-size: .86rem;
+    font-weight: 500;
 }
 
 .navigate a:hover {
@@ -53,12 +59,19 @@
     box-shadow: none;
     padding: 2em;
     border-radius: 1em;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;    
 }
 
 .register_form label {
     margin-bottom: 1em;
     font-size: .8rem;
     font-weight: 400;
+}
+
+@media only screen and (max-width: 768px) {
+    .form_edit {
+        width: 100%;
+    }
 }
 
 /* End: Form */

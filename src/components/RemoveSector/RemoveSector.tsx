@@ -24,7 +24,7 @@ const RemoveSector = () => {
     //Show alert
     const [showErrrorRemoveAlert, setShowErrrorRemoveAlert] = useState<boolean>(false);
     //Cancel button
-    const cancelButton = useRef<HTMLButtonElement>(null);
+    const cancelButton = useRef<HTMLInputElement>(null);
     //State data
     const {
         sectors,
@@ -38,7 +38,7 @@ const RemoveSector = () => {
         errorRemoveMessage: string | null
     } = useSelector((state: RootState) => state.sector);
 
-    const handleExcludeSector = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleExcludeSector = async (e: React.MouseEvent<HTMLFormElement>) => {
         e.preventDefault();
         if(sectorSelected?.sectorSelected){
             await dispatch(refreshToken());
@@ -80,18 +80,21 @@ const RemoveSector = () => {
             <div className='modal fade pb-5' id='exclude-sector-modal' data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className='modal-dialog modal-dialog-centered'>
                     <div className='modal-content border-0'>
-                        <div className='modal-body pb-0 text-center'>
-                            <h5>Deseja remover este setor?</h5>
-                            <p>Cuidado. Ao deletar o setor todos os leitos relacionados ao mesmo também serão deletados.</p>
-                        </div>
-                        <div className='modal-footer border-0 modal_footer_bg px-4'>
-                            <button className='form-control cancel' data-bs-dismiss="modal" aria-label="Close" ref={cancelButton}>
-                                Cancelar
-                            </button>
-                            <button className='form-control bg-danger' onClick={handleExcludeSector}>
-                                Deletar
-                            </button>
-                        </div>
+                        <form onSubmit={handleExcludeSector}>
+                            <div className='modal-body pb-0 text-center'>
+                                <h5>Deseja remover este setor?</h5>
+                                <p>Cuidado. Ao deletar o setor todos os leitos relacionados ao mesmo também serão deletados.</p>
+                            </div>
+                            <div className='modal-footer border-0 modal_footer_bg px-4'>
+                                <input  className='cancel col-4'
+                                        type='cancel'
+                                        ref={cancelButton}
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"
+                                        defaultValue='Cancelar'/>
+                                <input className='bg-danger col-4' type='submit' defaultValue='Deletar'/>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

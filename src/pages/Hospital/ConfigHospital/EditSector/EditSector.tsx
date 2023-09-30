@@ -256,11 +256,13 @@ const EditSector = (props: Props) => {
                             <div className='card-footer bg-transparent border-0 ps-0 pe-0'>
                                 {
                                     loading ? (
-                                        <button className='col-12 col-md-4 form-control' disabled>
-                                            <div className='spinner-border' role="status">
-                                                <span className='sr-only'></span>
-                                            </div>
-                                        </button>
+                                        <div className="col-12 col-md-4 ">
+                                            <button className='form-control' disabled>
+                                                <div className='spinner-border' role="status">
+                                                    <span className='sr-only'></span>
+                                                </div>
+                                            </button>                                            
+                                        </div>
                                     ) : (
                                         <input className='col-12 col-md-4' type='submit' value='Salvar'/>
                                     )

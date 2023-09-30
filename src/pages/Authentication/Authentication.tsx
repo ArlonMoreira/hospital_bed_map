@@ -67,7 +67,6 @@ const Authentication = () => {
     const [showLoginErrorAlert, setShowLoginErrorAlert] = useState<boolean>(false);
     
     useEffect(()=>{
-        console.log(errorLogin)
         if(errorLogin){
             setShowLoginErrorAlert(true);
 

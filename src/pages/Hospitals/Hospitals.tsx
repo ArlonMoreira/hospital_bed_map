@@ -127,10 +127,11 @@ const Hospitals = () => {
         newData.is_active = newData.is_active ? false: true;
         await dispatch(refreshToken()); //Update token access after to send data
         await dispatch(update({data:newData, hospital:hospital.id.toString()}));
-
+    
         if(loadingHospitals){ //Loading card hospital end
             loadingHospitals[indexUpdate] = false;
         }
+        
     };
 
     useEffect(()=>{
@@ -217,7 +218,7 @@ const Hospitals = () => {
                 </div>
                 {
                     hospitals && hospitals.map((hospital, i)=>(
-                        <div key={hospital.id} className={`card border-0 shadow ${styles.item}`}>
+                        <div key={hospital.id} className={`card border-0 ${styles.item}`} style={{'animationDelay': `${i/20}s`}}>
                             <div className={`card-body position-relative d-flex justify-content-between ${!hospital.is_active && 'opacity-50'}`}>
                                 {
                                     loadingHospitals && (
@@ -259,22 +260,19 @@ const Hospitals = () => {
                                                             <Tooltip anchorSelect=".active-tooltip" place="right">
                                                                 Ativar/Desativar
                                                             </Tooltip>
-                                                            {
-                                                                <a className="active-tooltip" onClick={() => active(hospital)}>
-                                                                    {
-                                                                        hospital.is_active ? (
-                                                                            <svg viewBox="0 0 448 512" width={'1em'} height={'1em'}>
-                                                                                <path d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z"/>
-                                                                            </svg>
-                                                                        ) : (
-                                                                            <svg viewBox="0 0 576 512" width={'1em'} height={'1em'}>
-                                                                                <path d="M352 144c0-44.2 35.8-80 80-80s80 35.8 80 80v48c0 17.7 14.3 32 32 32s32-14.3 32-32V144C576 64.5 511.5 0 432 0S288 64.5 288 144v48H64c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V256c0-35.3-28.7-64-64-64H352V144z"/>
-                                                                            </svg>
-                                                                        )
-                                                                    }
-                                                                </a>
-                                                            }
-                
+                                                            <a className="active-tooltip" onClick={() => active(hospital)}>
+                                                                {
+                                                                    hospital.is_active ? (
+                                                                        <svg viewBox="0 0 448 512" width={'1em'} height={'1em'}>
+                                                                            <path d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z"/>
+                                                                        </svg>
+                                                                    ) : (
+                                                                        <svg viewBox="0 0 576 512" width={'1em'} height={'1em'}>
+                                                                            <path d="M352 144c0-44.2 35.8-80 80-80s80 35.8 80 80v48c0 17.7 14.3 32 32 32s32-14.3 32-32V144C576 64.5 511.5 0 432 0S288 64.5 288 144v48H64c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V256c0-35.3-28.7-64-64-64H352V144z"/>
+                                                                        </svg>
+                                                                    )
+                                                                }  
+                                                            </a>
                                                         </li>
                                                         <li className='nav-item'>
                                                             <Tooltip anchorSelect=".add-tooltip" place="right">
@@ -312,7 +310,7 @@ const Hospitals = () => {
                         </div>
                         <form className='register_form' onSubmit={handleSubmit}>
                             <div className='modal-body p-4 row'>
-                                <label className='col-6'>
+                                <label className='col-12 col-md-6'>
                                     <span>CNES</span>
                                     <input
                                         className={`form-control ${errorsRegister?.cnes && 'border border-danger'}`}
@@ -338,7 +336,7 @@ const Hospitals = () => {
                                         )
                                     }
                                 </label>
-                                <label className='col-6'>
+                                <label className='col-12 col-md-6'>
                                     <span>CNPJ</span>
                                     <MaskedInput
                                         mask="99.999.999/9999-99"
@@ -365,7 +363,7 @@ const Hospitals = () => {
                                         )
                                     }
                                 </label>
-                                <label className='col-6'>
+                                <label className='col-12 col-md-6'>
                                     <span>Nome</span>
                                     <input
                                         className={`form-control ${errorsRegister?.name && 'border border-danger'}`}
@@ -391,7 +389,7 @@ const Hospitals = () => {
                                         )
                                     }
                                 </label>
-                                <label className='col-6'>
+                                <label className='col-12 col-md-6'>
                                     <span>Sigla</span>
                                     <input 
                                         className={`form-control ${errorsRegister?.acronym && 'border border-danger'}`}
@@ -419,18 +417,20 @@ const Hospitals = () => {
                                 </label>
                             </div>
                             <div className='modal-footer border-0 modal_footer_bg px-4'>
+                                <input ref={buttonCloseModal} className='cancel col-4' type='cancel' defaultValue='Cancelar' data-bs-dismiss="modal" aria-label="Close"/>
                                 {
                                     loading ? (
-                                        <button className='form-control' disabled>
-                                            <div className="spinner-border" role="status">
-                                                <span className="sr-only"></span>
-                                            </div>
-                                        </button>                                        
+                                        <div className='col-4'>
+                                            <button className='form-control' disabled>
+                                                <div className="spinner-border" role="status">
+                                                    <span className="sr-only"></span>
+                                                </div>
+                                            </button>
+                                        </div>                                    
                                     ) : (
-                                        <input type='submit' value='Cadastrar'/>
+                                        <input className='col-4' type='submit' value='Cadastrar'/>
                                     )
                                 }
-                                <input ref={buttonCloseModal} className='cancel' type='cancel' defaultValue='Cancelar' data-bs-dismiss="modal" aria-label="Close"/>
                             </div>
                         </form>
                     </div>
