@@ -10,7 +10,7 @@ import { RootState } from '../../../../store';
 //Interface
 import { IBed, IStatus, IType, IBedParams } from '../../../../interfaces/Bed';
 //Context
-import { useBedContext } from '../../../../components/Context/BedContext';
+import { useBedContext } from '../../../../Context/BedContext';
 
 type Props = {
   sector: string | undefined;

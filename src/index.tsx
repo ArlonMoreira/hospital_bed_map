@@ -15,8 +15,9 @@ import App from './App';
 import { Provider } from 'react-redux';
 import { store } from './store';
 //Context
-import { SectorProvider } from './components/Context/SectorContext';
-import { BedProvider } from './components/Context/BedContext';
+import { SectorProvider } from './Context/SectorContext';
+import { BedProvider } from './Context/BedContext';
+import { CnesProvider } from './Context/CnesDefaultContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -25,9 +26,11 @@ root.render(
   //<React.StrictMode>
   <BedProvider>
     <SectorProvider>
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <CnesProvider>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </CnesProvider>
     </SectorProvider>
   </BedProvider>
   //</React.StrictMode>

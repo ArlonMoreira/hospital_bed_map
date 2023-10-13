@@ -10,7 +10,7 @@ import { RootState } from '../../store';
 import { refreshToken } from '../../slices/authSlice';
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 //Context
-import { useSectorContext } from '../../components/Context/SectorContext';
+import { useSectorContext } from '../../Context/SectorContext';
 //Component
 import Alert from '../Alert/Alert';
 

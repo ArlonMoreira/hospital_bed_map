@@ -8,7 +8,7 @@ import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 //Hooks
 import { useRef } from 'react';
 //Context
-import { useBedContext } from '../Context/BedContext';
+import { useBedContext } from '../../Context/BedContext';
 //Components
 import Alert from '../Alert/Alert';
 

@@ -8,6 +8,7 @@ import Hospitals from './pages/Hospitals/Hospitals';
 import Authentication from './pages/Authentication/Authentication';
 import EditHospital from './pages/EditHospital/EditHospital';
 import Hospital from './pages/Hospital/Hospital';
+import Beds from './pages/Beds/Beds';
 //Components
 import Sidebar from './components/Sidebar/Sidebar';
 import Navbar from './components/NavBar/Navbar';
@@ -55,6 +56,7 @@ function App() {
                 <Routes>
                   <Route path='/' element={<Dashboard />}/>
                   <Route path='login' element={!auth ? <Authentication />: <Navigate to='/'/> }/>
+                  <Route path='leitos/:id' element={<Beds />}/>
                   <Route path="hospitais" element={auth ? <Hospitals /> : <Navigate to="/" />}/>
                   <Route path="hospitais/editar/:hospital" element={auth ? <EditHospital /> : <Navigate to="/" />}/>
                   <Route path='hospitais/cadastrar/:hospital/*' element={auth ? <Hospital /> : <Navigate to="/" />}/>

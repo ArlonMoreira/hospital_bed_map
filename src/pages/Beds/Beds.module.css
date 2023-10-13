@@ -1,0 +1,20 @@
+.container_select {
+    padding: .8rem;
+    background: var(--bs-body-bg);
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px; 
+}
+
+.container_sector {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    grid-column-gap: 0.5rem;
+    grid-row-gap: 0.5rem; 
+}
+
+.container_sector .item {
+    min-height: 75px;
+    background-color: var(--bs-body-bg);
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;    
+}

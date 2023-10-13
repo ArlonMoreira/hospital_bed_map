@@ -8,7 +8,7 @@ import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { refreshToken } from '../../slices/authSlice';
 import { remove, hideAlert } from '../../slices/sectorSlice';
 //Context
-import { useSectorContext } from '../../components/Context/SectorContext';
+import { useSectorContext } from '../../Context/SectorContext';
 //Interface
 import { ISector } from '../../interfaces/Sector';
 //Components

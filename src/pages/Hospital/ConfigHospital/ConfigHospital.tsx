@@ -9,7 +9,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Beds from './Beds/Beds';
 import EditSector from './EditSector/EditSector';
 //Context
-import { useSectorContext } from '../../../components/Context/SectorContext';
+import { useSectorContext } from '../../../Context/SectorContext';
 
 const ConfigHospital = () => {
 

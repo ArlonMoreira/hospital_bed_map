@@ -157,7 +157,7 @@ const EditHospital = (props: Props) => {
           </Link>
         </div>
         <div className='p-4 px-0'>
-          <h5 className='fw-bold'>Editar Cadastro</h5>
+          <h5>Editar Cadastro</h5>
         </div>
         <div className={`card ${styles.form_edit} px-2`}>
           <form className='register_form' onSubmit={handleSubmit}>

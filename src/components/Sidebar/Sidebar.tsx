@@ -2,11 +2,19 @@
 import styles from './Sidebar.module.css';
 //Router
 import { NavLink } from 'react-router-dom';
+//Redux
+import { list } from '../../slices/hospitalSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { ThunkDispatch, AnyAction } from '@reduxjs/toolkit';
+import { RootState } from '../../store';
 //Hooks
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 //interface
 import { AuthHookResult } from '../../interfaces/Authentication';
+import { IHospital } from '../../interfaces/Hospital';
+//Context
+import { useCnesContext } from '../../Context/CnesDefaultContext';
 
 type Props = {
     sideBarRef: React.RefObject<HTMLDivElement>,
@@ -23,7 +31,34 @@ const Sidebar = ({sideBarRef}: Props) => {
 
     const handleExpand = ():void => {
         expandArea.current?.classList.toggle(styles.expand);
-    };    
+    };
+
+    /**
+     * Cnes default
+     */
+    const cnes = useCnesContext();
+
+    const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>();
+    const { hospitals } : { hospitals: IHospital[] } = useSelector((state: RootState) => state.hospital);
+
+    useEffect(()=>{
+        dispatch(list());
+    }, []);
+
+    //Para que a classe active apareça no navlink é preciso que a url definida na classe nav link, seja mesmo daquele navegado.
+    useEffect(()=>{
+        //Só irá definir o valor padrão ao clicar no menu dos leitos caso o cnes padrão /contexto não tiver sido definido previamente.
+        if(hospitals.length > 0 && !cnes?.cnesDefault){
+            const hospital_active = hospitals.filter((obj) => obj.is_active);
+
+            if(hospital_active.length > 0){
+                const hospital = hospital_active[0] as IHospital;
+                cnes?.setCnesDefault(hospital.cnes);
+            }
+
+        }
+        
+    }, [hospitals]);
 
     return (
         <nav ref={sideBarRef} className={`${styles.sidebar} py-1 px-1 py-sm-1 px-sm-1 py-md-2 px-md-2`}>
@@ -47,7 +82,7 @@ const Sidebar = ({sideBarRef}: Props) => {
                         </NavLink>
                     </li>
                     <li className={`nav-item ${styles.item}`}>
-                        <NavLink to='/leitos'>
+                        <NavLink to={`/leitos/${cnes?.cnesDefault}`}>
                             <div className={styles.logo_nav}>
                                 <svg width="24" height="24" viewBox="0 0 249.000000 203.000000" preserveAspectRatio="xMidYMid meet">
                                     <g transform="translate(0.000000,203.000000) scale(0.100000,-0.100000)" stroke="none">
