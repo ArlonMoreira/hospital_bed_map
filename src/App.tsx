@@ -21,6 +21,7 @@ import { RootState } from './store';
 import { refreshToken } from './slices/authSlice';
 //Interface
 import { IAuth } from './interfaces/Authentication';
+import { IHospital } from './interfaces/Hospital';
 //Hooks
 import { useAuth } from './hooks/useAuth';
 
@@ -29,6 +30,7 @@ import { useAuth } from './hooks/useAuth';
 function App() {
   
   const { auth } = useAuth();
+  const [hospitalList, setHospitalList] = useState<Array<IHospital>>([]);
   
   /**
    * Start: Atualizar token de autenticação;
@@ -51,12 +53,12 @@ function App() {
         <div className='d-flex flex-column h-100'>
           <Navbar sidebarRef={sideBarRef}/>
           <div className='main w-100 h-100'>
-              <Sidebar sideBarRef={sideBarRef}/>
+              <Sidebar sideBarRef={sideBarRef} setHospitalList={setHospitalList}/>
               <div className='container-fluid py-1 px-1 py-sm-1 px-sm-1 py-md-2 px-md-2'>
                 <Routes>
                   <Route path='/' element={<Dashboard />}/>
                   <Route path='login' element={!auth ? <Authentication />: <Navigate to='/'/> }/>
-                  <Route path='leitos/:id' element={<Beds />}/>
+                  <Route path='leitos/:id' element={<Beds hospitalList={hospitalList}/>}/>
                   <Route path="hospitais" element={auth ? <Hospitals /> : <Navigate to="/" />}/>
                   <Route path="hospitais/editar/:hospital" element={auth ? <EditHospital /> : <Navigate to="/" />}/>
                   <Route path='hospitais/cadastrar/:hospital/*' element={auth ? <Hospital /> : <Navigate to="/" />}/>

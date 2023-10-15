@@ -3,7 +3,7 @@ import { useContext, createContext, useState, SetStateAction, Dispatch } from "r
 
 interface ICnesContext {
     cnesDefault: string | null,
-    setCnesDefault: Dispatch<SetStateAction<string | null>>
+    setCnesDefault: Dispatch<SetStateAction<string | null>>,
 };
 
 const CnesContext = createContext<ICnesContext | null>(null);

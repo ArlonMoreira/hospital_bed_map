@@ -10,18 +10,36 @@ interface Params {
 
 const useHospital = () => {
 
-    const update = async({params, hospital}:{params: Params, hospital: string}): Promise<IHospitalResponse> =>{
+    const config = async({params, url, method}: {params?:Params, url: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE'}): Promise<IHospitalResponse> => {
         try {
-            const response:Response = await fetch(`${url}hospital/${hospital}/`, {
-                method: 'PUT',
+            const paramsResponse = {
+                method,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${params.token}`
+                }
+            } as {
+                method: string,
+                headers: {
+                    'Content-Type': string,
+                    Authorization: string
                 },
-                body: JSON.stringify(params.data)
-            });
+                body: string
+            }
+
+            if(params?.token && params){
+                paramsResponse.headers.Authorization = `Bearer ${params.token}`
+            }
+            
+            if(params){
+                if(params.data) {
+                    paramsResponse.body = JSON.stringify(params.data)
+                }
+            }
+
+            const response:Response = await fetch(url, paramsResponse);
+            
             const result = await response.json();
-        
+
             return {
                 success: response.ok,
                 ...result
@@ -35,89 +53,30 @@ const useHospital = () => {
         }
     };
 
-    const hospital = async({params, hospital}:{params: Params, hospital: string}):Promise<IHospitalResponse> => {
-        try {
-            const response:Response = await fetch(`${url}hospital/${hospital}/`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${params.token}`
-                }
-            });
-            const result = await response.json();
-
-            return {
-                success: response.ok,
-                ...result
-            } as IHospitalResponse;
-
-        } catch(error) {
-            return {
-                success: false,
-                message: 'Erro interno no sistema. Contate o administrador.'
-            } as IHospitalResponse;
-        }
-    };
-
-    const hospitals = async(params: Params):Promise<IHospitalResponse> => {
-        try {
-            const response:Response = await fetch(`${url}hospital/`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${params.token}`
-                }
-            });
-            const result = await response.json();
-
-            const request:IHospitalResponse = {
-                success: response.ok,
-                ...result
-            };
-
-            return request;
-
-        } catch(error) {
-            return {
-                success: false,
-                message: 'Erro interno no sistema. Contate o administrador.'
-            } as IHospitalResponse;
-        }
-    };
-
-    const register = async (params: Params):Promise<IHospitalResponse> => {
-        try {
-            const response:Response = await fetch(`${url}hospital/cadastrar/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${params.token}`
-                },
-                body: JSON.stringify(params.data)
-            });
-            
-            const result = await response.json();
-            
-            const request:IHospitalResponse = {
-                success: response.ok,
-                ...result
-            };
-     
-            return request;
-        } catch(error) {
-            return {
-                success: false,
-                message: 'Erro interno no sistema. Contate o administrador.'
-            } as IHospitalResponse;
-        };
-
-    };
-
     return {
-        hospital,
-        hospitals,
-        register,
-        update,
+        hospital: ({params, hospital}: {params: Params, hospital: string}) => {
+            return config({params, url: `${url}hospital/${hospital}/`, method: 'GET'});
+        },
+        hospitals: ({token}: Params) => {
+            const params = {
+                token
+            } as Params
+
+            return config({params, url: `${url}hospital/`, method: 'GET'});
+        },
+        public: () => {
+            return config({url: `${url}hospital/public/`, method: 'GET'});
+        },
+        register: ({token, data}: Params) => {
+            const params = {
+                token, data
+            } as Params
+
+            return config({params, url: `${url}hospital/cadastrar/`, method: 'POST'});
+        },
+        update: ({params, hospital}: {params: Params, hospital: string}) => {
+            return config({params, url: `${url}hospital/${hospital}/`, method: 'PUT'});
+        },
     }
 };
 

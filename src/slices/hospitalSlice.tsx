@@ -68,6 +68,19 @@ export const list = createAsyncThunk(
     }
 );
 
+export const listPublic = createAsyncThunk(
+    'hospital/listPublic',
+    async(_, { rejectWithValue }) => {
+        const response:IHospitalResponse = await useHospital().public();
+        
+        if(response.success){
+            return response;
+        } else {
+            return rejectWithValue(response);
+        }
+    }
+)
+
 export const hospital = createAsyncThunk(
     'hospital/hospital',
     async(hospital: string, { getState, rejectWithValue }) => {
@@ -130,6 +143,13 @@ export const hospitalSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            .addCase(listPublic.fulfilled, (state: IState, action: PayloadAction<IHospitalResponse>)=>{
+                const response = (action.payload as IHospitalResponse);
+
+                //Hospitails
+                state.hospitals = response.data as IHospital[];
+                
+            })
             .addCase(register.fulfilled, (state: IState, action: PayloadAction<IHospitalResponse>)=>{
                 const response = (action.payload as IHospitalResponse);
                 //Success

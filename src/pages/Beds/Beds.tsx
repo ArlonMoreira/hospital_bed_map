@@ -2,8 +2,7 @@ import React, { useEffect, ChangeEvent, useState } from 'react'
 //Styles
 import styles from './Beds.module.css';
 //Redux
-import { list as listHospitals } from '../../slices/hospitalSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { ThunkDispatch, AnyAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 //Hooks
@@ -13,13 +12,14 @@ import { useNavigate } from 'react-router-dom';
 import { useCnesContext } from '../../Context/CnesDefaultContext';
 //Interface
 import { IHospital } from '../../interfaces/Hospital';
-type Props = {}
 
-const Beds = (props: Props) => {
+type Props = {
+    hospitalList: Array<IHospital>,
+};
+
+const Beds = ({hospitalList}: Props) => {
 
     const dispatch = useDispatch<ThunkDispatch<RootState, any, AnyAction>>();
-    const { hospitals } : { hospitals: IHospital[] } = useSelector((state: RootState) => state.hospital);
-
     /**
      * Navigate
      */
@@ -41,24 +41,19 @@ const Beds = (props: Props) => {
         }
 
     }, [id]);
-    
-    useEffect(()=>{
-        dispatch(listHospitals());
-    }, []);
 
     useEffect(()=>{
-        if(hospitals.length > 0 && hospitals){
-            const hospitalsActives = hospitals.filter((obj) => obj.is_active);
-            setHospitalSelectOptions(hospitalsActives);
+        if(hospitalList.length > 0 && hospitalList){
+            setHospitalSelectOptions(hospitalList);
         }
 
-    }, [hospitals]);
+    }, [hospitalList, dispatch]);
 
     const changePage = (e: ChangeEvent<HTMLSelectElement>) => {
         e.preventDefault();
         navigate(`/leitos/${e.target.value}`);
     };
-
+    
     return (
         <div>
             <label className={styles.container_select}>

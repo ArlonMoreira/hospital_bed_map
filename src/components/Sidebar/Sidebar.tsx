@@ -3,7 +3,7 @@ import styles from './Sidebar.module.css';
 //Router
 import { NavLink } from 'react-router-dom';
 //Redux
-import { list } from '../../slices/hospitalSlice';
+import { listPublic } from '../../slices/hospitalSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch, AnyAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
@@ -18,9 +18,10 @@ import { useCnesContext } from '../../Context/CnesDefaultContext';
 
 type Props = {
     sideBarRef: React.RefObject<HTMLDivElement>,
+    setHospitalList: (newHospitalList: Array<IHospital>) => void;
 }
 
-const Sidebar = ({sideBarRef}: Props) => {
+const Sidebar = ({sideBarRef, setHospitalList}: Props) => {
 
     const { auth }:AuthHookResult = useAuth();
 
@@ -42,20 +43,24 @@ const Sidebar = ({sideBarRef}: Props) => {
     const { hospitals } : { hospitals: IHospital[] } = useSelector((state: RootState) => state.hospital);
 
     useEffect(()=>{
-        dispatch(list());
+        (async()=>{
+            await dispatch(listPublic());
+        })();
+
     }, []);
 
     //Para que a classe active apareça no navlink é preciso que a url definida na classe nav link, seja mesmo daquele navegado.
     useEffect(()=>{
         //Só irá definir o valor padrão ao clicar no menu dos leitos caso o cnes padrão /contexto não tiver sido definido previamente.
-        if(hospitals.length > 0 && !cnes?.cnesDefault){
-            const hospital_active = hospitals.filter((obj) => obj.is_active);
+        if(hospitals.length > 0){
+            const hospitals_actives = hospitals.filter((obj) => obj.is_active)
+            const hospital = hospitals_actives[0] as IHospital;
 
-            if(hospital_active.length > 0){
-                const hospital = hospital_active[0] as IHospital;
+            setHospitalList(hospitals_actives);
+
+            if(!cnes?.cnesDefault){
                 cnes?.setCnesDefault(hospital.cnes);
             }
-
         }
         
     }, [hospitals]);
