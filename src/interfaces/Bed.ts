@@ -40,8 +40,15 @@ export interface IBed {
     is_extra?: boolean;
 }
 
+export interface ISector {
+    id: number;
+    name: string;
+    tip_acc: string;
+    beds: IBed[];
+}
+
 export interface IBedResponse {
     success: boolean;
     message: string;
-    data?: IStatus[] | IType[] | IBed[] | IBedErrors;
+    data?: IStatus[] | IType[] | IBed[] | ISector[] | IBedErrors;
 }

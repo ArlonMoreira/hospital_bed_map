@@ -10,16 +10,33 @@ interface Params {
 
 const useBed = () => {
 
-    const config = async({params, url, method}: {params:Params, url: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE'}): Promise<IBedResponse> => {
+    const config = async({params, url, method}: {params?:Params, url: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE'}): Promise<IBedResponse> => {
         try {
-            const response:Response = await fetch(url, {
+            const paramsResponse = {
                 method,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${params.token}`
+                }
+            } as {
+                method: string,
+                headers: {
+                    'Content-Type': string,
+                    Authorization: string
                 },
-                body: JSON.stringify(params.data)
-            });
+                body: string
+            }
+
+            if(params?.token && params){
+                paramsResponse.headers.Authorization = `Bearer ${params.token}`
+            }
+            
+            if(params){
+                if(params.data) {
+                    paramsResponse.body = JSON.stringify(params.data)
+                }
+            }
+
+            const response:Response = await fetch(url, paramsResponse);
             
             const result = await response.json();
 
@@ -57,6 +74,9 @@ const useBed = () => {
         },
         remove: ({params, bed}: {params: Params, bed: string}) => {
             return config({params, url: `${url}leitos/remove/${bed}/`, method: 'DELETE'})
+        },
+        sectors: (hospital: number) => {
+            return config({url: `${url}leitos/public/${hospital}/`, method: 'GET'})
         }
     }
 

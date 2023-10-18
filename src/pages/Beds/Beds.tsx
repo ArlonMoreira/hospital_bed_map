@@ -2,6 +2,7 @@ import React, { useEffect, ChangeEvent, useState } from 'react'
 //Styles
 import styles from './Beds.module.css';
 //Redux
+import { sectors } from '../../slices/bedSlice';
 import { useDispatch } from 'react-redux';
 import { ThunkDispatch, AnyAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
@@ -53,12 +54,23 @@ const Beds = ({hospitalList}: Props) => {
         e.preventDefault();
         navigate(`/leitos/${e.target.value}`);
     };
+
+    useEffect(()=>{
+        if(cnes && hospitalList.length > 0 && hospitalList){
+            const hospital = hospitalList.filter((option) => option.cnes == cnes.cnesDefault)[0];
+            if(hospital){
+                dispatch(sectors(hospital?.id));
+            }
+
+        }
+
+    }, [cnes, hospitalList]);
     
     return (
         <div>
             <label className={styles.container_select}>
                 <span>Hospital</span>
-                <select className='form-select' onChange={changePage} defaultValue={cnes?.cnesDefault ? cnes?.cnesDefault:0}>
+                <select className='form-select' onChange={changePage} value={cnes?.cnesDefault ? cnes?.cnesDefault:0}>
                     {
                         hospitalSelectOptions.length > 0 && (
                             hospitalSelectOptions.map((hospital, i) => (

@@ -2,7 +2,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 //Hooks
 import useBed from "../hooks/useBed";
-import { IBed, IBedParams, IBedResponse, IBedErrors } from "../interfaces/Bed";
+//Intercace
+import { IBed, IBedParams, IBedResponse, IBedErrors, ISector } from "../interfaces/Bed";
 import { IAuth } from "../interfaces/Authentication";
 
 interface IState {
@@ -12,6 +13,7 @@ interface IState {
     mensagemRegisterError: string | null,
     loadingRegister: boolean,
     errorsRegisterBed: IBedErrors,
+    sectors: ISector | null,
     beds: IBed[],
     removeError: boolean,
     mensagemRemoverError: string | null
@@ -26,7 +28,8 @@ const initialState = {
     errorsRegisterBed: {},
     beds: [],
     removeError: false,
-    mensagemRemoverError: null
+    mensagemRemoverError: null,
+    sectors: null
 };
 
 export const list = createAsyncThunk(
@@ -43,6 +46,20 @@ export const list = createAsyncThunk(
         } else {
             return rejectWithValue(response);
         }
+    }
+)
+
+export const sectors = createAsyncThunk(
+    'bed/sectors',
+    async(idHospital:number, {getState, rejectWithValue}) => {
+        const response:IBedResponse = await useBed().sectors(idHospital);
+
+        if(response.success){
+            return response;
+        } else {
+            return rejectWithValue(response);
+        }
+        
     }
 )
 
