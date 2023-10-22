@@ -3,7 +3,7 @@ import styles from './Sidebar.module.css';
 //Router
 import { NavLink } from 'react-router-dom';
 //Redux
-import { listPublic } from '../../slices/hospitalSlice';
+import { getHospitals } from '../../slices/hospitalSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThunkDispatch, AnyAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
@@ -44,7 +44,7 @@ const Sidebar = ({sideBarRef, setHospitalList}: Props) => {
 
     useEffect(()=>{
         (async()=>{
-            await dispatch(listPublic());
+            await dispatch(getHospitals());
         })();
 
     }, []);

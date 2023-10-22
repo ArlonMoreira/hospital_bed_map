@@ -4,7 +4,7 @@ import { IHospitalParams, IHospitalResponse } from "../interfaces/Hospital";
 const url = `${process.env.REACT_APP_BASE_URL}`;
 
 interface Params {
-    token: string,
+    token?: string,
     data ?: IHospitalParams
 };
 
@@ -57,15 +57,16 @@ const useHospital = () => {
         hospital: ({params, hospital}: {params: Params, hospital: string}) => {
             return config({params, url: `${url}hospital/${hospital}/`, method: 'GET'});
         },
-        hospitals: ({token}: Params) => {
+        hospitals: ({ token }: Params = {}) => {
+            if(!token){
+                return config({url: `${url}hospital/public/`, method: 'GET'});
+            }
+            
             const params = {
                 token
             } as Params
 
             return config({params, url: `${url}hospital/`, method: 'GET'});
-        },
-        public: () => {
-            return config({url: `${url}hospital/public/`, method: 'GET'});
         },
         register: ({token, data}: Params) => {
             const params = {

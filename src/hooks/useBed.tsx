@@ -35,7 +35,7 @@ const useBed = () => {
                     paramsResponse.body = JSON.stringify(params.data)
                 }
             }
-
+            
             const response:Response = await fetch(url, paramsResponse);
             
             const result = await response.json();
@@ -49,7 +49,7 @@ const useBed = () => {
             return {
                 success: false,
                 message: 'Erro interno no sistema. Contate o administrador.'
-            } as IBedResponse
+            } as IBedResponse;
         }
     };
 
@@ -61,22 +61,22 @@ const useBed = () => {
             return config({params, url: `${url}leitos/tipo/`, method: 'GET'})
         },
         register: ({params}: {params: Params}) => {
-            return config({params, url: `${url}leitos/cadastrar/`, method: 'POST'})
+            return config({params, url: `${url}leitos/cadastrar/`, method: 'POST'});
         },
         list: ({params, sector}: {params: Params, sector: string}) => {
-            return config({params, url: `${url}leitos/listar/${sector}/`, method: 'GET'})
+            return config({params, url: `${url}leitos/listar/${sector}/`, method: 'GET'});
         },
         occupation: ({params, bed}: {params: Params, bed: string}) => {
-            return config({params, url: `${url}leitos/occupation/${bed}/`, method: 'PUT'})
+            return config({params, url: `${url}leitos/occupation/${bed}/`, method: 'PUT'});
         },
         active: ({params, bed}: {params: Params, bed: string}) => {
-            return config({params, url: `${url}leitos/active/${bed}/`, method: 'PUT'})
+            return config({params, url: `${url}leitos/active/${bed}/`, method: 'PUT'});
         },
         remove: ({params, bed}: {params: Params, bed: string}) => {
-            return config({params, url: `${url}leitos/remove/${bed}/`, method: 'DELETE'})
+            return config({params, url: `${url}leitos/remove/${bed}/`, method: 'DELETE'});
         },
-        sectors: (hospital: number) => {
-            return config({url: `${url}leitos/public/${hospital}/`, method: 'GET'})
+        sectors: (hospital: string) => {
+            return config({url: `${url}leitos/public/${hospital}/`, method: 'GET'});
         }
     }
 

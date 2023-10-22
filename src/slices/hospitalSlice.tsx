@@ -20,7 +20,8 @@ interface IState {
     errorsUpdate: IHospitalErrors | null,
     errorUpdate: boolean | null,
     hospitals: IHospital[],
-    hospital: IHospital | null
+    hospital: IHospital | null,
+    loadingHospitals: boolean
 };
 
 const initialState: IState = {
@@ -36,7 +37,9 @@ const initialState: IState = {
     errorsUpdate: null,
     errorUpdate: false,
     hospitals: [],
-    hospital: null
+    hospital: null,
+    loadingHospitals: false
+    
 };
 
 export const register = createAsyncThunk(
@@ -68,11 +71,10 @@ export const list = createAsyncThunk(
     }
 );
 
-export const listPublic = createAsyncThunk(
-    'hospital/listPublic',
+export const getHospitals = createAsyncThunk(
+    'hospital/getHospitals',
     async(_, { rejectWithValue }) => {
-        const response:IHospitalResponse = await useHospital().public();
-        
+        const response:IHospitalResponse = await useHospital().hospitals();
         if(response.success){
             return response;
         } else {
@@ -143,12 +145,16 @@ export const hospitalSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(listPublic.fulfilled, (state: IState, action: PayloadAction<IHospitalResponse>)=>{
+            .addCase(getHospitals.fulfilled, (state: IState, action: PayloadAction<IHospitalResponse>)=>{
                 const response = (action.payload as IHospitalResponse);
-
                 //Hospitails
                 state.hospitals = response.data as IHospital[];
-                
+                //Encerrar carregamento
+                state.loadingHospitals = false;
+            })
+            .addCase(getHospitals.pending, (state: IState) => {
+                //Iiniciou carregamento
+                state.loadingHospitals = true;
             })
             .addCase(register.fulfilled, (state: IState, action: PayloadAction<IHospitalResponse>)=>{
                 const response = (action.payload as IHospitalResponse);

@@ -13,7 +13,8 @@ interface IState {
     mensagemRegisterError: string | null,
     loadingRegister: boolean,
     errorsRegisterBed: IBedErrors,
-    sectors: ISector | null,
+    sectors: ISector[] | null,
+    sectorsLoading: boolean,
     beds: IBed[],
     removeError: boolean,
     mensagemRemoverError: string | null
@@ -29,7 +30,8 @@ const initialState = {
     beds: [],
     removeError: false,
     mensagemRemoverError: null,
-    sectors: null
+    sectors: [],
+    sectorsLoading: false
 };
 
 export const list = createAsyncThunk(
@@ -49,11 +51,10 @@ export const list = createAsyncThunk(
     }
 )
 
-export const sectors = createAsyncThunk(
+export const getSectors = createAsyncThunk(
     'bed/sectors',
-    async(idHospital:number, {getState, rejectWithValue}) => {
-        const response:IBedResponse = await useBed().sectors(idHospital);
-
+    async(hospital:string, {rejectWithValue}) => {
+        const response:IBedResponse = await useBed().sectors(hospital);
         if(response.success){
             return response;
         } else {
@@ -61,7 +62,7 @@ export const sectors = createAsyncThunk(
         }
         
     }
-)
+);
 
 export const register = createAsyncThunk(
     'bed/register',
@@ -134,6 +135,9 @@ export const bedSlice = createSlice({
     name: 'bed',
     initialState,
     reducers: {
+        resetSectors: (state: IState) => {
+            state.sectors = [];
+        },
         reset: (state: IState) => {
             state.loadingRegister = false;
             state.errorsRegisterBed = {};
@@ -147,6 +151,23 @@ export const bedSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            .addCase(getSectors. fulfilled, (state: IState, action: PayloadAction<IBedResponse>) => {
+                //Obter setores
+                const response = (action.payload as IBedResponse);
+                const sectors = response.data as ISector[];
+                state.sectors = sectors;
+                //Encerrar carregamento de setores
+                state.sectorsLoading = false;
+            })
+            .addCase(getSectors.pending, (state: IState) => {
+                //Iniciar carregamento de setores
+                state.sectorsLoading = true;
+            })
+            .addCase(getSectors.rejected, (state: IState, action: PayloadAction<IBedResponse | unknown>) => {
+                //Obter setores
+                const response = (action.payload as IBedResponse);
+                console.log(response)
+            })
             .addCase(register.fulfilled, (state: IState, action: PayloadAction<IBedResponse>) => {
                 const response = (action.payload as IBedResponse);
                 //Loading
