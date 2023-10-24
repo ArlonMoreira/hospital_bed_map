@@ -152,8 +152,13 @@ const Beds = ({hospitalList}: Props) => {
 
     const calcOcupation = (status: Array<resumeStatus>):number => {
         const total = status.reduce((c, v) => c + v.beds, 0);
-        const free = status.filter((s) => s.status == 'VAGO')[0].beds;
-        return (total - free)/total * 100;
+        const free = status.filter((s) => s.status == 'VAGO')[0];
+
+        if(!free){
+            return 100;
+        }
+
+        return (total - free.beds)/total * 100;
     };
     
     return (
