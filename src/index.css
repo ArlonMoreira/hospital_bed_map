@@ -416,3 +416,35 @@ border-radius: 5px; /* Bordas arredondadas */
 ::-webkit-scrollbar-thumb:hover {
 background-color: var(--bs-gray-500);
 }
+
+.VAGO {
+    background-color: var(--bs-success) !important;
+}
+
+.VAGO-fill {
+    fill: var(--bs-success) !important;
+}
+
+.OCUPADO {
+    background-color: var(--bs-warning) !important;
+}
+
+.OCUPADO-fill {
+    fill: var(--bs-warning) !important;
+}
+
+.BLOQUEADO {
+    background-color: var(--bs-danger) !important;
+}
+
+.BLOQUEADO-fill {
+    fill: var(--bs-danger) !important;
+}
+
+.RESERVADO {
+    background-color: var(--bs-gray-500) !important;
+}
+
+.RESERVADO-fill {
+    fill: var(--bs-gray-500) !important;
+}

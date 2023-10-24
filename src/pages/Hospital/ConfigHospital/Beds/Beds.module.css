@@ -29,22 +29,6 @@
     fill: var(--bs-body-bg);
 }
 
-.VAGO {
-    background-color: var(--bs-success);
-}
-
-.OCUPADO {
-    background-color: var(--bs-warning);
-}
-
-.BLOQUEADO {
-    background-color: var(--bs-danger);
-}
-
-.RESERVADO {
-    background-color: var(--bs-gray-500);
-}
-
 .content {
     display: flex;
     flex-direction: column;
