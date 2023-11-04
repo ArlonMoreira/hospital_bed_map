@@ -161,47 +161,31 @@ const Beds = ({hospitalList}: Props) => {
         return (total - free.beds)/total * 100;
     };
 
+    /**
+     * Carrocel scroll horizontal
+     */
+
     const sectorContainer = useRef<HTMLDivElement>(null);
+    const [elements, setElements] = useState<Array<Element>>();
 
-    const eventScroll = ({key, type}: {key: number, type: 'next'| 'previous'}) => {
- 
-        if (sectorContainer.current) {
-            for (let i = 0; i < sectorContainer.current.children.length; i++) {
-                const child = sectorContainer.current.children[i];
-                if(child.getAttribute('data-sector-id') === key.toString()){
-                    const scrollArea = child.querySelectorAll('.scroll-area')[0];
-                    
-                    scrollArea.scrollLeft = type === 'next' ? scrollArea.scrollLeft + 100 * 2 : scrollArea.scrollLeft - 100 * 2;
-
-                    const previousButton = sectorContainer.current.children[i].querySelectorAll('.previous-button-scroll')[0] as HTMLButtonElement;
-                    const nextButton = sectorContainer.current.children[i].querySelectorAll('.next-button-scroll')[0] as HTMLButtonElement;
-
-                    const handleScroll = (e:Event) => {
-                        const element = e.target as HTMLElement; // Converte o elemento de destino para HTMLElement
-
-                        if (element instanceof HTMLElement) {
-                            const scrollLeft = element.scrollLeft; // Posição atual de rolagem
-          
-                            if(scrollLeft === 0){
-                                previousButton.disabled = true;
-                                nextButton.disabled = false;
-
-                            } else {
-                                nextButton.disabled = true;
-                                previousButton.disabled = false;
-                            }
-                        }
-
-                    };
-
-                    scrollArea.addEventListener('scroll', handleScroll);
-
-                }
-            }
+    useEffect(()=>{
+        if (sectorContainer.current && sectorContainer.current.children.length !== 0) {
+            const childrenArray = Array.from(sectorContainer.current.children);
+            setElements(childrenArray);
         }
-        
-    };  
+
+    }, [sectorContainer, sectors]);
     
+    const eventScroll = ({ element, type }: { element: Element; type: 'next' | 'previous' }) => {
+        const dom = element as HTMLDivElement;
+        const scrollArea = dom.querySelector('.scroll-area');
+      
+        if (scrollArea) {
+          scrollArea.scrollLeft = type === 'next' ? scrollArea.scrollLeft + 200 * 2 : scrollArea.scrollLeft - 200 * 2;
+        }
+
+    };
+
     return (
         <div>
             <label className={styles.container_select}>
@@ -217,26 +201,29 @@ const Beds = ({hospitalList}: Props) => {
                 </select>
             </label>
             <div className='p-4 px-0'>
-                <h5>Setores</h5>
+                <h5 className='m-0'>Setores</h5>
             </div>
             <div className={`${styles.container_sector}`} ref={sectorContainer}>
                 {
                     sectors.map((sector, i)=>(
-                        <div    className={`${styles.item} ${expandSectors[i] && styles.expand}`}
-                                key={sector.id}
-                                data-sector-id={sector.id}>
+                        <div    className={`${styles.item} ${expandSectors[i] ? styles.expand: ''}`} key={sector.id}>
                             <div className={`${styles.header}`}>
                                 <div className={`${styles.title}`}>
                                     <span>{sector.name}</span>
                                 </div>
                                 <div className={`${styles.tools}`}>
-                                    <button className={`${expandSectors[i] && 'd-none'} previous-button-scroll`} onClick={() => eventScroll({key: sector.id, type: 'previous'})} >
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg>
-                                    </button>
-                                    <button className={`${expandSectors[i] && 'd-none'} next-button-scroll`} onClick={() => eventScroll({key: sector.id, type: 'next'})} >
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>                                    
-                                    </button>                                    
-                                    <a onClick={() => expand(sector)}>
+                                    {
+                                        elements && 
+                                        <>
+                                            <button className={`${expandSectors[i] && 'd-none'} previous-button-scroll`} onClick={() => eventScroll({element: elements[i], type: 'previous'})}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg>
+                                            </button>
+                                            <button className={`${expandSectors[i] && 'd-none'} next-button-scroll`} onClick={() => eventScroll({element: elements[i], type: 'next'})}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>                                    
+                                            </button>                                        
+                                        </>                                      
+                                    }
+                                    <a onClick={() => expand(sector)} className="ms-3 ms-md-0">
                                         <svg height="1em" viewBox="0 0 448 512"><path d="M32 32C14.3 32 0 46.3 0 64v96c0 17.7 14.3 32 32 32s32-14.3 32-32V96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H32zM64 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7 14.3 32 32 32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H64V352zM320 32c-17.7 0-32 14.3-32 32s14.3 32 32 32h64v64c0 17.7 14.3 32 32 32s32-14.3 32-32V64c0-17.7-14.3-32-32-32H320zM448 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64H320c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c17.7 0 32-14.3 32-32V352z"/></svg>
                                     </a>
                                 </div>
