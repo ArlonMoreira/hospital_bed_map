@@ -168,23 +168,73 @@ const Beds = ({hospitalList}: Props) => {
     const sectorContainer = useRef<HTMLDivElement>(null);
     const [elements, setElements] = useState<Array<Element>>();
 
+    //Os elementos HTML precisam ser alimentados em um array, pois para cada elemento diferente uma ação deve ser empregada.
     useEffect(()=>{
         if (sectorContainer.current && sectorContainer.current.children.length !== 0) {
             const childrenArray = Array.from(sectorContainer.current.children);
             setElements(childrenArray);
+            
         }
 
     }, [sectorContainer, sectors]);
     
-    const eventScroll = ({ element, type }: { element: Element; type: 'next' | 'previous' }) => {
+    //Ao clicar no botão de navegação do carrossel irá mover o scroll na direção horizontal
+    const eventScroll = ({ element, type, value }: { element: Element; type: 'next' | 'previous'; value: number }) => {
         const dom = element as HTMLDivElement;
         const scrollArea = dom.querySelector('.scroll-area');
-      
+
         if (scrollArea) {
-          scrollArea.scrollLeft = type === 'next' ? scrollArea.scrollLeft + 200 * 2 : scrollArea.scrollLeft - 200 * 2;
+            scrollArea.scrollLeft = type === 'next' ? scrollArea.scrollLeft + value : scrollArea.scrollLeft - value;
         }
 
     };
+
+    //Irá habilitar e desabilitar o botão do scroll ao chegar ao fim da área de rolagem
+    useEffect(()=>{
+        if(elements){
+            elements.forEach((element)=>{
+
+                const dom = element as HTMLDivElement
+                const scrollArea = dom.querySelector('.scroll-area');
+
+                const previousButton = dom.querySelector('.previous-button-scroll') as HTMLButtonElement;
+                const nextButton = dom.querySelector('.next-button-scroll') as HTMLButtonElement;
+
+                if(scrollArea){
+                    //Quando expandir e retornará o scroll para 0, caso contrário.
+                    //O botão ficará divergente em relação ao scroll. Por esse motivo esse hook está escutando expandSectors                 
+                    scrollArea.scrollLeft = 0;
+
+                    const maxScroll = scrollArea.scrollWidth - scrollArea.clientWidth;
+                    
+                    //Caso a área de scroll for pequena ao ponto de não permitir a rolagem, os botões serão desabilitados.
+                    if(maxScroll === 0) {
+                        nextButton.classList.add(styles.disabled);
+                    }
+                    
+                    //Quando acionado o evento de scroll habilita ou desabilita os botões caso não tiver mais pra onde rolar.
+                    scrollArea.addEventListener('scroll', () => {
+                        if(scrollArea.scrollLeft == 0){
+                            previousButton.classList.add(styles.disabled);
+                        } else {
+                            previousButton.classList.remove(styles.disabled);
+                        }
+
+                        if(maxScroll <= scrollArea.scrollLeft + 1){
+                            nextButton.classList.add(styles.disabled);
+                        } else {
+                            nextButton.classList.remove(styles.disabled);
+                        }
+
+
+
+                    });
+                }
+
+            });
+        }
+
+    }, [elements, expandSectors]);
 
     return (
         <div>
@@ -206,7 +256,7 @@ const Beds = ({hospitalList}: Props) => {
             <div className={`${styles.container_sector}`} ref={sectorContainer}>
                 {
                     sectors.map((sector, i)=>(
-                        <div    className={`${styles.item} ${expandSectors[i] ? styles.expand: ''}`} key={sector.id}>
+                        <div    className={`${styles.item} ${expandSectors[i] ? styles.expand: ''}`} key={sector.id} id={`box-${sector.id}`}>
                             <div className={`${styles.header}`}>
                                 <div className={`${styles.title}`}>
                                     <span>{sector.name}</span>
@@ -215,10 +265,14 @@ const Beds = ({hospitalList}: Props) => {
                                     {
                                         elements && 
                                         <>
-                                            <button className={`${expandSectors[i] && 'd-none'} previous-button-scroll`} onClick={() => eventScroll({element: elements[i], type: 'previous'})}>
+                                            <button 
+                                                className={`${expandSectors[i] && 'd-none'} previous-button-scroll ${elements[i] && elements[i].scrollLeft == 0 && styles.disabled}`}
+                                                onClick={() => eventScroll({element: elements[i], type: 'previous', value: 500})}
+                                                >
                                                 <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg>
                                             </button>
-                                            <button className={`${expandSectors[i] && 'd-none'} next-button-scroll`} onClick={() => eventScroll({element: elements[i], type: 'next'})}>
+                                            <button className={`${expandSectors[i] && 'd-none'} next-button-scroll`}
+                                                onClick={() => eventScroll({element: elements[i], type: 'next', value: 500})}>
                                                 <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>                                    
                                             </button>                                        
                                         </>                                      
@@ -241,13 +295,13 @@ const Beds = ({hospitalList}: Props) => {
                                     {
                                         resumeStatus[i] &&
                                         resumeStatus[i].map((status, i) => (
-                                            <div className={`${styles.bignumber} d-flex align-items-center`} key={i}>
-                                                <div className={`${styles.iconArea}`}>
+                                            <div className={styles.bignumber} key={i}>
+                                                <div className={styles.iconArea}>
                                                     <svg className={`${status.status}-fill`} height="1em" viewBox="0 0 640 512"><path d="M32 32c17.7 0 32 14.3 32 32V320H288V160c0-17.7 14.3-32 32-32H544c53 0 96 43 96 96V448c0 17.7-14.3 32-32 32s-32-14.3-32-32V416H352 320 64v32c0 17.7-14.3 32-32 32s-32-14.3-32-32V64C0 46.3 14.3 32 32 32zm144 96a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg>                                                    
                                                 </div>
-                                                <div className={`${styles.textArea}`}>
-                                                    <span className={`${styles.label}`}>{status.status}</span>
-                                                    <span className={`${styles.number}`}>{status.beds}</span>
+                                                <div className={styles.textArea}>
+                                                    <span className={styles.label}>{status.status}</span>
+                                                    <span className={styles.number}>{status.beds}</span>
                                                 </div>
                                             </div>
                                         ))
